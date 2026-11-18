@@ -4,12 +4,10 @@ import { useLayoutEffect, type RefObject } from "react";
 
 // Timing, in milliseconds
 const APPEAR = 180; // spines fade in, all together, packed at the left
-const HOLD = 320; // pause on the packed shelf
-const SLIDE = 480; // spines slide out to their own slots, still spine-on
-const OPEN = 520; // each book swings open where it stands
-const PAUSE = 60; // between the last spine settling and the first book opening
-const MAX_STAGGER = 60; // gap between neighbours, shrunk for long rows...
-const MAX_STAGGER_TOTAL = 480; // ...so a row never staggers longer than this
+const HOLD = 380; // pause on the packed shelf
+const SPREAD = 760; // each book slides to its spot while swinging open
+const MAX_STAGGER = 70; // gap between neighbours leaving, shrunk for long rows...
+const MAX_STAGGER_TOTAL = 520; // ...so a row never staggers longer than this
 const GAP = 2; // px between spines on the packed shelf
 const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 
@@ -18,9 +16,10 @@ const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 const played = new Set<string>();
 
 /**
- * Shelf reveal, in two steps so books never overlap:
- * 1. each row starts as a packed shelf of spines on the left, which slide out to their own slots;
- * 2. once in place, the books swing open one by one, left to right.
+ * Shelf reveal: each row starts as a packed shelf of spines on the left, then fans out like a
+ * hand of cards. The rightmost book leaves first and sits on top; each book to its left follows,
+ * hidden underneath until it has fanned out, so no spine ever sits on top of an open cover.
+ * Every book slides and swings open in one smooth motion.
  *
  * Mark each book with `data-shelf-item`, the 3D book with `data-shelf-cover` (see <ShelfBook>,
  * whose `data-spine` gives the spine's thickness), and text underneath with `data-shelf-caption`.
@@ -48,34 +47,31 @@ export function useShelfReveal(ref: RefObject<HTMLElement | null>, key: string) 
     for (const row of rows.values()) {
       const rowStart = row[0].offsetLeft;
       const stagger = Math.min(MAX_STAGGER, MAX_STAGGER_TOTAL / Math.max(1, row.length - 1));
-      // Everyone opens after the whole row has slid into place
-      const slidesDone = APPEAR + HOLD + stagger * 0.5 * (row.length - 1) + SLIDE;
       let shelfX = rowStart; // where the next spine goes on the packed shelf
 
       row.forEach((el, col) => {
         const book = el.querySelector<HTMLElement>("[data-shelf-cover]") ?? el;
         const thickness = book.offsetWidth * Number(book.dataset.spine ?? 0.06);
         // Turned sideways, a book hinges on its left edge and its spine sits just left of
-        // that hinge, so shift by one spine width to line the spine up where we want it.
-        const packed = shelfX + thickness - el.offsetLeft;
-        const inSlot = thickness; // spine on the left edge of its own slot
+        // that hinge, so shift by one spine width to line the spine up on the shelf.
+        const dx = shelfX + thickness - el.offsetLeft;
         shelfX += thickness + GAP;
 
-        const slideStart = APPEAR + HOLD + col * stagger * 0.5;
-        const slideEnd = slideStart + SLIDE;
-        const openStart = slidesDone + PAUSE + col * stagger;
-        const duration = openStart + OPEN;
+        // Rightmost leaves first; later books in the row are drawn on top of earlier ones,
+        // so each book stays covered by its right-hand neighbour until it has fanned out.
+        const leaveAt = APPEAR + HOLD + (row.length - 1 - col) * stagger;
+        const duration = leaveAt + SPREAD;
         // Move first, then add depth, so every book is seen head-on from where it sits
-        const sideways = (x: number) => `translateX(${x}px) perspective(1000px) rotateY(90deg)`;
+        const sideways = `translateX(${dx}px) perspective(1000px) rotateY(90deg)`;
 
         book.style.transformOrigin = "left center";
+        el.style.position = "relative";
+        el.style.zIndex = String(col + 1);
         running.push(
           book.animate(
             [
-              { transform: sideways(packed), offset: 0 },
-              { transform: sideways(packed), offset: slideStart / duration, easing: EASE },
-              { transform: sideways(inSlot), offset: slideEnd / duration },
-              { transform: sideways(inSlot), offset: openStart / duration, easing: EASE },
+              { transform: sideways, offset: 0 },
+              { transform: sideways, offset: leaveAt / duration, easing: EASE },
               { transform: "translateX(0) perspective(1000px) rotateY(0deg)", offset: 1 },
             ],
             { duration, fill: "backwards" }
@@ -99,12 +95,19 @@ export function useShelfReveal(ref: RefObject<HTMLElement | null>, key: string) 
     }
 
     // Only count it as played once it finishes. Leaving mid-way means it plays again next time.
+    const reset = () => items.forEach((el) => (el.style.zIndex = ""));
     Promise.all(running.map((a) => a.finished)).then(
-      () => played.add(key),
+      () => {
+        played.add(key);
+        reset();
+      },
       () => {}
     );
 
-    return () => running.forEach((a) => a.cancel());
+    return () => {
+      running.forEach((a) => a.cancel());
+      reset();
+    };
     // Only re-check when the list changes, not on every re-render
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);

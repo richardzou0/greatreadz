@@ -41,11 +41,11 @@ This is a portfolio piece, built from the design files in `public/` (5 screens Ã
 - Progress bars ease to their new value when you log pages.
 - The bar chart grows in when My books opens.
 - Mood and pace selections reorder the Discover picks.
-- The shelf reveal: spines first, then covers fanning out left to right, once per list per visit (`components/useShelfReveal.ts`; timings are at the top of that file).
+- The shelf reveal: spines first, then covers fanning out like a hand of cards (rightmost on top), once per list per visit (`components/useShelfReveal.ts`; timings are at the top of that file).
 - Everything respects "reduce motion" on the device.
 
 ## Recent Changes
-- 2026-11-18: Smoothed the shelf reveal for long rows. Spines now slide out to their own slots first, then each book swings open in place, left to right, so covers never overlap other spines. The total stagger is capped, so a 12-book row takes about as long as a 6-book one.
+- 2026-11-18: Reworked the shelf reveal into one smooth motion that fans out like a hand of cards: the rightmost book leaves the packed shelf first and sits on top, and each book to its left follows from underneath, so no spine ever sits on top of an open cover. The total stagger is capped, so long rows don't drag.
 - 2026-11-18: The shelf reveal now plays once per list per visit. Coming back to a tab skips it, and reloading the page plays it again. Discover plays it on first view, not on every filter change.
 - 2026-11-18: "Friends just finished" on Home now has 12 books (sample friends) in a sideways-scrolling shelf, with arrow buttons on desktop and a soft fade on the edge that has more books.
 - 2026-11-18: The shelf reveal now shows real spines instead of squashed covers. Each book is a small 3D object: the spine uses a colour sampled from the left edge of its real cover, shows the title and author's surname, and is thicker for longer books.
