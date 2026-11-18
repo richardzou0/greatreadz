@@ -167,6 +167,14 @@ body {
 @utility animate-sweep { transform-origin: left; animation: sweep 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
 @utility animate-grow { transform-origin: bottom; animation: grow-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
+/* Shelf reveal: keep covers hidden until the animation takes over, so they don't flash in place first.
+   Only when JavaScript is on, so the books always show without it. */
+@media (scripting: enabled) {
+  [data-shelf-reveal="pending"] :is([data-shelf-cover], [data-shelf-caption]) {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

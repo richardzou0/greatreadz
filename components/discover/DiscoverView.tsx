@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { books, discoverPicks, genres, getBook, lovedCount, moods, paceOf, paces, topMood } from "@/lib/data";
 import { BookCover } from "../BookCover";
 import { ChevronRightIcon, FlagIcon, ListIcon, PeopleIcon, ScanIcon, SearchIcon } from "../Icons";
+import { ShelfReveal } from "../ShelfReveal";
 import { ThemeToggle } from "../ThemeToggle";
 import { Eyebrow, PageTitle } from "../ui";
 
@@ -135,14 +136,21 @@ export function DiscoverView() {
             Nothing {mood.toLowerCase()} on your radar yet. Try another mood or rate a few more books.
           </p>
         ) : (
-          <ul className="no-scrollbar -mx-5 mt-3 flex gap-3 overflow-x-auto px-5 lg:mx-0 lg:mt-4 lg:grid lg:max-w-[960px] lg:grid-cols-6 lg:gap-[18px] lg:overflow-visible lg:px-0">
+          <ShelfReveal
+            replayKey={`${mood}-${pace}`}
+            className="no-scrollbar -mx-5 mt-3 flex gap-3 overflow-x-auto px-5 lg:mx-0 lg:mt-4 lg:grid lg:max-w-[960px] lg:grid-cols-6 lg:gap-[18px] lg:overflow-visible lg:px-0"
+          >
             {picks.map((p) => (
-              <li key={p.slug} className="animate-fade-in w-[80px] shrink-0 lg:w-auto">
-                <BookCover slug={p.slug} size="sm" />
-                <p className="mt-2 text-[11px] font-semibold text-accent lg:mt-3 lg:text-[13px]">{p.match}% match</p>
+              <li key={p.slug} data-shelf-item className="w-[80px] shrink-0 lg:w-auto">
+                <div data-shelf-cover>
+                  <BookCover slug={p.slug} size="sm" />
+                </div>
+                <p data-shelf-caption className="mt-2 text-[11px] font-semibold text-accent lg:mt-3 lg:text-[13px]">
+                  {p.match}% match
+                </p>
               </li>
             ))}
-          </ul>
+          </ShelfReveal>
         )}
       </section>
 

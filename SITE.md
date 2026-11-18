@@ -29,6 +29,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens �
 - **Sidebar** (`components/Navigation.tsx`) — Greatreadz logo (no "concept" tag), Home / Discover / My books, shelf counts, the "unsolicited concept" note, and the light/dark switch. Shown on laptops and desktops.
 - **Bottom tab bar** (same file) — Home / Discover / My books on phones and tablets.
 - **Book cover** (`components/BookCover.tsx`) — draws any book's cover at any size.
+- **Shelf reveal** (`components/ShelfReveal.tsx`) — a row or grid of books that plays the spine-to-cover animation.
 - **Add books sheet** (`components/my-books/AddBooksSheet.tsx`) — opened from the add button on any shelf; search the catalogue, then add straight away (Want to read) or log the page or rating (the other shelves).
 - **Log sheet** (`components/LogSheet.tsx`) — status, ±10 pages, half-star taps, quarter-star slider, a note that auto-saves as a draft.
 - **Reading memory** (`components/ReadingProvider.tsx`) — remembers your progress, rating and shelves in your browser so the pages stay in sync.
@@ -39,9 +40,11 @@ This is a portfolio piece, built from the design files in `public/` (5 screens �
 - Progress bars ease to their new value when you log pages.
 - The bar chart grows in when My books opens.
 - Mood and pace selections reorder the Discover picks.
+- The shelf reveal: spines first, then covers fanning out left to right (`components/useShelfReveal.ts`; timings are at the top of that file).
 - Everything respects "reduce motion" on the device.
 
 ## Recent Changes
+- 2026-11-18: Added the "shelf reveal" animation. Books start as spines packed at the left like a bookshelf, then slide out to the right one by one, swinging open to show their covers. It plays when switching shelf tabs on My books, when changing mood or pace on Discover, and when Home or a book page loads. It's skipped for visitors who turn on "reduce motion".
 - 2026-11-18: Every shelf on My books now has an add button: "Add a book" (Want to read), "Start a book" (Reading), "Log a finished book" (end of the Finished list) and "Log a book" (Didn't finish). The last three open the log sheet so you can set the page or rating, and can also move books from another shelf. The stats on My books and the Home challenge card now update as soon as a book is logged.
 - 2026-11-18: Added an "Add a book" tile at the end of the Want to read shelf. It opens a search of the catalogue (best matches first) where you can add or undo books. Additions are saved in each visitor's own browser; to add a book for everyone, add it to `lib/data.ts`.
 - 2026-11-18: Added Be Useful (3.75), Greenlights (3), Living with a SEAL (4.5) and Can't Hurt Me (2.5) to Read, and Between Two Kingdoms to Didn't finish at 50%, all with real covers. Read is now 13, which passes the placeholder goal of 12, so the challenge shows "Goal reached".

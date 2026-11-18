@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { ShelfReveal } from "../ShelfReveal";
 import { AddBooksSheet } from "./AddBooksSheet";
 import { formatPages, getBook, shelves, type ShelfKey } from "@/lib/data";
 import { BookCover } from "../BookCover";
@@ -74,7 +75,7 @@ function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
   }[shelf];
 
   return (
-    <section className="animate-fade-in mt-6 lg:mt-8">
+    <section className="mt-6 lg:mt-8">
       <h2 className="font-serif text-[22px] font-medium lg:text-[26px]">{label}</h2>
       <p className="mt-0.5 text-[13px] text-muted">{slugs.length ? note : ""}</p>
       {slugs.length === 0 && (
@@ -82,36 +83,39 @@ function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
           {shelf === "dnf" ? "You've finished everything you started. Impressive." : "Nothing here yet."}
         </p>
       )}
-      {
-        <ul className="mt-4 grid grid-cols-3 gap-3.5 sm:grid-cols-4 lg:grid-cols-6 lg:gap-[18px]">
-          {slugs.map((slug) => {
-            const b = getBook(slug);
-            const l = logOf(slug);
-            return (
-              <li key={slug}>
+      <ShelfReveal replayKey={shelf} className="mt-4 grid grid-cols-3 gap-3.5 sm:grid-cols-4 lg:grid-cols-6 lg:gap-[18px]">
+        {slugs.map((slug) => {
+          const b = getBook(slug);
+          const l = logOf(slug);
+          return (
+            <li key={slug} data-shelf-item>
+              <div data-shelf-cover>
                 <BookCover slug={slug} size="sm" />
+              </div>
+              <div data-shelf-caption>
                 <p className="mt-2 truncate text-[13px] font-semibold">{b.title}</p>
                 <p className="truncate text-[12px] text-muted">{b.series ?? b.author}</p>
                 {shelf === "reading" && <ProgressBar value={(l.page / b.pages) * 100} height={4} className="mt-2" />}
                 {shelf === "dnf" && (
                   <p className="mt-1 text-[12px] text-muted">Stopped at {Math.round((l.page / b.pages) * 100)}%</p>
                 )}
-              </li>
-            );
-          })}
-          <li>
-            <button
-              onClick={() => setAdding(true)}
-              className="group flex aspect-[2/3] w-full flex-col items-center justify-center gap-3 rounded-[6px] border-2 border-dashed border-line text-muted transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent"
-            >
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-surface transition-transform group-hover:scale-110">
-                <PlusIcon size={22} />
-              </span>
-              <span className="px-3 text-center text-[13px] font-semibold">{ADD_LABEL[shelf]}</span>
-            </button>
-          </li>
-        </ul>
-      }
+              </div>
+            </li>
+          );
+        })}
+        <li data-shelf-item>
+          <button
+            data-shelf-cover
+            onClick={() => setAdding(true)}
+            className="group flex aspect-[2/3] w-full flex-col items-center justify-center gap-3 rounded-[6px] border-2 border-dashed border-line text-muted transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent"
+          >
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-surface transition-transform group-hover:scale-110">
+              <PlusIcon size={22} />
+            </span>
+            <span className="px-3 text-center text-[13px] font-semibold">{ADD_LABEL[shelf]}</span>
+          </button>
+        </li>
+      </ShelfReveal>
       {adding && <AddBooksSheet shelf={shelf} onClose={() => setAdding(false)} />}
     </section>
   );

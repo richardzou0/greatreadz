@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { BookActions } from "@/components/book/BookActions";
 import { RatingBreakdown } from "@/components/book/RatingBreakdown";
 import { BookCover } from "@/components/BookCover";
+import { ShelfReveal } from "@/components/ShelfReveal";
 import { BackIcon, ShareIcon, StarSmall } from "@/components/Icons";
 import { Eyebrow } from "@/components/ui";
 import { books, followReviews, getBook, similarTo } from "@/lib/data";
@@ -193,13 +194,18 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
               <Eyebrow>
                 <span id="similar">Readers with your taste also loved</span>
               </Eyebrow>
-              <ul className="no-scrollbar -mx-5 mt-3 flex gap-3 overflow-x-auto px-5 lg:mx-0 lg:grid lg:grid-cols-6 lg:gap-[18px] lg:overflow-visible lg:px-0">
+              <ShelfReveal
+                replayKey={slug}
+                className="no-scrollbar -mx-5 mt-3 flex gap-3 overflow-x-auto px-5 lg:mx-0 lg:grid lg:grid-cols-6 lg:gap-[18px] lg:overflow-visible lg:px-0"
+              >
                 {similar.map((s) => (
-                  <li key={s} className="w-[100px] shrink-0 lg:w-auto">
-                    <BookCover slug={s} size="sm" />
+                  <li key={s} data-shelf-item className="w-[100px] shrink-0 lg:w-auto">
+                    <div data-shelf-cover>
+                      <BookCover slug={s} size="sm" />
+                    </div>
                   </li>
                 ))}
-              </ul>
+              </ShelfReveal>
             </section>
           </div>
         </div>

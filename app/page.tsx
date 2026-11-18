@@ -1,4 +1,5 @@
 import { BookCover } from "@/components/BookCover";
+import { ShelfReveal } from "@/components/ShelfReveal";
 import { CurrentlyReading } from "@/components/home/CurrentlyReading";
 import { ChallengeCard, FriendsActivity, Greeting, PickedForYou } from "@/components/home/HomeWidgets";
 import { Eyebrow, Rating } from "@/components/ui";
@@ -33,17 +34,22 @@ export default function Home() {
             <Eyebrow className="mb-3 lg:mb-4">
               <span id="friends">Friends just finished</span>
             </Eyebrow>
-            <ul className="no-scrollbar -mx-5 flex gap-3.5 overflow-x-auto px-5 lg:mx-0 lg:grid lg:grid-cols-5 lg:gap-5 lg:overflow-visible lg:px-0">
+            <ShelfReveal
+              replayKey="friends"
+              className="no-scrollbar -mx-5 flex gap-3.5 overflow-x-auto px-5 lg:mx-0 lg:grid lg:grid-cols-5 lg:gap-5 lg:overflow-visible lg:px-0"
+            >
               {friendsFinished.map((f) => (
-                <li key={f.slug} className="w-[107px] shrink-0 lg:w-auto">
-                  <BookCover slug={f.slug} />
-                  <p className="mt-2 flex items-center justify-between text-[13px] lg:mt-3 lg:text-[14px]">
+                <li key={f.slug} data-shelf-item className="w-[107px] shrink-0 lg:w-auto">
+                  <div data-shelf-cover>
+                    <BookCover slug={f.slug} />
+                  </div>
+                  <p data-shelf-caption className="mt-2 flex items-center justify-between text-[13px] lg:mt-3 lg:text-[14px]">
                     <span className="font-semibold">{f.friend}</span>
                     <Rating value={f.rating} className="text-[12px] text-muted lg:text-[13px]" />
                   </p>
                 </li>
               ))}
-            </ul>
+            </ShelfReveal>
           </section>
 
           <section className="mt-6 lg:hidden" aria-labelledby="pick-m">
