@@ -3,11 +3,14 @@
 import { useLayoutEffect, type RefObject } from "react";
 
 // Timing, in milliseconds
-const APPEAR = 180; // spines fade in, all together
-const HOLD = 420; // pause on the packed shelf before spreading
-const STAGGER = 60; // each book leaves a little after the one to its left
-const SPREAD = 750; // time to slide out and swing open
-const GAP = 2; // px between spines on the shelf
+const APPEAR = 180; // spines fade in, all together, packed at the left
+const HOLD = 320; // pause on the packed shelf
+const SLIDE = 480; // spines slide out to their own slots, still spine-on
+const OPEN = 520; // each book swings open where it stands
+const PAUSE = 60; // between the last spine settling and the first book opening
+const MAX_STAGGER = 60; // gap between neighbours, shrunk for long rows...
+const MAX_STAGGER_TOTAL = 480; // ...so a row never staggers longer than this
+const GAP = 2; // px between spines on the packed shelf
 const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 
 // Lists that have already played since the page loaded. Lives in memory,
@@ -15,8 +18,9 @@ const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 const played = new Set<string>();
 
 /**
- * Shelf reveal: each row starts as a packed shelf of spines on the left,
- * then the books slide out to the right one by one, swinging open to show their covers.
+ * Shelf reveal, in two steps so books never overlap:
+ * 1. each row starts as a packed shelf of spines on the left, which slide out to their own slots;
+ * 2. once in place, the books swing open one by one, left to right.
  *
  * Mark each book with `data-shelf-item`, the 3D book with `data-shelf-cover` (see <ShelfBook>,
  * whose `data-spine` gives the spine's thickness), and text underneath with `data-shelf-caption`.
@@ -43,26 +47,35 @@ export function useShelfReveal(ref: RefObject<HTMLElement | null>, key: string) 
     const running: Animation[] = [];
     for (const row of rows.values()) {
       const rowStart = row[0].offsetLeft;
-      let shelfX = rowStart; // where the next spine goes
+      const stagger = Math.min(MAX_STAGGER, MAX_STAGGER_TOTAL / Math.max(1, row.length - 1));
+      // Everyone opens after the whole row has slid into place
+      const slidesDone = APPEAR + HOLD + stagger * 0.5 * (row.length - 1) + SLIDE;
+      let shelfX = rowStart; // where the next spine goes on the packed shelf
+
       row.forEach((el, col) => {
         const book = el.querySelector<HTMLElement>("[data-shelf-cover]") ?? el;
         const thickness = book.offsetWidth * Number(book.dataset.spine ?? 0.06);
-        // Turned sideways, the book hinges on its left edge and its spine sits just left of
-        // that hinge, so shift by one spine width to line it up on the shelf.
-        const dx = shelfX + thickness - el.offsetLeft;
+        // Turned sideways, a book hinges on its left edge and its spine sits just left of
+        // that hinge, so shift by one spine width to line the spine up where we want it.
+        const packed = shelfX + thickness - el.offsetLeft;
+        const inSlot = thickness; // spine on the left edge of its own slot
         shelfX += thickness + GAP;
 
-        const leaveAt = APPEAR + HOLD + col * STAGGER;
-        const duration = leaveAt + SPREAD;
+        const slideStart = APPEAR + HOLD + col * stagger * 0.5;
+        const slideEnd = slideStart + SLIDE;
+        const openStart = slidesDone + PAUSE + col * stagger;
+        const duration = openStart + OPEN;
         // Move first, then add depth, so every book is seen head-on from where it sits
-        const sideways = `translateX(${dx}px) perspective(1000px) rotateY(90deg)`;
+        const sideways = (x: number) => `translateX(${x}px) perspective(1000px) rotateY(90deg)`;
 
         book.style.transformOrigin = "left center";
         running.push(
           book.animate(
             [
-              { transform: sideways, offset: 0 },
-              { transform: sideways, offset: leaveAt / duration, easing: EASE },
+              { transform: sideways(packed), offset: 0 },
+              { transform: sideways(packed), offset: slideStart / duration, easing: EASE },
+              { transform: sideways(inSlot), offset: slideEnd / duration },
+              { transform: sideways(inSlot), offset: openStart / duration, easing: EASE },
               { transform: "translateX(0) perspective(1000px) rotateY(0deg)", offset: 1 },
             ],
             { duration, fill: "backwards" }
@@ -75,8 +88,8 @@ export function useShelfReveal(ref: RefObject<HTMLElement | null>, key: string) 
         if (caption) {
           running.push(
             caption.animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], {
-              duration: 320,
-              delay: duration - 200,
+              duration: 300,
+              delay: duration - 220,
               easing: "ease-out",
               fill: "backwards",
             })
