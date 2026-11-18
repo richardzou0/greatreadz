@@ -322,34 +322,7 @@ export const shelves: { key: ShelfKey; label: string; count: number }[] = [
 const read = onShelf("read");
 const sum = (ns: number[]) => ns.reduce((a, b) => a + b, 0);
 
-export const stats = {
-  booksRead: read.length,
-  pages: sum(read.map((b) => b.pages)),
-  avgRating: sum(read.map((b) => b.myRating ?? 0)) / read.length,
-  avgPages: Math.round(sum(read.map((b) => b.pages)) / read.length),
-};
-
 export const formatPages = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(1)}k` : `${n}`);
-
-// Most-read author
-const byAuthor = read.reduce<Record<string, number>>((acc, b) => ({ ...acc, [b.author]: (acc[b.author] ?? 0) + 1 }), {});
-const [topAuthor, topAuthorCount] = Object.entries(byAuthor).sort((a, b) => b[1] - a[1])[0];
-export const favouriteAuthor = { name: topAuthor, count: topAuthorCount };
-
-// Mood mix: share of each mood tag across finished books (pace tags left out)
-const PACE_TAGS = ["Slow-paced", "Fast-paced"];
-const moodCounts = read
-  .flatMap((b) => b.moods.filter((m) => !PACE_TAGS.includes(m)))
-  .reduce<Record<string, number>>((acc, m) => ({ ...acc, [m]: (acc[m] ?? 0) + 1 }), {});
-const moodTotal = sum(Object.values(moodCounts));
-const moodRanked = Object.entries(moodCounts).sort((a, b) => b[1] - a[1]);
-const TASTE_COLOURS = ["var(--accent)", "var(--taste-2)", "var(--taste-3)", "var(--taste-4)"];
-const top3 = moodRanked.slice(0, 3).map(([label, n]) => ({ label, pct: Math.round((n / moodTotal) * 100) }));
-export const readingTaste = [...top3, { label: "Other", pct: 100 - sum(top3.map((t) => t.pct)) }].map((t, i) => ({
-  ...t,
-  color: TASTE_COLOURS[i],
-}));
-export const topMood = moodRanked[0][0];
 
 // Reading challenge. The goal is a placeholder: change it to Rich's real goal.
 export const CHALLENGE_GOAL = 12;
@@ -357,28 +330,80 @@ const today = new Date("2026-11-18");
 const yearShare = (today.getTime() - new Date("2026-01-01").getTime()) / (365 * 864e5);
 const onPace = Math.round(CHALLENGE_GOAL * yearShare);
 export const CHALLENGE_DAYS_LEFT = Math.ceil((new Date("2027-01-01").getTime() - today.getTime()) / 864e5);
-export const challenge = {
-  goal: CHALLENGE_GOAL,
-  read: stats.booksRead,
-  // positive = ahead of schedule, negative = behind
-  vsPace: stats.booksRead - onPace,
-};
 
-// Sample friends' challenge numbers, ranked with Rich's real count
-export const challengeFriends = [
+const PACE_TAGS = ["Slow-paced", "Fast-paced"];
+const TASTE_COLOURS = ["var(--accent)", "var(--taste-2)", "var(--taste-3)", "var(--taste-4)"];
+const SAMPLE_FRIENDS = [
   { name: "Priya", read: 11 },
-  { name: "Rich", read: stats.booksRead, you: true },
   { name: "Maya", read: 8 },
   { name: "Jonah", read: 6 },
   { name: "Sam", read: 4 },
-].sort((a, b) => b.read - a.read);
-export const challengeRank = challengeFriends.findIndex((f) => f.you) + 1;
+];
+const SEASONS = ["rita-hayworth", "apt-pupil", "the-body", "the-breathing-method"];
 
-// Achievement earned from the real shelf: all four Different Seasons novellas read
-const seasons = ["rita-hayworth", "apt-pupil", "the-body", "the-breathing-method"];
-export const achievement = seasons.every((s) => books[s].shelf === "read")
-  ? { title: "Different Seasons, complete", text: "All four Stephen King novellas, from Shawshank to The Breathing Method" }
-  : null;
+/**
+ * Every number on My books and the Home challenge card, worked out from a list of finished books.
+ * Runs again whenever a book is logged, so the stats always match the shelves.
+ */
+export function summarise(readSlugs: string[], ratingOf: (slug: string) => number) {
+  const done = readSlugs.map(getBook).filter(Boolean);
+  const count = done.length || 1;
+  const pages = sum(done.map((b) => b.pages));
+  const rated = done.map((b) => ratingOf(b.slug)).filter((r) => r > 0);
+
+  const byAuthor = done.reduce<Record<string, number>>((acc, b) => ({ ...acc, [b.author]: (acc[b.author] ?? 0) + 1 }), {});
+  const [authorName = "", authorCount = 0] = Object.entries(byAuthor).sort((a, b) => b[1] - a[1])[0] ?? [];
+
+  // Mood mix: share of each mood tag across finished books (pace tags left out)
+  const moodCounts = done
+    .flatMap((b) => b.moods.filter((m) => !PACE_TAGS.includes(m)))
+    .reduce<Record<string, number>>((acc, m) => ({ ...acc, [m]: (acc[m] ?? 0) + 1 }), {});
+  const moodTotal = sum(Object.values(moodCounts)) || 1;
+  const moodRanked = Object.entries(moodCounts).sort((a, b) => b[1] - a[1]);
+  const top3 = moodRanked.slice(0, 3).map(([label, n]) => ({ label, pct: Math.round((n / moodTotal) * 100) }));
+  const taste = [...top3, { label: "Other", pct: Math.max(0, 100 - sum(top3.map((t) => t.pct))) }].map((t, i) => ({
+    ...t,
+    color: TASTE_COLOURS[i],
+  }));
+
+  const friends = [
+    ...SAMPLE_FRIENDS.map((f) => ({ ...f, you: false })),
+    { name: "Rich", read: done.length, you: true },
+  ].sort((a, b) => b.read - a.read);
+
+  return {
+    stats: {
+      booksRead: done.length,
+      pages,
+      avgRating: rated.length ? sum(rated) / rated.length : 0,
+      avgPages: Math.round(pages / count),
+      novellas: done.filter((b) => b.series?.includes("novella")).length,
+    },
+    favouriteAuthor: { name: authorName, count: authorCount },
+    readingTaste: taste,
+    topMood: moodRanked[0]?.[0] ?? "Reflective",
+    challenge: {
+      goal: CHALLENGE_GOAL,
+      read: done.length,
+      // positive = ahead of schedule, negative = behind
+      vsPace: done.length - onPace,
+    },
+    // Sample friends' numbers, ranked with Rich's real count
+    challengeFriends: friends,
+    challengeRank: friends.findIndex((f) => f.you) + 1,
+    // Earned from the real shelf: all four Different Seasons novellas read
+    achievement: SEASONS.every((s) => readSlugs.includes(s))
+      ? { title: "Different Seasons, complete", text: "All four Stephen King novellas, from Shawshank to The Breathing Method" }
+      : null,
+  };
+}
+
+// Starting values, straight from the shelves above
+const initial = summarise(
+  read.map((b) => b.slug),
+  (slug) => getBook(slug).myRating ?? 0
+);
+export const { stats, favouriteAuthor, readingTaste, topMood, challenge, challengeFriends, challengeRank, achievement } = initial;
 
 // ——— Recommendations ———
 // Match % compares each book's moods with a taste profile built from the books

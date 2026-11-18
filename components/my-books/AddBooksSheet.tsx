@@ -1,16 +1,28 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { books, discoverPicks } from "@/lib/data";
+import { books, discoverPicks, shelves, type ShelfKey } from "@/lib/data";
 import { BookCover } from "../BookCover";
 import { CheckIcon, CloseIcon, PlusIcon, SearchIcon } from "../Icons";
-import { useReading } from "../ReadingProvider";
+import { useReading, type Status } from "../ReadingProvider";
 
 const matchOf = Object.fromEntries(discoverPicks.map((p) => [p.slug, p.match]));
+const shelfLabel = Object.fromEntries(shelves.map((s) => [s.key, s.label]));
 
-// Search the catalogue and drop books onto Want to read. Stays open so you can add several.
-export function AddBooksSheet({ onClose }: { onClose: () => void }) {
-  const { shelfOf, setShelf } = useReading();
+// What each shelf's sheet says, which books it can take, and how adding works.
+// Want to read adds straight away. The others open the log sheet so you can set
+// your page or rating; nothing is added if you cancel there.
+const SETUP: Record<ShelfKey, { title: string; hint: string; from: (ShelfKey | null)[]; log?: Status }> = {
+  want: { title: "Add to Want to read", hint: "Best matches for your taste first", from: [null] },
+  reading: { title: "Start a book", hint: "Pick one, then set the page you're on", from: [null, "want"], log: "reading" },
+  read: { title: "Log a finished book", hint: "Pick one, then give it a rating", from: [null, "want", "reading", "dnf"], log: "finished" },
+  dnf: { title: "Log a book you didn't finish", hint: "Pick one, then set where you stopped", from: [null, "want", "reading"], log: "dnf" },
+};
+
+// Search the catalogue and put books on a shelf.
+export function AddBooksSheet({ shelf, onClose }: { shelf: ShelfKey; onClose: () => void }) {
+  const { shelfOf, setShelf, openLog } = useReading();
+  const setup = SETUP[shelf];
   const [query, setQuery] = useState("");
   // Remember what was added here so those rows can be undone instead of disappearing.
   const [added, setAdded] = useState<string[]>([]);
@@ -34,21 +46,27 @@ export function AddBooksSheet({ onClose }: { onClose: () => void }) {
     };
   }, []);
 
-  // Anything not already on a shelf, best matches for Rich's taste first.
+  // Books that can move onto this shelf. Unshelved ones first, best matches for Rich's taste first.
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     return Object.values(books)
-      .filter((b) => !shelfOf(b.slug) || added.includes(b.slug))
+      .filter((b) => setup.from.includes(shelfOf(b.slug)) || added.includes(b.slug))
       .filter((b) => !q || b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q))
-      .sort((a, b) => (matchOf[b.slug] ?? 0) - (matchOf[a.slug] ?? 0));
-  }, [query, shelfOf, added]);
+      .sort((a, b) => Number(!!shelfOf(a.slug)) - Number(!!shelfOf(b.slug)) || (matchOf[b.slug] ?? 0) - (matchOf[a.slug] ?? 0));
+  }, [query, shelfOf, added, setup]);
 
-  const toggle = (slug: string) => {
-    if (shelfOf(slug) === "want") {
+  const choose = (slug: string) => {
+    if (setup.log) {
+      // Hand over to the log sheet; saving it puts the book on this shelf.
+      onClose();
+      openLog(slug, setup.log);
+      return;
+    }
+    if (shelfOf(slug) === shelf) {
       setShelf(slug, null);
       setAdded((a) => a.filter((s) => s !== slug));
     } else {
-      setShelf(slug, "want");
+      setShelf(slug, shelf);
       setAdded((a) => [...a, slug]);
     }
   };
@@ -61,17 +79,15 @@ export function AddBooksSheet({ onClose }: { onClose: () => void }) {
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Add books to Want to read"
+        aria-label={setup.title}
         className="animate-sheet lg:animate-modal flex max-h-[88dvh] w-full flex-col rounded-t-[28px] bg-bg shadow-modal lg:max-w-[560px] lg:rounded-[24px]"
       >
         <div className="px-5 pt-3 lg:px-7 lg:pt-7">
           <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-line lg:hidden" />
           <div className="flex items-center justify-between gap-4">
             <div>
-              <h2 className="font-serif text-[24px] font-medium leading-tight">Add to Want to read</h2>
-              <p className="mt-0.5 text-[13px] text-muted">
-                {added.length ? `${added.length} added` : "Best matches for your taste first"}
-              </p>
+              <h2 className="font-serif text-[24px] font-medium leading-tight">{setup.title}</h2>
+              <p className="mt-0.5 text-[13px] text-muted">{added.length ? `${added.length} added` : setup.hint}</p>
             </div>
             <button
               onClick={onClose}
@@ -102,7 +118,8 @@ export function AddBooksSheet({ onClose }: { onClose: () => void }) {
             </li>
           )}
           {results.map((b) => {
-            const on = shelfOf(b.slug) === "want";
+            const current = shelfOf(b.slug);
+            const on = current === shelf;
             return (
               <li key={b.slug}>
                 <div className="flex items-center gap-3 rounded-2xl p-2 hover:bg-surface">
@@ -111,19 +128,23 @@ export function AddBooksSheet({ onClose }: { onClose: () => void }) {
                     <p className="truncate font-serif text-[17px] font-medium">{b.title}</p>
                     <p className="truncate text-[13px] text-muted">
                       {b.author}
-                      {matchOf[b.slug] ? <span className="font-semibold text-accent"> · {matchOf[b.slug]}% match</span> : null}
+                      {current && !on ? (
+                        <span> · on {shelfLabel[current]}</span>
+                      ) : matchOf[b.slug] ? (
+                        <span className="font-semibold text-accent"> · {matchOf[b.slug]}% match</span>
+                      ) : null}
                     </p>
                   </div>
                   <button
-                    onClick={() => toggle(b.slug)}
-                    aria-pressed={on}
-                    aria-label={on ? `Remove ${b.title} from Want to read` : `Add ${b.title} to Want to read`}
+                    onClick={() => choose(b.slug)}
+                    aria-pressed={setup.log ? undefined : on}
+                    aria-label={on ? `Remove ${b.title} from ${shelfLabel[shelf]}` : `Add ${b.title} to ${shelfLabel[shelf]}`}
                     className={`flex h-11 shrink-0 items-center gap-1.5 rounded-full px-4 text-[13px] font-semibold transition-all active:scale-95 ${
                       on ? "bg-accent text-on-accent" : "border border-accent text-accent hover:bg-accent-soft"
                     }`}
                   >
                     {on ? <CheckIcon size={15} /> : <PlusIcon size={15} />}
-                    {on ? "Added" : "Add"}
+                    {on ? "Added" : current ? "Move" : "Add"}
                   </button>
                 </div>
               </li>

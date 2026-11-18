@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
-import { CHALLENGE_DAYS_LEFT, challenge, friendsActivity, topPick } from "@/lib/data";
+import { CHALLENGE_DAYS_LEFT, friendsActivity, topPick } from "@/lib/data";
 import { BookCover } from "../BookCover";
 import { ProgressBar } from "../ProgressBar";
-import { useReading } from "../ReadingProvider";
+import { useReading, useSummary } from "../ReadingProvider";
 
 const partOfDay = () => {
   const h = new Date().getHours();
@@ -80,6 +80,7 @@ function PickButtons({ wanted, onWant, onDismiss }: { wanted: boolean; onWant: (
 }
 
 export function ChallengeCard() {
+  const { challenge } = useSummary();
   return (
     <Link href="/my-books" className="block rounded-[20px] border border-line bg-surface p-6 transition-colors hover:border-accent/40">
       <p className="font-serif text-[20px] font-medium">2026 reading challenge</p>

@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { books, type ShelfKey } from "@/lib/data";
+import { books, summarise, type ShelfKey } from "@/lib/data";
 import { LogSheet } from "./LogSheet";
 
 export type Status = "reading" | "finished" | "dnf";
@@ -126,4 +126,10 @@ export function useReading() {
   const ctx = useContext(ReadingContext);
   if (!ctx) throw new Error("useReading must be used inside ReadingProvider");
   return ctx;
+}
+
+/** Live stats for the Read shelf. Updates as soon as a book is logged. */
+export function useSummary() {
+  const { onShelf, logOf } = useReading();
+  return useMemo(() => summarise(onShelf("read"), (slug) => logOf(slug).rating), [onShelf, logOf]);
 }

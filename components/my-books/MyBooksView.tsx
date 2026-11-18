@@ -4,23 +4,11 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { AddBooksSheet } from "./AddBooksSheet";
-import {
-  achievement,
-  challenge,
-  challengeFriends,
-  challengeRank,
-  favouriteAuthor,
-  formatPages,
-  getBook,
-  readingTaste,
-  shelves,
-  stats,
-  type ShelfKey,
-} from "@/lib/data";
+import { formatPages, getBook, shelves, type ShelfKey } from "@/lib/data";
 import { BookCover } from "../BookCover";
 import { BadgeIcon, PlusIcon, StarSmall } from "../Icons";
 import { ProgressBar } from "../ProgressBar";
-import { useReading } from "../ReadingProvider";
+import { useReading, useSummary } from "../ReadingProvider";
 import { ThemeToggle } from "../ThemeToggle";
 import { Eyebrow, PageTitle } from "../ui";
 
@@ -66,11 +54,17 @@ export function MyBooksView() {
   );
 }
 
+const ADD_LABEL: Record<ShelfKey, string> = {
+  want: "Add a book",
+  reading: "Start a book",
+  read: "Log a finished book",
+  dnf: "Log a book",
+};
+
 function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
   const { onShelf, logOf } = useReading();
   const [adding, setAdding] = useState(false);
   const slugs = onShelf(shelf);
-  const canAdd = shelf === "want";
   const label = shelves.find((s) => s.key === shelf)?.label;
   const note = {
     reading: "Pick up where you left off",
@@ -83,11 +77,12 @@ function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
     <section className="animate-fade-in mt-6 lg:mt-8">
       <h2 className="font-serif text-[22px] font-medium lg:text-[26px]">{label}</h2>
       <p className="mt-0.5 text-[13px] text-muted">{slugs.length ? note : ""}</p>
-      {slugs.length === 0 && !canAdd ? (
-        <p className="mt-4 rounded-2xl border border-dashed border-line p-6 text-[14px] text-muted">
+      {slugs.length === 0 && (
+        <p className="mt-1 text-[13px] text-muted">
           {shelf === "dnf" ? "You've finished everything you started. Impressive." : "Nothing here yet."}
         </p>
-      ) : (
+      )}
+      {
         <ul className="mt-4 grid grid-cols-3 gap-3.5 sm:grid-cols-4 lg:grid-cols-6 lg:gap-[18px]">
           {slugs.map((slug) => {
             const b = getBook(slug);
@@ -104,29 +99,29 @@ function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
               </li>
             );
           })}
-          {canAdd && (
-            <li>
-              <button
-                onClick={() => setAdding(true)}
-                className="group flex aspect-[2/3] w-full flex-col items-center justify-center gap-3 rounded-[6px] border-2 border-dashed border-line text-muted transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent"
-              >
-                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-surface transition-transform group-hover:scale-110">
-                  <PlusIcon size={22} />
-                </span>
-                <span className="px-3 text-center text-[13px] font-semibold">Add a book</span>
-              </button>
-            </li>
-          )}
+          <li>
+            <button
+              onClick={() => setAdding(true)}
+              className="group flex aspect-[2/3] w-full flex-col items-center justify-center gap-3 rounded-[6px] border-2 border-dashed border-line text-muted transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent"
+            >
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-surface transition-transform group-hover:scale-110">
+                <PlusIcon size={22} />
+              </span>
+              <span className="px-3 text-center text-[13px] font-semibold">{ADD_LABEL[shelf]}</span>
+            </button>
+          </li>
         </ul>
-      )}
-      {adding && <AddBooksSheet onClose={() => setAdding(false)} />}
+      }
+      {adding && <AddBooksSheet shelf={shelf} onClose={() => setAdding(false)} />}
     </section>
   );
 }
 
 function ReadShelf() {
   const { onShelf, logOf } = useReading();
+  const { stats, favouriteAuthor, readingTaste, challenge, challengeFriends, challengeRank, achievement } = useSummary();
   const [showAll, setShowAll] = useState(false);
+  const [adding, setAdding] = useState(false);
   const readSlugs = onShelf("read");
   const byPages = [...readSlugs].sort((a, b) => getBook(b).pages - getBook(a).pages);
   const maxPages = getBook(byPages[0])?.pages ?? 1;
@@ -135,7 +130,7 @@ function ReadShelf() {
   const tags = [
     `${favouriteAuthor.count} by ${favouriteAuthor.name}`,
     `Avg ${stats.avgPages} pages`,
-    `${readSlugs.filter((s) => getBook(s).series?.includes("novella")).length} novellas`,
+    ...(stats.novellas ? [`${stats.novellas} novella${stats.novellas > 1 ? "s" : ""}`] : []),
   ];
 
   return (
@@ -167,8 +162,8 @@ function ReadShelf() {
           <span className="font-semibold">Moods you read</span>
           <span className="text-muted">{tags[0]}</span>
         </p>
-        <TasteBar className="mt-2" />
-        <TasteLegend className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-[11px]" />
+        <TasteBar taste={readingTaste} className="mt-2" />
+        <TasteLegend taste={readingTaste} className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-[11px]" />
       </div>
 
       {/* Desktop: stat tiles */}
@@ -214,8 +209,8 @@ function ReadShelf() {
 
         <section className="rounded-[20px] border border-line bg-surface p-6">
           <Eyebrow>Your reading taste</Eyebrow>
-          <TasteBar className="mt-4" />
-          <TasteLegend className="mt-4 space-y-2.5 text-[14px]" />
+          <TasteBar taste={readingTaste} className="mt-4" />
+          <TasteLegend taste={readingTaste} className="mt-4 space-y-2.5 text-[14px]" />
           <ul className="mt-5 flex flex-wrap gap-2 border-t border-line pt-5">
             {tags.map((t) => (
               <li key={t} className="rounded-full bg-accent-soft px-3 py-1.5 text-[13px] font-semibold text-accent">
@@ -282,30 +277,42 @@ function ReadShelf() {
             );
           })}
         </ol>
-        {readSlugs.length > 4 && !showAll && (
-          <button onClick={() => setShowAll(true)} className="mt-3 h-11 text-[14px] font-semibold text-accent lg:hidden">
-            See all {readSlugs.length}
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          {readSlugs.length > 4 && !showAll && (
+            <button onClick={() => setShowAll(true)} className="h-11 text-[14px] font-semibold text-accent lg:hidden">
+              See all {readSlugs.length}
+            </button>
+          )}
+          <button
+            onClick={() => setAdding(true)}
+            className="flex h-11 items-center gap-2 rounded-full border-2 border-dashed border-line px-4 text-[14px] font-semibold text-muted transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent"
+          >
+            <PlusIcon size={18} />
+            Log a finished book
           </button>
-        )}
+        </div>
       </section>
+      {adding && <AddBooksSheet shelf="read" onClose={() => setAdding(false)} />}
     </div>
   );
 }
 
-function TasteBar({ className = "" }: { className?: string }) {
+type Taste = ReturnType<typeof useSummary>["readingTaste"];
+
+function TasteBar({ taste, className = "" }: { taste: Taste; className?: string }) {
   return (
     <div className={`flex h-3 gap-[3px] overflow-hidden ${className}`}>
-      {readingTaste.map((t) => (
+      {taste.map((t) => (
         <span key={t.label} className="rounded-[3px]" style={{ flexBasis: `${t.pct}%`, background: t.color }} />
       ))}
     </div>
   );
 }
 
-function TasteLegend({ className = "" }: { className?: string }) {
+function TasteLegend({ taste, className = "" }: { taste: Taste; className?: string }) {
   return (
     <ul className={className}>
-      {readingTaste.map((t) => (
+      {taste.map((t) => (
         <li key={t.label} className="flex items-center gap-2 text-muted">
           <span className="h-3 w-3 shrink-0 rounded-[3px]" style={{ background: t.color }} />
           <span>
