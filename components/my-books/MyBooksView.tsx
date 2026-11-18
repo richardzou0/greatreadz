@@ -84,7 +84,7 @@ function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
           {shelf === "dnf" ? "You've finished everything you started. Impressive." : "Nothing here yet."}
         </p>
       )}
-      <ShelfReveal replayKey={shelf} className="mt-4 grid grid-cols-3 gap-3.5 sm:grid-cols-4 lg:grid-cols-6 lg:gap-[18px]">
+      <ShelfReveal replayKey={`shelf-${shelf}`} className="mt-4 grid grid-cols-3 gap-3.5 sm:grid-cols-4 lg:grid-cols-6 lg:gap-[18px]">
         {slugs.map((slug) => {
           const b = getBook(slug);
           const l = logOf(slug);

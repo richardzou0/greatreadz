@@ -438,6 +438,13 @@ export const friendsFinished = [
   { friend: "Priya", slug: "fourth-wing", rating: 3.5 },
   { friend: "Sam", slug: "project-hail-mary", rating: 5 },
   { friend: "Lena", slug: "dune", rating: 4.5 },
+  { friend: "Maya", slug: "the-name-of-the-wind", rating: 5 },
+  { friend: "Jonah", slug: "enders-game", rating: 4.5 },
+  { friend: "Priya", slug: "the-hunger-games", rating: 4 },
+  { friend: "Sam", slug: "misery", rating: 4 },
+  { friend: "Lena", slug: "the-poppy-war", rating: 3.5 },
+  { friend: "Maya", slug: "red-rising", rating: 4.5 },
+  { friend: "Jonah", slug: "the-shining", rating: 4 },
 ];
 
 export const friendsActivity = [

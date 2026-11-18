@@ -1,9 +1,7 @@
-import { ShelfReveal } from "@/components/ShelfReveal";
-import { ShelfBook } from "@/components/ShelfBook";
 import { CurrentlyReading } from "@/components/home/CurrentlyReading";
+import { FriendsFinished } from "@/components/home/FriendsFinished";
 import { ChallengeCard, FriendsActivity, Greeting, PickedForYou } from "@/components/home/HomeWidgets";
-import { Eyebrow, Rating } from "@/components/ui";
-import { friendsFinished } from "@/lib/data";
+import { Eyebrow } from "@/components/ui";
 
 // Home: a calm feed. What you're reading, what friends finished, one smart pick.
 export default function Home() {
@@ -30,25 +28,7 @@ export default function Home() {
             <CurrentlyReading />
           </section>
 
-          <section aria-labelledby="friends" className="mt-6 lg:mt-12">
-            <Eyebrow className="mb-3 lg:mb-4">
-              <span id="friends">Friends just finished</span>
-            </Eyebrow>
-            <ShelfReveal
-              replayKey="friends"
-              className="no-scrollbar -mx-5 flex gap-3.5 overflow-x-auto px-5 lg:mx-0 lg:grid lg:grid-cols-5 lg:gap-5 lg:overflow-visible lg:px-0"
-            >
-              {friendsFinished.map((f) => (
-                <li key={f.slug} data-shelf-item className="w-[107px] shrink-0 lg:w-auto">
-                  <ShelfBook slug={f.slug} />
-                  <p data-shelf-caption className="mt-2 flex items-center justify-between text-[13px] lg:mt-3 lg:text-[14px]">
-                    <span className="font-semibold">{f.friend}</span>
-                    <Rating value={f.rating} className="text-[12px] text-muted lg:text-[13px]" />
-                  </p>
-                </li>
-              ))}
-            </ShelfReveal>
-          </section>
+          <FriendsFinished />
 
           <section className="mt-6 lg:hidden" aria-labelledby="pick-m">
             <Eyebrow className="mb-3">

@@ -10,21 +10,30 @@ const SPREAD = 750; // time to slide out and swing open
 const GAP = 2; // px between spines on the shelf
 const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 
+// Lists that have already played since the page loaded. Lives in memory,
+// so reloading the page plays them again.
+const played = new Set<string>();
+
 /**
  * Shelf reveal: each row starts as a packed shelf of spines on the left,
  * then the books slide out to the right one by one, swinging open to show their covers.
  *
  * Mark each book with `data-shelf-item`, the 3D book with `data-shelf-cover` (see <ShelfBook>,
  * whose `data-spine` gives the spine's thickness), and text underneath with `data-shelf-caption`.
- * Runs again whenever `key` changes. Usually used through <ShelfReveal>.
+ * Each `key` plays once per page load: coming back to a list it has already shown
+ * skips straight to the covers. Usually used through <ShelfReveal>.
  */
-export function useShelfReveal(ref: RefObject<HTMLElement | null>, key: unknown) {
+export function useShelfReveal(ref: RefObject<HTMLElement | null>, key: string) {
   useLayoutEffect(() => {
     const list = ref.current;
     if (!list) return;
     // Covers are hidden until this point (see globals.css), so release them now
     list.dataset.shelfReveal = "running";
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (played.has(key)) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      played.add(key);
+      return;
+    }
 
     const items = [...list.querySelectorAll<HTMLElement>("[data-shelf-item]")];
     // Group by row, so a wrapped grid gets one shelf per row
@@ -76,8 +85,14 @@ export function useShelfReveal(ref: RefObject<HTMLElement | null>, key: unknown)
       });
     }
 
+    // Only count it as played once it finishes. Leaving mid-way means it plays again next time.
+    Promise.all(running.map((a) => a.finished)).then(
+      () => played.add(key),
+      () => {}
+    );
+
     return () => running.forEach((a) => a.cancel());
-    // Only replay when the shelf changes, not on every re-render
+    // Only re-check when the list changes, not on every re-render
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
 }

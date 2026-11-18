@@ -5,14 +5,14 @@ import { useShelfReveal } from "./useShelfReveal";
 
 /**
  * A list of books that plays the shelf reveal: spines first, then covers fanning out to the right.
- * Change `replayKey` to play it again (e.g. when switching shelves or filters).
+ * `replayKey` names the list. Each name plays once per page load (e.g. one per shelf tab).
  */
 export function ShelfReveal({
   replayKey,
   className = "",
   children,
 }: {
-  replayKey: unknown;
+  replayKey: string;
   className?: string;
   children: React.ReactNode;
 }) {

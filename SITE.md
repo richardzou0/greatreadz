@@ -19,7 +19,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens �
 - **Sample:** friends (Maya, Jonah, Priya, Sam, Lena), their ratings, reviews and challenge numbers, and the "Verified readers" one-star burst, which is a demo of the idea.
 
 ## Pages
-- **Home** (`/`) — greeting, Morning Star with its progress bar plus a smaller "also reading" row for Empire of the Vampire, friends' recently finished books, one pick for your taste (The Long Walk), the reading challenge and three friend updates with a Cheer button.
+- **Home** (`/`) — greeting, Morning Star with its progress bar plus a smaller "also reading" row for Empire of the Vampire, friends' recently finished books (a sideways-scrolling shelf), one pick for your taste (The Long Walk), the reading challenge and three friend updates with a Cheer button.
 - **Book page** (`/book/the-long-walk`, `/book/golden-son` and every other book) — big cover, a shelf button, "Rate or log it", where to get it, your rating if you've read it, real Open Library star breakdown with a **Verified readers** switch, a summary worked out from those ratings, friends' reviews (sample, only on a couple of books) and similar books you haven't read.
 - **Discover** (`/discover`) — one search box (try typing "Austen"), mood buttons and a pace switch that change the picks, genres and community cards.
 - **My books** (`/my-books`) — shelf tabs (Reading, Want to read, Read, Didn't finish), your stats, a pages-per-book chart (there are no finish dates, so no monthly chart), reading taste, the friends challenge, the Different Seasons achievement and the Finished list in the order you read them.
@@ -41,10 +41,12 @@ This is a portfolio piece, built from the design files in `public/` (5 screens �
 - Progress bars ease to their new value when you log pages.
 - The bar chart grows in when My books opens.
 - Mood and pace selections reorder the Discover picks.
-- The shelf reveal: spines first, then covers fanning out left to right (`components/useShelfReveal.ts`; timings are at the top of that file).
+- The shelf reveal: spines first, then covers fanning out left to right, once per list per visit (`components/useShelfReveal.ts`; timings are at the top of that file).
 - Everything respects "reduce motion" on the device.
 
 ## Recent Changes
+- 2026-11-18: The shelf reveal now plays once per list per visit. Coming back to a tab skips it, and reloading the page plays it again. Discover plays it on first view, not on every filter change.
+- 2026-11-18: "Friends just finished" on Home now has 12 books (sample friends) in a sideways-scrolling shelf, with arrow buttons on desktop and a soft fade on the edge that has more books.
 - 2026-11-18: The shelf reveal now shows real spines instead of squashed covers. Each book is a small 3D object: the spine uses a colour sampled from the left edge of its real cover, shows the title and author's surname, and is thicker for longer books.
 - 2026-11-18: Added the "shelf reveal" animation. Books start as spines packed at the left like a bookshelf, then slide out to the right one by one, swinging open to show their covers. It plays when switching shelf tabs on My books, when changing mood or pace on Discover, and when Home or a book page loads. It's skipped for visitors who turn on "reduce motion".
 - 2026-11-18: Every shelf on My books now has an add button: "Add a book" (Want to read), "Start a book" (Reading), "Log a finished book" (end of the Finished list) and "Log a book" (Didn't finish). The last three open the log sheet so you can set the page or rating, and can also move books from another shelf. The stats on My books and the Home challenge card now update as soon as a book is logged.

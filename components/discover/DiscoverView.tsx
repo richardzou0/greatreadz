@@ -138,7 +138,7 @@ export function DiscoverView() {
           </p>
         ) : (
           <ShelfReveal
-            replayKey={`${mood}-${pace}`}
+            replayKey="discover"
             className="no-scrollbar -mx-5 mt-3 flex gap-3 overflow-x-auto px-5 lg:mx-0 lg:mt-4 lg:grid lg:max-w-[960px] lg:grid-cols-6 lg:gap-[18px] lg:overflow-visible lg:px-0"
           >
             {picks.map((p) => (

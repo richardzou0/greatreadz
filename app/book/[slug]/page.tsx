@@ -196,7 +196,7 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
                 <span id="similar">Readers with your taste also loved</span>
               </Eyebrow>
               <ShelfReveal
-                replayKey={slug}
+                replayKey={`similar-${slug}`}
                 className="no-scrollbar -mx-5 mt-3 flex gap-3 overflow-x-auto px-5 lg:mx-0 lg:grid lg:grid-cols-6 lg:gap-[18px] lg:overflow-visible lg:px-0"
               >
                 {similar.map((s) => (
