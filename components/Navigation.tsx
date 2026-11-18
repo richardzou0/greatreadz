@@ -9,8 +9,8 @@ import { ThemeToggle } from "./ThemeToggle";
 
 const NAV = [
   { href: "/", label: "Home", Icon: HomeIcon },
+  { href: "/my-books", label: "My shelf", Icon: BooksIcon },
   { href: "/discover", label: "Discover", Icon: CompassIcon },
-  { href: "/my-books", label: "My books", Icon: BooksIcon },
 ];
 
 // Book pages count as part of Home, like in the phone designs.

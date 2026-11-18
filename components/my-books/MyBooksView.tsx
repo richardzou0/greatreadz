@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { ScrollShelf } from "../ScrollShelf";
 import { ShelfReveal } from "../ShelfReveal";
 import { ShelfBook } from "../ShelfBook";
 import { AddBooksSheet } from "./AddBooksSheet";
@@ -14,30 +15,32 @@ import { Eyebrow, PageTitle } from "../ui";
 
 const ordinal = (n: number) => `${n}${["th", "st", "nd", "rd"][n % 10 > 3 || [11, 12, 13].includes(n % 100) ? 0 : n % 10]}`;
 
-type Tab = ShelfKey | "stats";
+type Tab = ShelfKey | "stats" | "all";
 
-// My books: a Stats tab for the year in reading, then one tab per shelf.
+// My shelf: "All" shows every shelf at once, then a tab per shelf, then Stats.
 export function MyBooksView() {
   const params = useSearchParams();
   const router = useRouter();
   const path = usePathname();
   const { onShelf } = useReading();
   const fromUrl = params.get("shelf");
-  const tab: Tab = shelves.some((s) => s.key === fromUrl) ? (fromUrl as ShelfKey) : "stats";
+  const tab: Tab =
+    fromUrl === "stats" ? "stats" : shelves.some((s) => s.key === fromUrl) ? (fromUrl as ShelfKey) : "all";
 
-  const pick = (key: Tab) => router.replace(key === "stats" ? path : `${path}?shelf=${key}`, { scroll: false });
+  const pick = (key: Tab) => router.replace(key === "all" ? path : `${path}?shelf=${key}`, { scroll: false });
   const tabs: { key: Tab; label: string; count?: number }[] = [
-    { key: "stats", label: "Stats" },
+    { key: "all", label: "All" },
     ...shelves.map((s) => ({ key: s.key, label: s.label, count: onShelf(s.key).length })),
+    { key: "stats", label: "Stats" },
   ];
 
   return (
     <main className="mx-auto max-w-[1216px] pb-12 pt-14 lg:px-12 lg:pt-10">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="px-5 lg:px-0">
-          <PageTitle right={<ThemeToggle className="lg:hidden" />}>My books</PageTitle>
+          <PageTitle right={<ThemeToggle className="lg:hidden" />}>My shelf</PageTitle>
         </div>
-        <div role="tablist" aria-label="My books" className="no-scrollbar flex gap-2 overflow-x-auto px-5 lg:px-0">
+        <div role="tablist" aria-label="My shelf" className="no-scrollbar flex gap-2 overflow-x-auto px-5 lg:px-0">
           {tabs.map((t) => (
             <button
               key={t.key}
@@ -58,7 +61,13 @@ export function MyBooksView() {
       </div>
 
       <div className="px-5 lg:px-0">
-        {tab === "stats" ? <StatsView onSeeRead={() => pick("read")} /> : <ShelfGrid shelf={tab} />}
+        {tab === "all" ? (
+          <MyShelf onSeeAll={pick} />
+        ) : tab === "stats" ? (
+          <StatsView onSeeRead={() => pick("read")} />
+        ) : (
+          <ShelfGrid shelf={tab} />
+        )}
       </div>
     </main>
   );
@@ -71,8 +80,93 @@ const ADD_LABEL: Record<ShelfKey, string> = {
   dnf: "Log a book",
 };
 
+/** The text under a book: title, then what matters for its shelf. */
+function BookCaption({ slug, shelf }: { slug: string; shelf: ShelfKey }) {
+  const { logOf } = useReading();
+  const b = getBook(slug);
+  const l = logOf(slug);
+  return (
+    <div data-shelf-caption>
+      <p className="mt-3 truncate text-[13px] font-semibold">{b.title}</p>
+      <p className="truncate text-[12px] text-muted">{shelf === "read" ? b.author : (b.series ?? b.author)}</p>
+      {shelf === "read" && l.rating > 0 && (
+        <p className="mt-1 flex items-center gap-1 text-[12px] font-semibold">
+          <StarSmall size={11} className="text-accent" />
+          {l.rating}
+        </p>
+      )}
+      {shelf === "reading" && <ProgressBar value={(l.page / b.pages) * 100} height={4} className="mt-2" />}
+      {shelf === "dnf" && <p className="mt-1 text-[12px] text-muted">Stopped at {Math.round((l.page / b.pages) * 100)}%</p>}
+    </div>
+  );
+}
+
+function AddTile({ shelf, onClick }: { shelf: ShelfKey; onClick: () => void }) {
+  return (
+    <button
+      data-shelf-cover
+      data-spine={0.05}
+      onClick={onClick}
+      className="group flex aspect-[2/3] w-full flex-col items-center justify-center gap-3 rounded-[6px] border-2 border-dashed border-line text-muted transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent"
+    >
+      <span className="flex h-11 w-11 items-center justify-center rounded-full bg-surface transition-transform group-hover:scale-110">
+        <PlusIcon size={22} />
+      </span>
+      <span className="px-3 text-center text-[13px] font-semibold">{ADD_LABEL[shelf]}</span>
+    </button>
+  );
+}
+
+// Every shelf at once, each as its own sideways-scrolling row on a ledge.
+function MyShelf({ onSeeAll }: { onSeeAll: (shelf: ShelfKey) => void }) {
+  const { onShelf } = useReading();
+  const [adding, setAdding] = useState<ShelfKey | null>(null);
+
+  return (
+    <div className="mt-6 space-y-9 lg:mt-8 lg:space-y-11">
+      {shelves.map((s) => {
+        const slugs = onShelf(s.key);
+        return (
+          <ScrollShelf
+            key={s.key}
+            ledgeTop="top-[160px] lg:top-[189px]"
+            replayKey={`all-${s.key}`}
+            heading={
+              <h2 className="font-serif text-[22px] font-medium lg:text-[24px]">
+                {s.label} <span className="font-sans text-[14px] font-medium text-muted">{slugs.length}</span>
+              </h2>
+            }
+            action={
+              slugs.length > 0 && (
+                <button
+                  onClick={() => onSeeAll(s.key)}
+                  className="flex h-9 items-center gap-1 text-[14px] font-semibold text-accent"
+                >
+                  See all
+                  <ChevronRightIcon size={15} />
+                </button>
+              )
+            }
+          >
+            {slugs.map((slug) => (
+              <li key={slug} data-shelf-item className="w-[107px] shrink-0 snap-start lg:w-[126px]">
+                <ShelfBook slug={slug} size="sm" />
+                <BookCaption slug={slug} shelf={s.key} />
+              </li>
+            ))}
+            <li data-shelf-item className="w-[107px] shrink-0 snap-start lg:w-[126px]">
+              <AddTile shelf={s.key} onClick={() => setAdding(s.key)} />
+            </li>
+          </ScrollShelf>
+        );
+      })}
+      {adding && <AddBooksSheet shelf={adding} onClose={() => setAdding(null)} />}
+    </div>
+  );
+}
+
 function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
-  const { onShelf, logOf } = useReading();
+  const { onShelf } = useReading();
   const [adding, setAdding] = useState(false);
   const slugs = onShelf(shelf);
   const label = shelves.find((s) => s.key === shelf)?.label;
@@ -93,41 +187,14 @@ function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
         </p>
       )}
       <ShelfReveal replayKey={`shelf-${shelf}`} className="mt-4 grid grid-cols-3 gap-3.5 sm:grid-cols-4 lg:grid-cols-6 lg:gap-[18px]">
-        {slugs.map((slug) => {
-          const b = getBook(slug);
-          const l = logOf(slug);
-          return (
-            <li key={slug} data-shelf-item>
-              <ShelfBook slug={slug} size="sm" />
-              <div data-shelf-caption>
-                <p className="mt-2 truncate text-[13px] font-semibold">{b.title}</p>
-                <p className="truncate text-[12px] text-muted">{shelf === "read" ? b.author : (b.series ?? b.author)}</p>
-                {shelf === "read" && l.rating > 0 && (
-                  <p className="mt-1 flex items-center gap-1 text-[12px] font-semibold">
-                    <StarSmall size={11} className="text-accent" />
-                    {l.rating}
-                  </p>
-                )}
-                {shelf === "reading" && <ProgressBar value={(l.page / b.pages) * 100} height={4} className="mt-2" />}
-                {shelf === "dnf" && (
-                  <p className="mt-1 text-[12px] text-muted">Stopped at {Math.round((l.page / b.pages) * 100)}%</p>
-                )}
-              </div>
-            </li>
-          );
-        })}
+        {slugs.map((slug) => (
+          <li key={slug} data-shelf-item>
+            <ShelfBook slug={slug} size="sm" />
+            <BookCaption slug={slug} shelf={shelf} />
+          </li>
+        ))}
         <li data-shelf-item>
-          <button
-            data-shelf-cover
-            data-spine={0.05}
-            onClick={() => setAdding(true)}
-            className="group flex aspect-[2/3] w-full flex-col items-center justify-center gap-3 rounded-[6px] border-2 border-dashed border-line text-muted transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent"
-          >
-            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-surface transition-transform group-hover:scale-110">
-              <PlusIcon size={22} />
-            </span>
-            <span className="px-3 text-center text-[13px] font-semibold">{ADD_LABEL[shelf]}</span>
-          </button>
+          <AddTile shelf={shelf} onClick={() => setAdding(true)} />
         </li>
       </ShelfReveal>
       {adding && <AddBooksSheet shelf={shelf} onClose={() => setAdding(false)} />}
