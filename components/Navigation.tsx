@@ -24,10 +24,9 @@ export function Sidebar() {
   const isActive = useActive();
   const { onShelf } = useReading();
   return (
-    <aside className="sticky top-0 hidden h-dvh w-56 shrink-0 flex-col border-r border-line bg-surface px-[18px] pb-7 pt-6 lg:flex">
-      <Link href="/" className="flex items-baseline gap-3 px-2.5">
-        <span className="font-serif text-[24px] font-semibold tracking-tight">Greatreadz</span>
-        <span className="text-[11px] font-semibold text-muted">concept</span>
+    <aside className="sticky top-0 hidden h-dvh w-56 shrink-0 flex-col border-r border-line bg-surface px-[18px] pb-7 pt-11 lg:flex">
+      <Link href="/" className="px-2.5 font-serif text-[24px] font-semibold leading-none tracking-tight">
+        Greatreadz
       </Link>
 
       <nav aria-label="Main" className="mt-7 flex flex-col gap-1">

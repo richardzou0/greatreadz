@@ -55,7 +55,13 @@ export default function Home() {
         </div>
 
         <aside className="hidden min-w-0 flex-col gap-6 lg:flex">
-          <PickedForYou />
+          {/* Label sits outside the card, like "Currently reading", so both cards share a top edge */}
+          <section aria-labelledby="pick">
+            <Eyebrow className="mb-4">
+              <span id="pick">Picked for your taste</span>
+            </Eyebrow>
+            <PickedForYou />
+          </section>
           <ChallengeCard />
           <section aria-labelledby="activity">
             <Eyebrow className="mb-1">

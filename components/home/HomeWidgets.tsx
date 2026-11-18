@@ -39,8 +39,7 @@ export function PickedForYou() {
 
   return (
     <div className="rounded-[20px] bg-accent-soft p-4 lg:p-6">
-      <p className="hidden text-[12px] font-semibold uppercase tracking-[0.08em] text-accent lg:block">Picked for your taste</p>
-      <div className="flex gap-4 lg:mt-4">
+      <div className="flex gap-4">
         <BookCover slug={book.slug} className="w-16 shrink-0 lg:w-20" size="sm" />
         <div className="min-w-0">
           <Link href={`/book/${book.slug}`} className="font-serif text-[19px] font-medium hover:underline lg:text-[22px]">
