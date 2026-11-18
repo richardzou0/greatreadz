@@ -50,8 +50,14 @@ export function LogSheet({
   const pct = Math.round((shownPage / pages) * 100);
 
   // Close on Escape, and stop the page behind from scrolling.
+  // Latest close handler, so the setup below runs once per open (not on every re-render).
+  const closeRef = useRef(onClose);
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    closeRef.current = onClose;
+  });
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && closeRef.current();
     window.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -60,7 +66,7 @@ export function LogSheet({
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
     };
-  }, [onClose]);
+  }, []);
 
   // Autosave the note as you type.
   useEffect(() => {

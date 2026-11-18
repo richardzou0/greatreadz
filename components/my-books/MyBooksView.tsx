@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { AddBooksSheet } from "./AddBooksSheet";
 import {
   achievement,
   challenge,
@@ -17,7 +18,7 @@ import {
   type ShelfKey,
 } from "@/lib/data";
 import { BookCover } from "../BookCover";
-import { BadgeIcon, StarSmall } from "../Icons";
+import { BadgeIcon, PlusIcon, StarSmall } from "../Icons";
 import { ProgressBar } from "../ProgressBar";
 import { useReading } from "../ReadingProvider";
 import { ThemeToggle } from "../ThemeToggle";
@@ -67,7 +68,9 @@ export function MyBooksView() {
 
 function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
   const { onShelf, logOf } = useReading();
+  const [adding, setAdding] = useState(false);
   const slugs = onShelf(shelf);
+  const canAdd = shelf === "want";
   const label = shelves.find((s) => s.key === shelf)?.label;
   const note = {
     reading: "Pick up where you left off",
@@ -80,7 +83,7 @@ function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
     <section className="animate-fade-in mt-6 lg:mt-8">
       <h2 className="font-serif text-[22px] font-medium lg:text-[26px]">{label}</h2>
       <p className="mt-0.5 text-[13px] text-muted">{slugs.length ? note : ""}</p>
-      {slugs.length === 0 ? (
+      {slugs.length === 0 && !canAdd ? (
         <p className="mt-4 rounded-2xl border border-dashed border-line p-6 text-[14px] text-muted">
           {shelf === "dnf" ? "You've finished everything you started. Impressive." : "Nothing here yet."}
         </p>
@@ -101,8 +104,22 @@ function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
               </li>
             );
           })}
+          {canAdd && (
+            <li>
+              <button
+                onClick={() => setAdding(true)}
+                className="group flex aspect-[2/3] w-full flex-col items-center justify-center gap-3 rounded-[6px] border-2 border-dashed border-line text-muted transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent"
+              >
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-surface transition-transform group-hover:scale-110">
+                  <PlusIcon size={22} />
+                </span>
+                <span className="px-3 text-center text-[13px] font-semibold">Add a book</span>
+              </button>
+            </li>
+          )}
         </ul>
       )}
+      {adding && <AddBooksSheet onClose={() => setAdding(false)} />}
     </section>
   );
 }

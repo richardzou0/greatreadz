@@ -64,6 +64,9 @@ export const ChevronDownIcon = (p: IconProps) => (
 export const ShareIcon = (p: IconProps) => (
   <Icon {...p}><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" /></Icon>
 );
+export const PlusIcon = (p: IconProps) => (
+  <Icon {...p}><path d="M12 5v14M5 12h14" /></Icon>
+);
 export const CheckIcon = (p: IconProps) => (
   <Icon {...p}><path d="M5 12l4 4 10-10" /></Icon>
 );
