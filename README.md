@@ -1,8 +1,8 @@
-# Goodreads, reimagined
+# Greatreadz
 
-**Unsolicited concept. Not affiliated with Goodreads or Amazon.**
+**Unsolicited Goodreads redesign concept. Not affiliated with Goodreads or Amazon.**
 
-A redesign concept for Goodreads, built as a working Next.js prototype. It covers five screens in light and dark mode, on phones and desktops. Together they make one loop: find a book, log it, see your progress.
+Greatreadz is a book-tracking app concept, built as a working Next.js prototype. It covers five screens in light and dark mode, on phones and desktops. Together they make one loop: find a book, log it, see your progress.
 
 | Screen | What it fixes |
 | --- | --- |

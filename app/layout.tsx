@@ -18,9 +18,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Goodreads, reimagined — a concept",
+  title: "Greatreadz",
   description:
-    "An unsolicited redesign concept of Goodreads: a calmer feed, half-star ratings, one search, mood-based browsing and a true dark mode. Not affiliated with Goodreads or Amazon.",
+    "Greatreadz: a calmer feed, half-star ratings, one search, mood-based browsing and a true dark mode. An unsolicited Goodreads redesign concept, not affiliated with Goodreads or Amazon.",
 };
 
 export const viewport: Viewport = {

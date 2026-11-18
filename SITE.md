@@ -1,6 +1,6 @@
-# Goodreads, reimagined
+# Greatreadz
 
-> An unsolicited redesign concept of Goodreads: a calmer feed, finer ratings, one search and a true dark mode. Not affiliated with Goodreads or Amazon.
+> A calmer feed, finer ratings, one search and a true dark mode. An unsolicited Goodreads redesign concept, not affiliated with Goodreads or Amazon.
 
 This is a portfolio piece, built from the design files in `public/` (5 screens × desktop/phone × light/dark) and the concept brief.
 
@@ -26,7 +26,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens �
 - **Log and rate** — not a separate page: it pops up when you press **Update progress**, **Mark as finished**, **Rate or log it** or **Log**. On phones it slides up from the bottom; on bigger screens it's a centred card.
 
 ## Components
-- **Sidebar** (`components/Navigation.tsx`) — logo, Home / Discover / My books, shelf counts, the "unsolicited concept" note, and the light/dark switch. Shown on laptops and desktops.
+- **Sidebar** (`components/Navigation.tsx`) — Greatreadz logo, Home / Discover / My books, shelf counts, the "unsolicited concept" note, and the light/dark switch. Shown on laptops and desktops.
 - **Bottom tab bar** (same file) — Home / Discover / My books on phones and tablets.
 - **Book cover** (`components/BookCover.tsx`) — draws any book's cover at any size.
 - **Log sheet** (`components/LogSheet.tsx`) — status, ±10 pages, half-star taps, quarter-star slider, a note that auto-saves as a draft.
@@ -41,6 +41,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens �
 - Everything respects "reduce motion" on the device.
 
 ## Recent Changes
+- 2026-11-18: Renamed the app to Greatreadz. "Buy on Amazon" is now "Buy on Yamazon" and Kindle is "Quindle". The real names stay only in the "not affiliated" notes.
 - 2026-11-18: Added real book covers for all 32 books (English editions, checked by eye), with Open Library credited in the sidebar.
 - 2026-11-18: Swapped the placeholder books for Rich's real shelves and ratings. All stats are now worked out from them. Added real Open Library ratings, per-book progress (two books on the go) and more real recommendations.
 - 2026-11-18: Built all five screens from the design files, for phones and desktops, in light and dark mode. Added the working log-and-rate flow.

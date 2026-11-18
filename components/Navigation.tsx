@@ -26,7 +26,7 @@ export function Sidebar() {
   return (
     <aside className="sticky top-0 hidden h-dvh w-56 shrink-0 flex-col border-r border-line bg-surface px-[18px] pb-7 pt-6 lg:flex">
       <Link href="/" className="flex items-baseline gap-3 px-2.5">
-        <span className="font-serif text-[24px] font-semibold tracking-tight">Goodreads</span>
+        <span className="font-serif text-[24px] font-semibold tracking-tight">Greatreadz</span>
         <span className="text-[11px] font-semibold text-muted">concept</span>
       </Link>
 
@@ -66,7 +66,7 @@ export function Sidebar() {
 
       <div className="mt-auto">
         <p className="mb-5 px-2.5 text-[11px] leading-relaxed text-muted">
-          Unsolicited concept. Not affiliated with Goodreads or Amazon. Covers and ratings from{" "}
+          Unsolicited Goodreads redesign concept. Not affiliated with Goodreads or Amazon. Covers and ratings from{" "}
           <a href="https://openlibrary.org" className="underline underline-offset-2 hover:text-ink">
             Open Library
           </a>

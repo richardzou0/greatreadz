@@ -13,11 +13,11 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const book = getBook((await params).slug);
-  return { title: book ? `${book.title} · Goodreads concept` : "Book not found" };
+  return { title: book ? `${book.title} · Greatreadz` : "Book not found" };
 }
 
 const GET_IT = [
-  { label: "Buy on Amazon", short: "Buy on Amazon", note: "Paperback, Kindle" },
+  { label: "Buy on Yamazon", short: "Buy on Yamazon", note: "Paperback, Quindle" },
   { label: "Borrow from your library", short: "Borrow free", note: "Free" },
   { label: "Listen on Audible", short: "Audiobook", note: "Audiobook" },
 ];
