@@ -1,0 +1,177 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1298" viewBox="0 0 1440 1298">
+<defs><clipPath id="clip1"><rect x="1143.94" y="256.39" width="228" height="6" rx="3"/></clipPath><clipPath id="clip2"><rect x="402.94" y="696.89" width="329" height="8" rx="4"/></clipPath><clipPath id="clip3"><rect x="402.94" y="725.89" width="329" height="8" rx="4"/></clipPath><clipPath id="clip4"><rect x="402.94" y="754.89" width="329" height="8" rx="4"/></clipPath><clipPath id="clip5"><rect x="402.94" y="783.89" width="329" height="8" rx="4"/></clipPath><filter id="shadow6" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.15"/></filter><filter id="shadow7" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.15"/></filter><filter id="shadow8" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.15"/></filter><filter id="shadow9" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.15"/></filter></defs>
+<rect width="1440" height="1298" fill="#f7f2ea"/>
+<g><rect x="0" y="0" width="1440" height="1298.39" fill="#f7f2ea"/>
+<g><rect x="0" y="0" width="223.88" height="1298.39" fill="#fffcf7"/>
+<rect x="222.88" y="0" width="1" height="1298.390625" fill="#e4dbcd"/>
+<g><text x="28" y="46" font-family="Newsreader" font-size="24" font-weight="600" fill="#1e1a16">Goodreads</text>
+<text x="151.38" y="46" font-family="Inter" font-size="11" font-weight="600" fill="#665d52">concept</text></g>
+<g id="Main"><g><svg x="30" y="92" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1e1a16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" overflow="visible"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg>
+<text x="62" y="107.5" font-family="Inter" font-size="15" font-weight="500" fill="#1e1a16">Home</text></g>
+<g><svg x="30" y="140" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1e1a16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" overflow="visible"><circle cx="12" cy="12" r="9"></circle><path d="M15.5 8.5l-2 5-5 2 2-5z"></path></svg>
+<text x="62" y="155.5" font-family="Inter" font-size="15" font-weight="500" fill="#1e1a16">Discover</text></g>
+<g><rect x="18" y="176" width="186.88" height="44" rx="12" fill="#e2ede5"/>
+<svg x="30" y="188" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2f6b50" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" overflow="visible"><path d="M5 4h3v16H5zM10 4h3v16h-3zM15.2 5.1l2.9-.8 4 15.4-2.9.8z"></path></svg>
+<text x="62" y="203.5" font-family="Inter" font-size="15" font-weight="600" fill="#2f6b50">My books</text></g></g>
+<g><text x="30" y="259" font-family="Inter" font-size="11" font-weight="600" letter-spacing="0.88" fill="#665d52">SHELVES</text>
+<g><text x="30" y="297.5" font-family="Inter" font-size="14" font-weight="400" fill="#1e1a16">Reading</text>
+<text x="187.17" y="297.5" font-family="Inter" font-size="14" font-weight="400" fill="#665d52">1</text></g>
+<g><text x="30" y="341.5" font-family="Inter" font-size="14" font-weight="400" fill="#1e1a16">Want to read</text>
+<text x="175.5" y="341.5" font-family="Inter" font-size="14" font-weight="400" fill="#665d52">24</text></g>
+<g><text x="30" y="385.5" font-family="Inter" font-size="14" font-weight="400" fill="#1e1a16">Read</text>
+<text x="178.48" y="385.5" font-family="Inter" font-size="14" font-weight="400" fill="#665d52">61</text></g></g>
+<g><g><rect x="28" y="1234.39" width="36" height="36" rx="18" fill="#e2ede5"/>
+<text x="40.78" y="1258.39" font-family="Inter" font-size="16" font-weight="600" fill="#2f6b50">R</text></g>
+<text x="74" y="1257.89" font-family="Inter" font-size="14" font-weight="600" fill="#1e1a16">Rich</text></g></g>
+<g><g><text x="271.94" y="78" font-family="Newsreader" font-size="44" font-weight="500" fill="#1e1a16">My books</text>
+<g id="Shelves"><g><rect x="916.63" y="48.39" width="98.48" height="44" rx="22" fill="#fffcf7"/>
+<rect x="917.13" y="48.89" width="97.48" height="43" rx="21.5" fill="none" stroke="#e4dbcd" stroke-width="1"/>
+<text x="933.63" y="75.89" font-family="Inter" font-size="14" font-weight="600" fill="#1e1a16">Reading</text>
+<text x="992.3" y="75.89" font-family="Inter" font-size="14" font-weight="500" fill="#665d52">1</text></g>
+<g><rect x="1023.11" y="48.39" width="141.03" height="44" rx="22" fill="#fffcf7"/>
+<rect x="1023.61" y="48.89" width="140.03" height="43" rx="21.5" fill="none" stroke="#e4dbcd" stroke-width="1"/>
+<text x="1040.11" y="75.89" font-family="Inter" font-size="14" font-weight="600" fill="#1e1a16">Want to read</text>
+<text x="1129.53" y="75.89" font-family="Inter" font-size="14" font-weight="500" fill="#665d52">24</text></g>
+<g><rect x="1172.14" y="48.39" width="84.33" height="44" rx="22" fill="#2f6b50"/>
+<text x="1188.14" y="75.89" font-family="Inter" font-size="14" font-weight="600" fill="#ffffff">Read</text>
+<text x="1225.83" y="75.89" font-family="Inter" font-size="14" font-weight="500" fill="#ffffff">61</text></g>
+<g><rect x="1264.47" y="48.39" width="127.47" height="44" rx="22" fill="#fffcf7"/>
+<rect x="1264.97" y="48.89" width="126.47" height="43" rx="21.5" fill="none" stroke="#e4dbcd" stroke-width="1"/>
+<text x="1281.47" y="75.89" font-family="Inter" font-size="14" font-weight="600" fill="#1e1a16">Didn’t finish</text>
+<text x="1366.16" y="75.89" font-family="Inter" font-size="14" font-weight="500" fill="#665d52">3</text></g></g></g>
+<g><text x="271.94" y="139.39" font-family="Newsreader" font-size="26" font-weight="500" fill="#1e1a16">Your 2026 in reading</text>
+<g><g><rect x="271.94" y="160.39" width="268" height="122" rx="18" fill="#fffcf7"/>
+<rect x="272.44" y="160.89" width="267" height="121" rx="17.5" fill="none" stroke="#e4dbcd" stroke-width="1"/>
+<text x="292.94" y="210.39" font-family="Newsreader" font-size="40" font-weight="500" fill="#1e1a16">38</text>
+<text x="292.94" y="240.39" font-family="Inter" font-size="13" font-weight="400" fill="#665d52">books read</text></g>
+<g><rect x="555.94" y="160.39" width="268" height="122" rx="18" fill="#fffcf7"/>
+<rect x="556.44" y="160.89" width="267" height="121" rx="17.5" fill="none" stroke="#e4dbcd" stroke-width="1"/>
+<text x="576.94" y="210.39" font-family="Newsreader" font-size="40" font-weight="500" fill="#1e1a16">11.2k</text>
+<text x="576.94" y="240.39" font-family="Inter" font-size="13" font-weight="400" fill="#665d52">pages turned</text></g>
+<g><rect x="839.94" y="160.39" width="268" height="122" rx="18" fill="#fffcf7"/>
+<rect x="840.44" y="160.89" width="267" height="121" rx="17.5" fill="none" stroke="#e4dbcd" stroke-width="1"/>
+<text x="860.94" y="210.39" font-family="Newsreader" font-size="40" font-weight="500" fill="#1e1a16">3.9</text>
+<text x="860.94" y="240.39" font-family="Inter" font-size="13" font-weight="400" fill="#665d52">average rating</text></g>
+<g><rect x="1123.94" y="160.39" width="268" height="122" rx="18" fill="#e2ede5"/>
+<text x="1143.94" y="209.39" font-family="Newsreader" font-size="40" font-weight="500" fill="#1e1a16">76%</text>
+<text x="1143.94" y="243.39" font-family="Inter" font-size="13" font-weight="400" fill="#665d52">38 of 50 · 2nd of 5 friends</text>
+<g id="76-percent-of-goal"><rect x="1143.94" y="256.39" width="228" height="6" rx="3" fill="#e4dbcd" id="76-percent-of-goal-bg"/>
+<g clip-path="url(#clip1)"><rect x="1143.94" y="256.39" width="173.27" height="6" rx="3" fill="#2f6b50"/></g></g></g></g></g>
+<g><g><rect x="271.94" y="310.39" width="672.67" height="302" rx="18" fill="#fffcf7"/>
+<rect x="272.44" y="310.89" width="671.67" height="301" rx="17.5" fill="none" stroke="#e4dbcd" stroke-width="1"/>
+<text x="296.94" y="347.39" font-family="Inter" font-size="12" font-weight="600" letter-spacing="0.96" fill="#665d52">PAGES PER MONTH</text>
+<g id="Pages-read-each-month-in-2026,-highest-in-July"><g><path d="M310.69 433.39H330.69A6 6 0 0 1 336.69 439.39V522.39A2 2 0 0 1 334.69 524.39H306.69A2 2 0 0 1 304.69 522.39V439.39A6 6 0 0 1 310.69 433.39Z" fill="#2f6b50"/>
+<text x="317.55" y="543.39" font-family="Inter" font-size="11" font-weight="400" fill="#665d52">J</text></g>
+<g><path d="M368.2 420.39H388.2A6 6 0 0 1 394.2 426.39V522.39A2 2 0 0 1 392.2 524.39H364.2A2 2 0 0 1 362.2 522.39V426.39A6 6 0 0 1 368.2 420.39Z" fill="#2f6b50"/>
+<text x="374.95" y="543.39" font-family="Inter" font-size="11" font-weight="400" fill="#665d52">F</text></g>
+<g><path d="M425.72 402.39H445.72A6 6 0 0 1 451.72 408.39V522.39A2 2 0 0 1 449.72 524.39H421.72A2 2 0 0 1 419.72 522.39V408.39A6 6 0 0 1 425.72 402.39Z" fill="#2f6b50"/>
+<text x="430.75" y="543.39" font-family="Inter" font-size="11" font-weight="400" fill="#665d52">M</text></g>
+<g><path d="M483.23 440.39H503.23A6 6 0 0 1 509.23 446.39V522.39A2 2 0 0 1 507.23 524.39H479.23A2 2 0 0 1 477.23 522.39V446.39A6 6 0 0 1 483.23 440.39Z" fill="#2f6b50"/>
+<text x="489.44" y="543.39" font-family="Inter" font-size="11" font-weight="400" fill="#665d52">A</text></g>
+<g><path d="M540.75 390.39H560.75A6 6 0 0 1 566.75 396.39V522.39A2 2 0 0 1 564.75 524.39H536.75A2 2 0 0 1 534.75 522.39V396.39A6 6 0 0 1 540.75 390.39Z" fill="#2f6b50"/>
+<text x="545.78" y="543.39" font-family="Inter" font-size="11" font-weight="400" fill="#665d52">M</text></g>
+<g><path d="M598.27 414.39H618.27A6 6 0 0 1 624.27 420.39V522.39A2 2 0 0 1 622.27 524.39H594.27A2 2 0 0 1 592.27 522.39V420.39A6 6 0 0 1 598.27 414.39Z" fill="#2f6b50"/>
+<text x="605.13" y="543.39" font-family="Inter" font-size="11" font-weight="400" fill="#665d52">J</text></g>
+<g><path d="M655.78 374.39H675.78A6 6 0 0 1 681.78 380.39V522.39A2 2 0 0 1 679.78 524.39H651.78A2 2 0 0 1 649.78 522.39V380.39A6 6 0 0 1 655.78 374.39Z" fill="#2f6b50"/>
+<text x="662.64" y="543.39" font-family="Inter" font-size="11" font-weight="400" fill="#665d52">J</text></g>
+<g><path d="M713.3 393.39H733.3A6 6 0 0 1 739.3 399.39V522.39A2 2 0 0 1 737.3 524.39H709.3A2 2 0 0 1 707.3 522.39V399.39A6 6 0 0 1 713.3 393.39Z" fill="#2f6b50"/>
+<text x="719.5" y="543.39" font-family="Inter" font-size="11" font-weight="400" fill="#665d52">A</text></g>
+<g><path d="M770.81 427.39H790.81A6 6 0 0 1 796.81 433.39V522.39A2 2 0 0 1 794.81 524.39H766.81A2 2 0 0 1 764.81 522.39V433.39A6 6 0 0 1 770.81 427.39Z" fill="#2f6b50"/>
+<text x="777.28" y="543.39" font-family="Inter" font-size="11" font-weight="400" fill="#665d52">S</text></g>
+<g><path d="M828.33 408.39H848.33A6 6 0 0 1 854.33 414.39V522.39A2 2 0 0 1 852.33 524.39H824.33A2 2 0 0 1 822.33 522.39V414.39A6 6 0 0 1 828.33 408.39Z" fill="#2f6b50"/>
+<text x="834.13" y="543.39" font-family="Inter" font-size="11" font-weight="400" fill="#665d52">O</text></g>
+<g><path d="M885.84 419.39H905.84A6 6 0 0 1 911.84 425.39V522.39A2 2 0 0 1 909.84 524.39H881.84A2 2 0 0 1 879.84 522.39V425.39A6 6 0 0 1 885.84 419.39Z" fill="#6a9c83"/>
+<text x="891.7" y="543.39" font-family="Inter" font-size="11" font-weight="400" fill="#665d52">N</text></g></g></g>
+<g><rect x="960.61" y="310.39" width="431.33" height="302" rx="18" fill="#fffcf7"/>
+<rect x="961.11" y="310.89" width="430.33" height="301" rx="17.5" fill="none" stroke="#e4dbcd" stroke-width="1"/>
+<text x="985.61" y="347.39" font-family="Inter" font-size="12" font-weight="600" letter-spacing="0.96" fill="#665d52">YOUR READING TASTE</text>
+<g id="Moods:-Reflective-42-percent,-Dark-26-percent,-Hopeful-18-percent,-Other-14-percent"><rect x="985.61" y="366.39" width="156.38" height="14" rx="4" fill="#2f6b50"/>
+<rect x="1144.98" y="366.39" width="96.81" height="14" rx="4" fill="#6a9c83"/>
+<rect x="1244.8" y="366.39" width="67.02" height="14" rx="4" fill="#a9c9b7"/>
+<rect x="1314.81" y="366.39" width="52.13" height="14" rx="4" fill="#d9cfbf"/></g>
+<g><g><rect x="985.61" y="398.89" width="12" height="12" rx="3" fill="#2f6b50"/>
+<text x="1005.61" y="410.39" font-family="Inter" font-size="14" font-weight="400" fill="#665d52">Reflective · 42%</text></g>
+<g><rect x="985.61" y="425.89" width="12" height="12" rx="3" fill="#6a9c83"/>
+<text x="1005.61" y="437.39" font-family="Inter" font-size="14" font-weight="400" fill="#665d52">Dark · 26%</text></g>
+<g><rect x="985.61" y="452.89" width="12" height="12" rx="3" fill="#a9c9b7"/>
+<text x="1005.61" y="464.39" font-family="Inter" font-size="14" font-weight="400" fill="#665d52">Hopeful · 18%</text></g>
+<g><rect x="985.61" y="479.89" width="12" height="12" rx="3" fill="#d9cfbf"/>
+<text x="1005.61" y="491.39" font-family="Inter" font-size="14" font-weight="400" fill="#665d52">Other · 14%</text></g></g>
+<g><rect x="985.61" y="510.39" width="381.328125" height="1" fill="#e4dbcd"/>
+<g><rect x="985.61" y="523.39" width="144.41" height="28" rx="14" fill="#e2ede5"/>
+<text x="997.61" y="542.39" font-family="Inter" font-size="13" font-weight="600" fill="#2f6b50">Mostly slow-paced</text></g>
+<g><rect x="1138.02" y="523.39" width="131.75" height="28" rx="14" fill="#e2ede5"/>
+<text x="1150.02" y="542.39" font-family="Inter" font-size="13" font-weight="600" fill="#2f6b50">Character-driven</text></g>
+<g><rect x="985.61" y="559.39" width="115.16" height="28" rx="14" fill="#e2ede5"/>
+<text x="997.61" y="578.39" font-family="Inter" font-size="13" font-weight="600" fill="#2f6b50">Avg 412 pages</text></g></g></g></g>
+<g><g><rect x="271.94" y="640.39" width="553" height="187" rx="18" fill="#fffcf7"/>
+<rect x="272.44" y="640.89" width="552" height="186" rx="17.5" fill="none" stroke="#e4dbcd" stroke-width="1"/>
+<text x="296.94" y="677.39" font-family="Inter" font-size="12" font-weight="600" letter-spacing="0.96" fill="#665d52">CHALLENGE WITH FRIENDS</text>
+<g><text x="296.94" y="706.39" font-family="Inter" font-size="14" font-weight="600" fill="#665d52">1</text>
+<text x="326.94" y="706.39" font-family="Inter" font-size="14" font-weight="400" fill="#1e1a16">Priya</text>
+<g><rect x="402.94" y="696.89" width="329" height="8" rx="4" fill="#e4dbcd"/>
+<g clip-path="url(#clip2)"><rect x="402.94" y="696.89" width="269.77" height="8" rx="4" fill="#a9c9b7"/></g></g>
+<text x="755.41" y="706.39" font-family="Inter" font-size="14" font-weight="400" fill="#665d52">41 / 50</text></g>
+<g><text x="296.94" y="735.39" font-family="Inter" font-size="14" font-weight="600" fill="#665d52">2</text>
+<text x="326.94" y="735.39" font-family="Inter" font-size="14" font-weight="600" fill="#1e1a16">Rich</text>
+<g><rect x="402.94" y="725.89" width="329" height="8" rx="4" fill="#e4dbcd"/>
+<g clip-path="url(#clip3)"><rect x="402.94" y="725.89" width="250.03" height="8" rx="4" fill="#2f6b50"/></g></g>
+<text x="752.56" y="735.39" font-family="Inter" font-size="14" font-weight="400" fill="#665d52">38 / 50</text></g>
+<g><text x="296.94" y="764.39" font-family="Inter" font-size="14" font-weight="600" fill="#665d52">3</text>
+<text x="326.94" y="764.39" font-family="Inter" font-size="14" font-weight="400" fill="#1e1a16">Maya</text>
+<g><rect x="402.94" y="754.89" width="329" height="8" rx="4" fill="#e4dbcd"/>
+<g clip-path="url(#clip4)"><rect x="402.94" y="754.89" width="217.13" height="8" rx="4" fill="#a9c9b7"/></g></g>
+<text x="752.58" y="764.39" font-family="Inter" font-size="14" font-weight="400" fill="#665d52">33 / 50</text></g>
+<g><text x="296.94" y="793.39" font-family="Inter" font-size="14" font-weight="600" fill="#665d52">4</text>
+<text x="326.94" y="793.39" font-family="Inter" font-size="14" font-weight="400" fill="#1e1a16">Jonah</text>
+<g><rect x="402.94" y="783.89" width="329" height="8" rx="4" fill="#e4dbcd"/>
+<g clip-path="url(#clip5)"><rect x="402.94" y="783.89" width="177.66" height="8" rx="4" fill="#a9c9b7"/></g></g>
+<text x="753.41" y="793.39" font-family="Inter" font-size="14" font-weight="400" fill="#665d52">27 / 50</text></g></g>
+<g><rect x="840.94" y="640.39" width="551" height="187" rx="18" fill="#e2ede5"/>
+<text x="864.94" y="676.39" font-family="Inter" font-size="12" font-weight="600" letter-spacing="0.96" fill="#2f6b50">ACHIEVEMENTS</text>
+<g><g><rect x="864.94" y="693.39" width="52" height="52" rx="26" fill="#2f6b50"/>
+<svg x="877.94" y="706.39" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" overflow="visible"><path d="M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12zM8.5 14L7 22l5-3 5 3-1.5-8"></path></svg></g>
+<g><text x="930.94" y="714.89" font-family="Newsreader" font-size="22" font-weight="500" fill="#1e1a16">Autumn Gothic unlocked</text>
+<text x="930.94" y="736.89" font-family="Inter" font-size="14" font-weight="400" fill="#665d52">3 gothic novels before Nov 30 · limited time</text></g></g>
+<g><g><rect x="864.94" y="759.39" width="184.98" height="44" rx="22" fill="#2f6b50"/>
+<text x="882.94" y="786.89" font-family="Inter" font-size="14" font-weight="600" fill="#ffffff">Share your year so far</text></g>
+<g><rect x="1058.42" y="759.89" width="131.47" height="43" rx="21.5" fill="none" stroke="#2f6b50" stroke-width="1"/>
+<text x="1074.92" y="786.89" font-family="Inter" font-size="14" font-weight="600" fill="#2f6b50">See all badges</text></g></g></g></g>
+<g><text x="271.94" y="867.39" font-family="Inter" font-size="12" font-weight="600" letter-spacing="0.96" fill="#665d52">READING DIARY</text>
+<g><rect x="271.94" y="966.39" width="1120" height="1" fill="#e4dbcd"/>
+<g><text x="282.75" y="912.89" font-family="Inter" font-size="11" font-weight="600" letter-spacing="0.66" fill="#665d52">NOV</text>
+<text x="280.66" y="933.89" font-family="Newsreader" font-size="26" font-weight="500" fill="#1e1a16">12</text></g>
+<rect x="337.94" y="892.39" width="40" height="60" rx="3" fill="#2b2b2b" filter="url(#shadow6)"/>
+<g><text x="395.94" y="917.89" font-family="Newsreader" font-size="19" font-weight="500" fill="#1e1a16">Frankenstein</text>
+<text x="395.94" y="937.89" font-family="Inter" font-size="13" font-weight="400" fill="#665d52">Mary Shelley</text></g>
+<text x="767.34" y="927.23" font-family="Inter" font-size="14" font-weight="400" fill="#665d52">Sadder than I expected. The creature is the most human person in it.</text>
+<g><svg x="1352.17" y="915.39" width="14" height="14" viewBox="0 0 24 24" fill="#2f6b50" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" overflow="visible"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"></path></svg>
+<text x="1370.17" y="927.89" font-family="Inter" font-size="14" font-weight="600" fill="#1e1a16">4.5</text></g></g>
+<g><rect x="271.94" y="1055.39" width="1120" height="1" fill="#e4dbcd"/>
+<g><text x="282.75" y="1001.89" font-family="Inter" font-size="11" font-weight="600" letter-spacing="0.66" fill="#665d52">NOV</text>
+<text x="280.66" y="1022.89" font-family="Newsreader" font-size="26" font-weight="500" fill="#1e1a16">03</text></g>
+<rect x="337.94" y="981.39" width="40" height="60" rx="3" fill="#a3b18a" filter="url(#shadow7)"/>
+<g><text x="395.94" y="1006.89" font-family="Newsreader" font-size="19" font-weight="500" fill="#1e1a16">Little Women</text>
+<text x="395.94" y="1026.89" font-family="Inter" font-size="13" font-weight="400" fill="#665d52">Louisa May Alcott</text></g>
+<text x="771.5" y="1016.23" font-family="Inter" font-size="14" font-weight="400" fill="#665d52">Comfort read. Jo forever.</text>
+<g><svg x="1364.61" y="1004.39" width="14" height="14" viewBox="0 0 24 24" fill="#2f6b50" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" overflow="visible"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"></path></svg>
+<text x="1382.61" y="1016.89" font-family="Inter" font-size="14" font-weight="600" fill="#1e1a16">4</text></g></g>
+<g><rect x="271.94" y="1144.39" width="1120" height="1" fill="#e4dbcd"/>
+<g><text x="283.03" y="1090.89" font-family="Inter" font-size="11" font-weight="600" letter-spacing="0.66" fill="#665d52">OCT</text>
+<text x="280.66" y="1111.89" font-family="Newsreader" font-size="26" font-weight="500" fill="#1e1a16">27</text></g>
+<rect x="337.94" y="1070.39" width="40" height="60" rx="3" fill="#5a1f24" filter="url(#shadow8)"/>
+<g><text x="395.94" y="1095.89" font-family="Newsreader" font-size="19" font-weight="500" fill="#1e1a16">Dracula</text>
+<text x="395.94" y="1115.89" font-family="Inter" font-size="13" font-weight="400" fill="#665d52">Bram Stoker</text></g>
+<text x="767.44" y="1105.23" font-family="Inter" font-size="14" font-weight="400" fill="#665d52">Great first act, drags in the middle.</text>
+<g><svg x="1352.42" y="1093.39" width="14" height="14" viewBox="0 0 24 24" fill="#2f6b50" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" overflow="visible"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"></path></svg>
+<text x="1370.42" y="1105.89" font-family="Inter" font-size="14" font-weight="600" fill="#1e1a16">3.5</text></g></g>
+<g><rect x="271.94" y="1233.39" width="1120" height="1" fill="#e4dbcd"/>
+<g><text x="283.03" y="1179.89" font-family="Inter" font-size="11" font-weight="600" letter-spacing="0.66" fill="#665d52">OCT</text>
+<text x="280.66" y="1200.89" font-family="Newsreader" font-size="26" font-weight="500" fill="#1e1a16">15</text></g>
+<rect x="337.94" y="1159.39" width="40" height="60" rx="3" fill="#9fb4c7" filter="url(#shadow9)"/>
+<g><text x="395.94" y="1184.89" font-family="Newsreader" font-size="19" font-weight="500" fill="#1e1a16">Persuasion</text>
+<text x="395.94" y="1204.89" font-family="Inter" font-size="13" font-weight="400" fill="#665d52">Jane Austen</text></g>
+<text x="771.75" y="1194.23" font-family="Inter" font-size="14" font-weight="400" fill="#665d52">The letter.</text>
+<g><svg x="1365.36" y="1182.39" width="14" height="14" viewBox="0 0 24 24" fill="#2f6b50" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" overflow="visible"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"></path></svg>
+<text x="1383.36" y="1194.89" font-family="Inter" font-size="14" font-weight="600" fill="#1e1a16">5</text></g></g></g></g></g>
+</svg>

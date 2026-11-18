@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+/* Light mode: warm paper + one forest-green accent */
+:root {
+  --bg: #f7f2ea;
+  --surface: #fffcf7;
+  --ink: #1e1a16;
+  --muted: #665d52;
+  --line: #e4dbcd;
+  --accent: #2f6b50;
+  --accent-soft: #e2ede5;
+  --on-accent: #ffffff;
+  --band: #e6ede6;
+  --star-empty: #8a8073;
+  --taste-2: #6a9c83;
+  --taste-3: #a9c9b7;
+  --taste-4: #d9cfbf;
+  --track: #b9b0a3;
+  --backdrop: rgb(52 47 41 / 0.78);
+  color-scheme: light;
+}
+
+/* Dark mode: follows the device unless the reader picked light */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14120f;
+    --surface: #1f1c18;
+    --ink: #f1eadf;
+    --muted: #a79e91;
+    --line: #34302a;
+    --accent: #82c9a6;
+    --accent-soft: #1e3329;
+    --on-accent: #0e1a14;
+    --band: #1c2622;
+    --star-empty: #7a7268;
+    --taste-2: #4f8c6e;
+    --taste-3: #2e5444;
+    --taste-4: #4a453e;
+    --track: #4a453e;
+    --backdrop: rgb(5 5 4 / 0.82);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #14120f;
+  --surface: #1f1c18;
+  --ink: #f1eadf;
+  --muted: #a79e91;
+  --line: #34302a;
+  --accent: #82c9a6;
+  --accent-soft: #1e3329;
+  --on-accent: #0e1a14;
+  --band: #1c2622;
+  --star-empty: #7a7268;
+  --taste-2: #4f8c6e;
+  --taste-3: #2e5444;
+  --taste-4: #4a453e;
+  --track: #4a453e;
+  --backdrop: rgb(5 5 4 / 0.82);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-on-accent: var(--on-accent);
+  --color-band: var(--band);
+  --color-star-empty: var(--star-empty);
+  --color-taste-2: var(--taste-2);
+  --color-taste-3: var(--taste-3);
+  --color-taste-4: var(--taste-4);
+  --color-track: var(--track);
+  --color-backdrop: var(--backdrop);
+  --font-sans: var(--font-body);
+  --font-serif: var(--font-display);
+  --shadow-cover: 0 6px 14px rgb(0 0 0 / 0.16);
+  --shadow-cover-lg: 0 18px 40px rgb(0 0 0 / 0.25);
+  --shadow-modal: 0 30px 80px rgb(0 0 0 / 0.35);
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Quarter-star slider */
+.rating-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(
+    to right,
+    var(--accent) 0%,
+    var(--accent) var(--fill),
+    var(--track) var(--fill),
+    var(--track) 100%
+  );
+  cursor: pointer;
+}
+.rating-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: var(--accent);
+  border: 0;
+  transition: transform 0.15s ease;
+}
+.rating-slider:active::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
+.rating-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: var(--accent);
+  border: 0;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.22); }
+  100% { transform: scale(1); }
+}
+@utility animate-pop {
+  animation: pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes grow-up {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+@utility animate-fade-in { animation: fade-in 0.2s ease-out; }
+@utility animate-sheet { animation: sheet-up 0.32s cubic-bezier(0.22, 1, 0.36, 1); }
+@utility animate-modal { animation: modal-in 0.26s cubic-bezier(0.22, 1, 0.36, 1); }
+@utility animate-grow { transform-origin: bottom; animation: grow-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

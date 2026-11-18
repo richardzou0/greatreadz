@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1131" viewBox="0 0 1440 1131">
+<defs><filter id="shadow1" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#000000" flood-opacity="0.25"/></filter><clipPath id="clip2"><rect x="616.94" y="504.36" width="305" height="6" rx="3"/></clipPath><clipPath id="clip3"><rect x="616.94" y="522.36" width="305" height="6" rx="3"/></clipPath><clipPath id="clip4"><rect x="616.94" y="540.36" width="305" height="6" rx="3"/></clipPath><clipPath id="clip5"><rect x="616.94" y="558.36" width="305" height="6" rx="3"/></clipPath><clipPath id="clip6"><rect x="616.94" y="576.36" width="305" height="6" rx="3"/></clipPath><filter id="shadow7" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#000000" flood-opacity="0.15"/></filter><filter id="shadow8" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#000000" flood-opacity="0.15"/></filter><filter id="shadow9" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#000000" flood-opacity="0.15"/></filter><filter id="shadow10" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#000000" flood-opacity="0.15"/></filter><filter id="shadow11" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#000000" flood-opacity="0.15"/></filter><filter id="shadow12" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#000000" flood-opacity="0.15"/></filter></defs>
+<rect width="1440" height="1131" fill="#14120f"/>
+<g><rect x="0" y="0" width="1440" height="1131.16" fill="#14120f"/>
+<g><rect x="0" y="0" width="223.88" height="1131.16" fill="#1f1c18"/>
+<rect x="222.88" y="0" width="1" height="1131.15625" fill="#34302a"/>
+<g><text x="28" y="46" font-family="Newsreader" font-size="24" font-weight="600" fill="#f1eadf">Goodreads</text>
+<text x="151.38" y="46" font-family="Inter" font-size="11" font-weight="600" fill="#a79e91">concept</text></g>
+<g id="Main"><g><svg x="30" y="92" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f1eadf" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" overflow="visible"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg>
+<text x="62" y="107.5" font-family="Inter" font-size="15" font-weight="500" fill="#f1eadf">Home</text></g>
+<g><svg x="30" y="140" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f1eadf" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" overflow="visible"><circle cx="12" cy="12" r="9"></circle><path d="M15.5 8.5l-2 5-5 2 2-5z"></path></svg>
+<text x="62" y="155.5" font-family="Inter" font-size="15" font-weight="500" fill="#f1eadf">Discover</text></g>
+<g><svg x="30" y="188" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f1eadf" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" overflow="visible"><path d="M5 4h3v16H5zM10 4h3v16h-3zM15.2 5.1l2.9-.8 4 15.4-2.9.8z"></path></svg>
+<text x="62" y="203.5" font-family="Inter" font-size="15" font-weight="500" fill="#f1eadf">My books</text></g></g>
+<g><text x="30" y="259" font-family="Inter" font-size="11" font-weight="600" letter-spacing="0.88" fill="#a79e91">SHELVES</text>
+<g><text x="30" y="297.5" font-family="Inter" font-size="14" font-weight="400" fill="#f1eadf">Reading</text>
+<text x="187.17" y="297.5" font-family="Inter" font-size="14" font-weight="400" fill="#a79e91">1</text></g>
+<g><text x="30" y="341.5" font-family="Inter" font-size="14" font-weight="400" fill="#f1eadf">Want to read</text>
+<text x="175.5" y="341.5" font-family="Inter" font-size="14" font-weight="400" fill="#a79e91">24</text></g>
+<g><text x="30" y="385.5" font-family="Inter" font-size="14" font-weight="400" fill="#f1eadf">Read</text>
+<text x="178.48" y="385.5" font-family="Inter" font-size="14" font-weight="400" fill="#a79e91">61</text></g></g>
+<g><g><rect x="28" y="1067.16" width="36" height="36" rx="18" fill="#1e3329"/>
+<text x="40.78" y="1091.16" font-family="Inter" font-size="16" font-weight="600" fill="#82c9a6">R</text></g>
+<text x="74" y="1090.66" font-family="Inter" font-size="14" font-weight="600" fill="#f1eadf">Rich</text></g></g>
+<g><g><rect x="223.88" y="0" width="1216.13" height="72" fill="#1c2622"/>
+<g><svg x="279.94" y="40" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f1eadf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" overflow="visible"><path d="M15 5l-7 7 7 7"></path></svg>
+<text x="305.94" y="55.5" font-family="Inter" font-size="14" font-weight="600" fill="#f1eadf">Back</text></g></g>
+<g><rect x="223.88" y="72" width="1216.125" height="140" fill="#1c2622"/>
+<g><g><g><rect x="271.94" y="84" width="260" height="390" rx="9" fill="#5e7f6e" filter="url(#shadow1)"/>
+<text x="293.94" y="136" font-family="Newsreader" font-size="40" font-weight="400" fill="#f4f1e8">Villette</text>
+<text x="293.94" y="449" font-family="Inter" font-size="12" font-weight="400" letter-spacing="1.2" fill="#f4f1e8">CHARLOTTE BRONTË</text></g>
+<g><rect x="271.94" y="488" width="260" height="50" rx="25" fill="#82c9a6"/>
+<text x="343.92" y="518.5" font-family="Inter" font-size="15" font-weight="600" fill="#0e1a14">Want to read</text>
+<svg x="443.94" y="505" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0e1a14" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" overflow="visible"><path d="M6 9l6 6 6-6"></path></svg></g>
+<g><rect x="272.44" y="552.5" width="259" height="49" rx="24.5" fill="none" stroke="#34302a" stroke-width="1"/>
+<text x="356.72" y="582.5" font-family="Inter" font-size="15" font-weight="600" fill="#f1eadf">Rate or log it</text></g>
+<g id="Get-this-book"><text x="271.94" y="634" font-family="Inter" font-size="12" font-weight="600" letter-spacing="0.96" fill="#a79e91">GET IT</text>
+<g><rect x="271.94" y="645" width="260" height="44" rx="12" fill="#1f1c18"/>
+<rect x="272.44" y="645.5" width="259" height="43" rx="11.5" fill="none" stroke="#34302a" stroke-width="1"/>
+<text x="288.94" y="664" font-family="Inter" font-size="14" font-weight="600" fill="#f1eadf">Buy on</text>
+<text x="288.94" y="681" font-family="Inter" font-size="14" font-weight="600" fill="#f1eadf">Amazon</text>
+<g><text x="393.88" y="664" font-family="Inter" font-size="14" font-weight="500" fill="#a79e91">Paperback,</text>
+<text x="393.88" y="681" font-family="Inter" font-size="14" font-weight="500" fill="#a79e91">Kindle</text></g></g>
+<g><rect x="271.94" y="697" width="260" height="44" rx="12" fill="#1f1c18"/>
+<rect x="272.44" y="697.5" width="259" height="43" rx="11.5" fill="none" stroke="#34302a" stroke-width="1"/>
+<text x="288.94" y="724.5" font-family="Inter" font-size="14" font-weight="600" fill="#f1eadf">Borrow from your library</text>
+<text x="485.45" y="724.5" font-family="Inter" font-size="14" font-weight="500" fill="#a79e91">Free</text></g>
+<g><rect x="271.94" y="749" width="260" height="44" rx="12" fill="#1f1c18"/>
+<rect x="272.44" y="749.5" width="259" height="43" rx="11.5" fill="none" stroke="#34302a" stroke-width="1"/>
+<text x="288.94" y="776.5" font-family="Inter" font-size="14" font-weight="600" fill="#f1eadf">Listen on Audible</text>
+<text x="442.55" y="776.5" font-family="Inter" font-size="14" font-weight="500" fill="#a79e91">Audiobook</text></g></g></g>
+<g><g><text x="579.94" y="166" font-family="Newsreader" font-size="56" font-weight="500" letter-spacing="-0.56" fill="#f1eadf">Villette</text>
+<text x="579.94" y="208.8" font-family="Inter" font-size="17" font-weight="400" fill="#a79e91">Charlotte Brontë · 1853</text>
+<g><svg x="579.94" y="224.3" width="16" height="16" viewBox="0 0 24 24" fill="#82c9a6" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" overflow="visible"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"></path></svg>
+<g><text x="603.94" y="237.8" font-family="Inter" font-size="15" font-weight="600" fill="#f1eadf">4.5</text>
+<text x="631.48" y="237.8" font-family="Inter" font-size="15" font-weight="400" fill="#a79e91">from 3 friends</text></g></g>
+<g><g><rect x="579.94" y="255.8" width="90.77" height="32" rx="16" fill="#1f1c18"/>
+<rect x="580.44" y="256.3" width="89.77" height="31" rx="15.5" fill="none" stroke="#34302a" stroke-width="1"/>
+<text x="594.94" y="276.8" font-family="Inter" font-size="13" font-weight="400" fill="#a79e91">Reflective</text></g>
+<g><rect x="678.7" y="255.8" width="90.33" height="32" rx="16" fill="#1f1c18"/>
+<rect x="679.2" y="256.3" width="89.33" height="31" rx="15.5" fill="none" stroke="#34302a" stroke-width="1"/>
+<text x="693.7" y="276.8" font-family="Inter" font-size="13" font-weight="400" fill="#a79e91">Emotional</text></g>
+<g><rect x="777.03" y="255.8" width="104.03" height="32" rx="16" fill="#1f1c18"/>
+<rect x="777.53" y="256.3" width="103.03" height="31" rx="15.5" fill="none" stroke="#34302a" stroke-width="1"/>
+<text x="792.03" y="276.8" font-family="Inter" font-size="13" font-weight="400" fill="#a79e91">Slow-paced</text></g>
+<g><rect x="889.06" y="255.8" width="74.25" height="32" rx="16" fill="#1f1c18"/>
+<rect x="889.56" y="256.3" width="73.25" height="31" rx="15.5" fill="none" stroke="#34302a" stroke-width="1"/>
+<text x="904.06" y="276.8" font-family="Inter" font-size="13" font-weight="400" fill="#a79e91">Classic</text></g></g></g>
+<g><text x="579.94" y="334.8" font-family="Inter" font-size="17" font-weight="400" fill="#f1eadf">Lucy Snowe, alone and with almost no money, crosses the sea to the town of</text>
+<text x="579.94" y="361.98" font-family="Inter" font-size="17" font-weight="400" fill="#f1eadf">Villette and finds work at a girls' school. She watches everyone closely and</text>
+<text x="579.94" y="389.17" font-family="Inter" font-size="17" font-weight="400" fill="#f1eadf">tells the reader far less than she knows.</text></g>
+<g><g><rect x="579.94" y="425.36" width="399" height="222.78" rx="16" fill="#1f1c18"/>
+<rect x="580.44" y="425.86" width="398" height="221.78" rx="15.5" fill="none" stroke="#34302a" stroke-width="1"/>
+<g><g><text x="600.94" y="470.36" font-family="Newsreader" font-size="30" font-weight="500" fill="#f1eadf">4.0</text>
+<g><text x="651.33" y="470.36" font-family="Inter" font-size="12" font-weight="400" fill="#a79e91">from readers who logged</text>
+<text x="651.33" y="485.36" font-family="Inter" font-size="12" font-weight="400" fill="#a79e91">it</text></g></g>
+<g><text x="839.22" y="465.36" font-family="Inter" font-size="12" font-weight="600" fill="#f1eadf">Verified</text>
+<text x="839.73" y="480.36" font-family="Inter" font-size="12" font-weight="600" fill="#f1eadf">readers</text>
+<g><rect x="915.16" y="456.36" width="38.78" height="24" rx="12" fill="#82c9a6"/>
+<rect x="934.16" y="459.36" width="18" height="18" rx="9" fill="#ffffff"/></g></g></g>
+<g id="Rating-breakdown:-5-stars-38-percent,-4-stars-34-percent,-3-stars-18-percent,-2-stars-6-percent,-1-stars-4-percent"><g><text x="600.94" y="511.36" font-family="Inter" font-size="11" font-weight="400" fill="#a79e91">5</text>
+<g><rect x="616.94" y="504.36" width="305" height="6" rx="3" fill="#34302a"/>
+<g clip-path="url(#clip2)"><rect x="616.94" y="504.36" width="115.89" height="6" rx="3" fill="#82c9a6"/></g></g>
+<text x="933.53" y="511.36" font-family="Inter" font-size="11" font-weight="400" fill="#a79e91">38%</text></g>
+<g><text x="600.94" y="529.36" font-family="Inter" font-size="11" font-weight="400" fill="#a79e91">4</text>
+<g><rect x="616.94" y="522.36" width="305" height="6" rx="3" fill="#34302a"/>
+<g clip-path="url(#clip3)"><rect x="616.94" y="522.36" width="103.69" height="6" rx="3" fill="#82c9a6"/></g></g>
+<text x="933.23" y="529.36" font-family="Inter" font-size="11" font-weight="400" fill="#a79e91">34%</text></g>
+<g><text x="600.94" y="547.36" font-family="Inter" font-size="11" font-weight="400" fill="#a79e91">3</text>
+<g><rect x="616.94" y="540.36" width="305" height="6" rx="3" fill="#34302a"/>
+<g clip-path="url(#clip4)"><rect x="616.94" y="540.36" width="54.89" height="6" rx="3" fill="#82c9a6"/></g></g>
+<text x="935.84" y="547.36" font-family="Inter" font-size="11" font-weight="400" fill="#a79e91">18%</text></g>
+<g><text x="600.94" y="565.36" font-family="Inter" font-size="11" font-weight="400" fill="#a79e91">2</text>
+<g><rect x="616.94" y="558.36" width="305" height="6" rx="3" fill="#34302a"/>
+<g clip-path="url(#clip5)"><rect x="616.94" y="558.36" width="18.3" height="6" rx="3" fill="#82c9a6"/></g></g>
+<text x="940.31" y="565.36" font-family="Inter" font-size="11" font-weight="400" fill="#a79e91">6%</text></g>
+<g><text x="600.94" y="583.36" font-family="Inter" font-size="11" font-weight="400" fill="#a79e91">1</text>
+<g><rect x="616.94" y="576.36" width="305" height="6" rx="3" fill="#34302a"/>
+<g clip-path="url(#clip6)"><rect x="616.94" y="576.36" width="12.19" height="6" rx="3" fill="#82c9a6"/></g></g>
+<text x="940.02" y="583.36" font-family="Inter" font-size="11" font-weight="400" fill="#a79e91">4%</text></g></g>
+<g><text x="600.94" y="607.36" font-family="Inter" font-size="11" font-weight="400" fill="#a79e91">Only counts accounts that shelved and logged this book. A burst of</text>
+<text x="600.94" y="622.75" font-family="Inter" font-size="11" font-weight="400" fill="#a79e91">one-star ratings from new accounts last week is hidden.</text></g></g>
+<g><rect x="992.94" y="425.36" width="399" height="222.78" rx="16" fill="#1e3329"/>
+<g><text x="1012.94" y="458.86" font-family="Inter" font-size="12" font-weight="600" letter-spacing="0.96" fill="#82c9a6">WHAT READERS SAY</text>
+<g><rect x="1159.08" y="445.86" width="91.09" height="17" rx="7.5" fill="none" stroke="#82c9a6" stroke-width="1"/>
+<text x="1166.58" y="458.36" font-family="Inter" font-size="10" font-weight="600" fill="#82c9a6">Summary · beta</text></g></g>
+<g><text x="1012.94" y="487.36" font-family="Inter" font-size="16" font-weight="400" fill="#f1eadf">Readers love Lucy's sharp, guarded voice and</text>
+<text x="1012.94" y="512.16" font-family="Inter" font-size="16" font-weight="400" fill="#f1eadf">the ending. Many say the first third is slow and</text>
+<text x="1012.94" y="536.95" font-family="Inter" font-size="16" font-weight="400" fill="#f1eadf">the payoff is worth it. Common words:</text>
+<text x="1012.94" y="561.75" font-family="Inter" font-size="16" font-weight="400" fill="#f1eadf">haunting, lonely, sharp.</text>
+<text x="1193.45" y="561.75" font-family="Inter" font-size="16" font-weight="600" fill="#82c9a6">Read reviews</text></g></g></g>
+<g><g><text x="579.94" y="690.14" font-family="Inter" font-size="12" font-weight="600" letter-spacing="0.96" fill="#a79e91">FROM PEOPLE YOU FOLLOW</text>
+<text x="1361.98" y="690.14" font-family="Inter" font-size="14" font-weight="600" fill="#82c9a6">All 3</text></g>
+<g><g><rect x="579.94" y="705.14" width="399" height="126.5" rx="16" fill="#1f1c18"/>
+<rect x="580.44" y="705.64" width="398" height="125.5" rx="15.5" fill="none" stroke="#34302a" stroke-width="1"/>
+<g><rect x="598.94" y="724.14" width="36" height="36" rx="18" fill="#1e3329"/>
+<text x="610.47" y="747.64" font-family="Inter" font-size="14" font-weight="600" fill="#82c9a6">M</text></g>
+<g><g><text x="646.94" y="738.14" font-family="Inter" font-size="14" font-weight="600" fill="#f1eadf">Maya</text>
+<text x="687.36" y="738.14" font-family="Inter" font-size="14" font-weight="500" fill="#a79e91">rated it 5</text></g>
+<g><text x="646.94" y="761.14" font-family="Inter" font-size="15" font-weight="400" fill="#f1eadf">Quieter than Jane Eyre and stranger. Lucy</text>
+<text x="646.94" y="783.64" font-family="Inter" font-size="15" font-weight="400" fill="#f1eadf">Snowe stays with you long after the last</text>
+<text x="646.94" y="806.14" font-family="Inter" font-size="15" font-weight="400" fill="#f1eadf">page.</text></g></g></g>
+<g><rect x="992.94" y="705.14" width="399" height="126.5" rx="16" fill="#1f1c18"/>
+<rect x="993.44" y="705.64" width="398" height="125.5" rx="15.5" fill="none" stroke="#34302a" stroke-width="1"/>
+<g><rect x="1011.94" y="724.14" width="36" height="36" rx="18" fill="#1e3329"/>
+<text x="1025.88" y="747.64" font-family="Inter" font-size="14" font-weight="600" fill="#82c9a6">J</text></g>
+<g><g><text x="1059.94" y="738.14" font-family="Inter" font-size="14" font-weight="600" fill="#f1eadf">Jonah</text>
+<text x="1105.28" y="738.14" font-family="Inter" font-size="14" font-weight="500" fill="#a79e91">rated it 4</text></g>
+<g><text x="1059.94" y="761.14" font-family="Inter" font-size="15" font-weight="400" fill="#f1eadf">Slow first hundred pages, then I could not</text>
+<text x="1059.94" y="783.64" font-family="Inter" font-size="15" font-weight="400" fill="#f1eadf">put it down. Read it in winter.</text></g></g></g></g></g>
+<g><text x="579.94" y="871.64" font-family="Inter" font-size="12" font-weight="600" letter-spacing="0.96" fill="#a79e91">READERS WITH YOUR TASTE ALSO LOVED</text>
+<g><g><rect x="579.94" y="886.64" width="120.33" height="180.48" rx="6" fill="#4a4f45" filter="url(#shadow7)"/>
+<g><text x="589.94" y="906.64" font-family="Newsreader" font-size="14" font-weight="400" fill="#ece6d8">Wuthering</text>
+<text x="589.94" y="922.03" font-family="Newsreader" font-size="14" font-weight="400" fill="#ece6d8">Heights</text></g>
+<text x="589.94" y="1055.13" font-family="Inter" font-size="8" font-weight="400" letter-spacing="0.64" fill="#ece6d8">E. BRONTË</text></g>
+<g><rect x="718.27" y="886.64" width="120.33" height="180.48" rx="6" fill="#9fb4c7" filter="url(#shadow8)"/>
+<text x="728.27" y="906.64" font-family="Newsreader" font-size="14" font-weight="400" fill="#1b2836">Persuasion</text>
+<text x="728.27" y="1055.13" font-family="Inter" font-size="8" font-weight="400" letter-spacing="0.64" fill="#1b2836">J. AUSTEN</text></g>
+<g><rect x="856.59" y="886.64" width="120.34" height="180.52" rx="6" fill="#c9a66b" filter="url(#shadow9)"/>
+<g><text x="866.59" y="906.64" font-family="Newsreader" font-size="14" font-weight="400" fill="#2a2118">The Age of</text>
+<text x="866.59" y="922.03" font-family="Newsreader" font-size="14" font-weight="400" fill="#2a2118">Innocence</text></g>
+<text x="866.59" y="1055.16" font-family="Inter" font-size="8" font-weight="400" letter-spacing="0.64" fill="#2a2118">E. WHARTON</text></g>
+<g><rect x="994.94" y="886.64" width="120.33" height="180.48" rx="6" fill="#e2b66f" filter="url(#shadow10)"/>
+<g><text x="1004.94" y="906.64" font-family="Newsreader" font-size="14" font-weight="400" fill="#2a2016">A Room with a</text>
+<text x="1004.94" y="922.03" font-family="Newsreader" font-size="14" font-weight="400" fill="#2a2016">View</text></g>
+<text x="1004.94" y="1055.13" font-family="Inter" font-size="8" font-weight="400" letter-spacing="0.64" fill="#2a2016">E. M. FORSTER</text></g>
+<g><rect x="1133.27" y="886.64" width="120.33" height="180.48" rx="6" fill="#8c3b3b" filter="url(#shadow11)"/>
+<text x="1143.27" y="906.64" font-family="Newsreader" font-size="14" font-weight="400" fill="#f6ede3">Jane Eyre</text>
+<text x="1143.27" y="1055.13" font-family="Inter" font-size="8" font-weight="400" letter-spacing="0.64" fill="#f6ede3">C. BRONTË</text></g>
+<g><rect x="1271.59" y="886.64" width="120.34" height="180.52" rx="6" fill="#a3b18a" filter="url(#shadow12)"/>
+<text x="1281.59" y="906.64" font-family="Newsreader" font-size="14" font-weight="400" fill="#1f2a1a">Little Women</text>
+<text x="1281.59" y="1055.16" font-family="Inter" font-size="8" font-weight="400" letter-spacing="0.64" fill="#1f2a1a">L. M. ALCOTT</text></g></g></g></g></g></g></g></g>
+</svg>
