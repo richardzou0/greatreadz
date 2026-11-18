@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
-import { challenge, friendsActivity, topPick } from "@/lib/data";
+import { CHALLENGE_DAYS_LEFT, challenge, friendsActivity, topPick } from "@/lib/data";
 import { BookCover } from "../BookCover";
 import { ProgressBar } from "../ProgressBar";
 import { useReading } from "../ReadingProvider";
@@ -89,10 +89,13 @@ export function ChallengeCard() {
       </p>
       <ProgressBar value={(challenge.read / challenge.goal) * 100} className="mt-4" />
       <p className="mt-4 text-[13px] text-muted">
-        {challenge.vsPace === 0
-          ? "Right on schedule"
-          : `${Math.abs(challenge.vsPace)} book${Math.abs(challenge.vsPace) > 1 ? "s" : ""} ${challenge.vsPace > 0 ? "ahead of" : "behind"} schedule`}{" "}
-        · {challenge.goal - challenge.read} to go
+        {challenge.read >= challenge.goal
+          ? `Goal reached with ${CHALLENGE_DAYS_LEFT} days to spare`
+          : `${
+              challenge.vsPace === 0
+                ? "Right on schedule"
+                : `${Math.abs(challenge.vsPace)} book${Math.abs(challenge.vsPace) > 1 ? "s" : ""} ${challenge.vsPace > 0 ? "ahead of" : "behind"} schedule`
+            } · ${challenge.goal - challenge.read} to go`}
       </p>
     </Link>
   );

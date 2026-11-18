@@ -106,6 +106,40 @@ const list: Book[] = [
     shelf: "read", myRating: 4, community: ol(3.69, [7, 0, 5, 8, 15]),
   },
 
+  {
+    slug: "be-useful", title: "Be Useful", author: "Arnold Schwarzenegger", shortAuthor: "A. Schwarzenegger", year: 2023, pages: 288,
+    series: "Seven Tools for Life", cover: "#d7d3cc", coverInk: "#1a1a1a", moods: ["Hopeful", "Reflective", "Fast-paced"],
+    blurb: "Arnold Schwarzenegger's seven rules for a useful life, drawn from bodybuilding, Hollywood and the governor's office.",
+    shelf: "read", myRating: 3.75, community: ol(4.33, [0, 0, 0, 2, 1]),
+  },
+  {
+    slug: "greenlights", title: "Greenlights", author: "Matthew McConaughey", shortAuthor: "M. McConaughey", year: 2020, pages: 304,
+    cover: "#e7dfd2", coverInk: "#1d1a16", moods: ["Funny", "Reflective", "Hopeful"],
+    blurb: "A memoir built from 35 years of journals: stories, poems and bumper-sticker philosophy about catching more of life's green lights.",
+    shelf: "read", myRating: 3, community: ol(4.17, [0, 2, 3, 8, 11]),
+  },
+  {
+    slug: "living-with-a-seal", title: "Living with a SEAL", author: "Jesse Itzler", shortAuthor: "J. Itzler", year: 2015, pages: 270,
+    series: "31 Days Training with the Toughest Man on the Planet", cover: "#2d3e6b", coverInk: "#f1c232",
+    moods: ["Funny", "Hopeful", "Adventurous", "Fast-paced"],
+    blurb: "An entrepreneur invites a Navy SEAL to live with his family for a month and train him. The SEAL's rules get stranger and harder every day.",
+    shelf: "read", myRating: 4.5, community: ol(4.33, [0, 0, 0, 2, 1]),
+  },
+  {
+    slug: "cant-hurt-me", title: "Can't Hurt Me", author: "David Goggins", shortAuthor: "D. Goggins", year: 2018, pages: 364,
+    series: "Master Your Mind and Defy the Odds", cover: "#1f1f1f", coverInk: "#d8b25a", moods: ["Hopeful", "Dark", "Tense"],
+    blurb: "David Goggins goes from an abusive childhood and a dead-end job to Navy SEAL and ultra-endurance athlete, and lays out the mental rules he used to get there.",
+    shelf: "read", myRating: 2.5, community: ol(4.19, [29, 4, 10, 27, 146]),
+  },
+
+  // ——— Didn't finish ———
+  {
+    slug: "between-two-kingdoms", title: "Between Two Kingdoms", author: "Suleika Jaouad", shortAuthor: "S. Jaouad", year: 2021, pages: 360,
+    series: "A Memoir of a Life Interrupted", cover: "#2f6f7a", coverInk: "#f3efe4", moods: ["Emotional", "Reflective", "Hopeful", "Slow-paced"],
+    blurb: "Diagnosed with leukemia at 22, Suleika Jaouad spends years in treatment, then sets off on a 15,000-mile road trip to meet the strangers who wrote to her.",
+    shelf: "dnf", page: 180, community: ol(3.67, [0, 0, 2, 0, 1]),
+  },
+
   // ——— Want to read ———
   {
     slug: "iron-gold", title: "Iron Gold", author: "Pierce Brown", shortAuthor: "P. Brown", year: 2018, pages: 600,
@@ -258,7 +292,8 @@ const COVERS = new Set([
   "light-bringer", "a-game-of-thrones", "a-clash-of-kings", "a-storm-of-swords", "a-feast-for-crows",
   "a-dance-with-dragons", "the-long-walk", "mistborn", "the-hunger-games", "the-poppy-war", "the-stand",
   "enders-game", "project-hail-mary", "fourth-wing", "misery", "the-shining", "the-blade-itself",
-  "the-name-of-the-wind", "dune",
+  "the-name-of-the-wind", "dune", "be-useful", "greenlights", "living-with-a-seal", "cant-hurt-me",
+  "between-two-kingdoms",
 ]);
 /** Path to a book's real cover, or undefined to use the coloured stand-in */
 export const coverImage = (slug: string) => (USE_REAL_COVERS && COVERS.has(slug) ? `/covers/${slug}.jpg` : undefined);
@@ -321,6 +356,7 @@ export const CHALLENGE_GOAL = 12;
 const today = new Date("2026-11-18");
 const yearShare = (today.getTime() - new Date("2026-01-01").getTime()) / (365 * 864e5);
 const onPace = Math.round(CHALLENGE_GOAL * yearShare);
+export const CHALLENGE_DAYS_LEFT = Math.ceil((new Date("2027-01-01").getTime() - today.getTime()) / 864e5);
 export const challenge = {
   goal: CHALLENGE_GOAL,
   read: stats.booksRead,

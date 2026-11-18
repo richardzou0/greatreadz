@@ -95,6 +95,9 @@ function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
                 <p className="mt-2 truncate text-[13px] font-semibold">{b.title}</p>
                 <p className="truncate text-[12px] text-muted">{b.series ?? b.author}</p>
                 {shelf === "reading" && <ProgressBar value={(l.page / b.pages) * 100} height={4} className="mt-2" />}
+                {shelf === "dnf" && (
+                  <p className="mt-1 text-[12px] text-muted">Stopped at {Math.round((l.page / b.pages) * 100)}%</p>
+                )}
               </li>
             );
           })}
@@ -111,7 +114,7 @@ function ReadShelf() {
   const byPages = [...readSlugs].sort((a, b) => getBook(b).pages - getBook(a).pages);
   const maxPages = getBook(byPages[0])?.pages ?? 1;
   const challengePct = (challenge.read / challenge.goal) * 100;
-  const challengeLine = `${challenge.read} of ${challenge.goal} · ${ordinal(challengeRank)} of ${challengeFriends.length} friends`;
+  const challengeLine = `${challenge.read} of ${challenge.goal}${challenge.read >= challenge.goal ? " · goal reached" : ""} · ${ordinal(challengeRank)} of ${challengeFriends.length} friends`;
   const tags = [
     `${favouriteAuthor.count} by ${favouriteAuthor.name}`,
     `Avg ${stats.avgPages} pages`,

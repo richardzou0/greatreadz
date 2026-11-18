@@ -12,10 +12,10 @@ This is a portfolio piece, built from the design files in `public/` (5 screens Ã
 - **Book covers:** real covers from Open Library, saved in `public/covers/`. Any book without one falls back to a plain coloured cover with the title in serif (colours live in `lib/data.ts`).
 
 ## Real vs sample content
-- **Real (Rich's own):** every book on the shelves, Rich's ratings, current page in Morning Star (82%) and Empire of the Vampire (5%), and the Want to read list (the rest of Red Rising and all of A Song of Ice and Fire).
+- **Real (Rich's own):** every book on the shelves, Rich's ratings, current page in Morning Star (82%) and Empire of the Vampire (5%), where he stopped in Between Two Kingdoms (50%), and the Want to read list (the rest of Red Rising and all of A Song of Ice and Fire).
 - **Worked out from that:** books read, pages turned, average rating, reading taste, the "6 by Stephen King" tag, the Different Seasons achievement and the recommendation match %.
 - **Real public data:** book years, page counts (common first editions; the four novellas are their share of *Different Seasons*) and the star breakdowns, which come from Open Library readers.
-- **Placeholders to change:** the 2026 reading goal (set to 12 in `lib/data.ts`, `CHALLENGE_GOAL`), and the assumption that all nine books were read in 2026.
+- **Placeholders to change:** the 2026 reading goal (set to 12 in `lib/data.ts`, `CHALLENGE_GOAL`), and the assumption that all 13 finished books were read in 2026.
 - **Sample:** friends (Maya, Jonah, Priya, Sam, Lena), their ratings, reviews and challenge numbers, and the "Verified readers" one-star burst, which is a demo of the idea.
 
 ## Pages
@@ -41,6 +41,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens Ã
 - Everything respects "reduce motion" on the device.
 
 ## Recent Changes
+- 2026-11-18: Added Be Useful (3.75), Greenlights (3), Living with a SEAL (4.5) and Can't Hurt Me (2.5) to Read, and Between Two Kingdoms to Didn't finish at 50%, all with real covers. Read is now 13, which passes the placeholder goal of 12, so the challenge shows "Goal reached".
 - 2026-11-18: Removed the "concept" tag next to the logo, lined the logo up with the page greeting, and moved the "Picked for your taste" label above its card so it lines up with "Currently reading". Site is live on Vercel at greatreadz.designsbyrich.com.
 - 2026-11-18: Renamed the app to Greatreadz. "Buy on Amazon" is now "Buy on Yamazon" and Kindle is "Quindle". The real names stay only in the "not affiliated" notes.
 - 2026-11-18: Added real book covers for all 32 books (English editions, checked by eye), with Open Library credited in the sidebar.
