@@ -1,14 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { ShelfReveal } from "../ShelfReveal";
 import { ShelfBook } from "../ShelfBook";
 import { AddBooksSheet } from "./AddBooksSheet";
 import { formatPages, getBook, shelves, type ShelfKey } from "@/lib/data";
-import { BookCover } from "../BookCover";
-import { BadgeIcon, PlusIcon, StarSmall } from "../Icons";
+import { BadgeIcon, ChevronRightIcon, PlusIcon, StarSmall } from "../Icons";
 import { ProgressBar } from "../ProgressBar";
 import { useReading, useSummary } from "../ReadingProvider";
 import { ThemeToggle } from "../ThemeToggle";
@@ -16,16 +14,22 @@ import { Eyebrow, PageTitle } from "../ui";
 
 const ordinal = (n: number) => `${n}${["th", "st", "nd", "rd"][n % 10 > 3 || [11, 12, 13].includes(n % 100) ? 0 : n % 10]}`;
 
-// My books: shelves plus a year-in-reading view. Every number comes from the Read shelf.
+type Tab = ShelfKey | "stats";
+
+// My books: a Stats tab for the year in reading, then one tab per shelf.
 export function MyBooksView() {
   const params = useSearchParams();
   const router = useRouter();
   const path = usePathname();
   const { onShelf } = useReading();
-  const fromUrl = params.get("shelf") as ShelfKey | null;
-  const shelf: ShelfKey = shelves.some((s) => s.key === fromUrl) ? fromUrl! : "read";
+  const fromUrl = params.get("shelf");
+  const tab: Tab = shelves.some((s) => s.key === fromUrl) ? (fromUrl as ShelfKey) : "stats";
 
-  const pick = (key: ShelfKey) => router.replace(key === "read" ? path : `${path}?shelf=${key}`, { scroll: false });
+  const pick = (key: Tab) => router.replace(key === "stats" ? path : `${path}?shelf=${key}`, { scroll: false });
+  const tabs: { key: Tab; label: string; count?: number }[] = [
+    { key: "stats", label: "Stats" },
+    ...shelves.map((s) => ({ key: s.key, label: s.label, count: onShelf(s.key).length })),
+  ];
 
   return (
     <main className="mx-auto max-w-[1216px] pb-12 pt-14 lg:px-12 lg:pt-10">
@@ -33,25 +37,29 @@ export function MyBooksView() {
         <div className="px-5 lg:px-0">
           <PageTitle right={<ThemeToggle className="lg:hidden" />}>My books</PageTitle>
         </div>
-        <div role="tablist" aria-label="Shelves" className="no-scrollbar flex gap-2 overflow-x-auto px-5 lg:px-0">
-          {shelves.map((s) => (
+        <div role="tablist" aria-label="My books" className="no-scrollbar flex gap-2 overflow-x-auto px-5 lg:px-0">
+          {tabs.map((t) => (
             <button
-              key={s.key}
+              key={t.key}
               role="tab"
-              aria-selected={shelf === s.key}
-              onClick={() => pick(s.key)}
+              aria-selected={tab === t.key}
+              onClick={() => pick(t.key)}
               className={`flex h-11 shrink-0 items-center gap-2 rounded-full border px-4 text-[14px] font-semibold transition-colors ${
-                shelf === s.key ? "border-accent bg-accent text-on-accent" : "border-line bg-surface hover:border-accent/50"
+                tab === t.key ? "border-accent bg-accent text-on-accent" : "border-line bg-surface hover:border-accent/50"
               }`}
             >
-              {s.label}
-              <span className={`font-medium ${shelf === s.key ? "opacity-80" : "text-muted"}`}>{onShelf(s.key).length}</span>
+              {t.label}
+              {t.count !== undefined && (
+                <span className={`font-medium ${tab === t.key ? "opacity-80" : "text-muted"}`}>{t.count}</span>
+              )}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="px-5 lg:px-0">{shelf === "read" ? <ReadShelf /> : <ShelfGrid shelf={shelf} />}</div>
+      <div className="px-5 lg:px-0">
+        {tab === "stats" ? <StatsView onSeeRead={() => pick("read")} /> : <ShelfGrid shelf={tab} />}
+      </div>
     </main>
   );
 }
@@ -72,7 +80,7 @@ function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
     reading: "Pick up where you left off",
     want: "The rest of Red Rising, then all of A Song of Ice and Fire",
     dnf: "No guilt. Life's too short.",
-    read: "",
+    read: "In the order you read them",
   }[shelf];
 
   return (
@@ -93,7 +101,13 @@ function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
               <ShelfBook slug={slug} size="sm" />
               <div data-shelf-caption>
                 <p className="mt-2 truncate text-[13px] font-semibold">{b.title}</p>
-                <p className="truncate text-[12px] text-muted">{b.series ?? b.author}</p>
+                <p className="truncate text-[12px] text-muted">{shelf === "read" ? b.author : (b.series ?? b.author)}</p>
+                {shelf === "read" && l.rating > 0 && (
+                  <p className="mt-1 flex items-center gap-1 text-[12px] font-semibold">
+                    <StarSmall size={11} className="text-accent" />
+                    {l.rating}
+                  </p>
+                )}
                 {shelf === "reading" && <ProgressBar value={(l.page / b.pages) * 100} height={4} className="mt-2" />}
                 {shelf === "dnf" && (
                   <p className="mt-1 text-[12px] text-muted">Stopped at {Math.round((l.page / b.pages) * 100)}%</p>
@@ -121,11 +135,9 @@ function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
   );
 }
 
-function ReadShelf() {
-  const { onShelf, logOf } = useReading();
+function StatsView({ onSeeRead }: { onSeeRead: () => void }) {
+  const { onShelf } = useReading();
   const { stats, favouriteAuthor, readingTaste, challenge, challengeFriends, challengeRank, achievement } = useSummary();
-  const [showAll, setShowAll] = useState(false);
-  const [adding, setAdding] = useState(false);
   const readSlugs = onShelf("read");
   const byPages = [...readSlugs].sort((a, b) => getBook(b).pages - getBook(a).pages);
   const maxPages = getBook(byPages[0])?.pages ?? 1;
@@ -250,53 +262,13 @@ function ReadShelf() {
         {achievement && <Achievement title={achievement.title} text={achievement.text} />}
       </div>
 
-      <section className="mt-6 lg:mt-9" aria-labelledby="finished">
-        <div className="flex items-baseline justify-between">
-          <Eyebrow>
-            <span id="finished">Finished</span>
-          </Eyebrow>
-          <span className="text-[12px] text-muted">In the order you read them</span>
-        </div>
-        <ol className="mt-1 lg:mt-2">
-          {readSlugs.map((slug, i) => {
-            const book = getBook(slug);
-            return (
-              <li key={slug} className={`border-b border-line ${i > 3 && !showAll ? "hidden lg:block" : ""}`}>
-                <Link href={`/book/${slug}`} className="flex items-center gap-4 py-3.5 lg:gap-6 lg:py-4">
-                  <span className="w-6 shrink-0 text-center font-serif text-[20px] font-medium text-muted lg:w-9 lg:text-[24px]">{i + 1}</span>
-                  <BookCover slug={slug} href={null} plain className="w-10 shrink-0 lg:w-11" />
-                  <span className="min-w-0 flex-1 lg:w-[340px] lg:flex-none">
-                    <span className="block truncate font-serif text-[18px] font-medium lg:text-[19px]">{book.title}</span>
-                    <span className="block text-[12px] text-muted lg:text-[13px]">{book.author}</span>
-                  </span>
-                  <span className="hidden flex-1 text-[14px] text-muted lg:block">
-                    {book.series ?? `${book.pages} pages`} · {book.year}
-                  </span>
-                  <span className="flex items-center gap-1 text-[13px] font-semibold lg:text-[14px]">
-                    <StarSmall size={12} className="text-accent" />
-                    {logOf(slug).rating}
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ol>
-        <div className="mt-3 flex flex-wrap items-center gap-3">
-          {readSlugs.length > 4 && !showAll && (
-            <button onClick={() => setShowAll(true)} className="h-11 text-[14px] font-semibold text-accent lg:hidden">
-              See all {readSlugs.length}
-            </button>
-          )}
-          <button
-            onClick={() => setAdding(true)}
-            className="flex h-11 items-center gap-2 rounded-full border-2 border-dashed border-line px-4 text-[14px] font-semibold text-muted transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent"
-          >
-            <PlusIcon size={18} />
-            Log a finished book
-          </button>
-        </div>
-      </section>
-      {adding && <AddBooksSheet shelf="read" onClose={() => setAdding(false)} />}
+      <button
+        onClick={onSeeRead}
+        className="mt-6 flex h-11 items-center gap-1.5 text-[14px] font-semibold text-accent lg:mt-8"
+      >
+        See all {readSlugs.length} books you&apos;ve read
+        <ChevronRightIcon size={16} />
+      </button>
     </div>
   );
 }

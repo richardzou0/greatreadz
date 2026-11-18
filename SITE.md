@@ -22,7 +22,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens �
 - **Home** (`/`) — greeting, Morning Star with its progress bar plus a smaller "also reading" row for Empire of the Vampire, friends' recently finished books (a sideways-scrolling shelf), one pick for your taste (The Long Walk), the reading challenge and three friend updates with a Cheer button.
 - **Book page** (`/book/the-long-walk`, `/book/golden-son` and every other book) — big cover, a shelf button, "Rate or log it", where to get it, your rating if you've read it, real Open Library star breakdown with a **Verified readers** switch, a summary worked out from those ratings, friends' reviews (sample, only on a couple of books) and similar books you haven't read.
 - **Discover** (`/discover`) — one search box (try typing "Austen"), mood buttons and a pace switch that change the picks, genres and community cards.
-- **My books** (`/my-books`) — shelf tabs (Reading, Want to read, Read, Didn't finish), your stats, a pages-per-book chart (there are no finish dates, so no monthly chart), reading taste, the friends challenge, the Different Seasons achievement and the Finished list in the order you read them.
+- **My books** (`/my-books`) — tabs for **Stats** (opens first: your numbers, pages per book, reading taste, the friends challenge and the Different Seasons achievement) and one per shelf: Reading, Want to read, Read and Didn't finish. Each shelf shows its covers (Read shows your ratings) with an add button at the end.
 - **Log and rate** — not a separate page: it pops up when you press **Update progress**, **Mark as finished**, **Rate or log it** or **Log**. On phones it slides up from the bottom; on bigger screens it's a centred card.
 
 ## Components
@@ -45,6 +45,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens �
 - Everything respects "reduce motion" on the device.
 
 ## Recent Changes
+- 2026-11-18: Stats is now its own tab on My books, first and open by default. The Read tab is a book shelf like the others (covers with your ratings, in reading order, plus a "Log a finished book" tile), and the old Finished list was removed from Stats in favour of a "See all books you've read" link.
 - 2026-11-18: Reworked the shelf reveal into one smooth motion that fans out like a hand of cards: the rightmost book leaves the packed shelf first and sits on top, and each book to its left follows from underneath, so no spine ever sits on top of an open cover. The total stagger is capped, so long rows don't drag.
 - 2026-11-18: The shelf reveal now plays once per list per visit. Coming back to a tab skips it, and reloading the page plays it again. Discover plays it on first view, not on every filter change.
 - 2026-11-18: "Friends just finished" on Home now has 12 books (sample friends) in a sideways-scrolling shelf, with arrow buttons on desktop and a soft fade on the edge that has more books.
