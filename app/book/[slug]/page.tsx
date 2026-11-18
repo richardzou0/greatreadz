@@ -4,6 +4,7 @@ import { BookActions } from "@/components/book/BookActions";
 import { RatingBreakdown } from "@/components/book/RatingBreakdown";
 import { BookCover } from "@/components/BookCover";
 import { ShelfReveal } from "@/components/ShelfReveal";
+import { ShelfBook } from "@/components/ShelfBook";
 import { BackIcon, ShareIcon, StarSmall } from "@/components/Icons";
 import { Eyebrow } from "@/components/ui";
 import { books, followReviews, getBook, similarTo } from "@/lib/data";
@@ -200,9 +201,7 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
               >
                 {similar.map((s) => (
                   <li key={s} data-shelf-item className="w-[100px] shrink-0 lg:w-auto">
-                    <div data-shelf-cover>
-                      <BookCover slug={s} size="sm" />
-                    </div>
+                    <ShelfBook slug={s} size="sm" />
                   </li>
                 ))}
               </ShelfReveal>

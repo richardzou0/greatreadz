@@ -7,6 +7,7 @@ import { books, discoverPicks, genres, getBook, lovedCount, moods, paceOf, paces
 import { BookCover } from "../BookCover";
 import { ChevronRightIcon, FlagIcon, ListIcon, PeopleIcon, ScanIcon, SearchIcon } from "../Icons";
 import { ShelfReveal } from "../ShelfReveal";
+import { ShelfBook } from "../ShelfBook";
 import { ThemeToggle } from "../ThemeToggle";
 import { Eyebrow, PageTitle } from "../ui";
 
@@ -142,9 +143,7 @@ export function DiscoverView() {
           >
             {picks.map((p) => (
               <li key={p.slug} data-shelf-item className="w-[80px] shrink-0 lg:w-auto">
-                <div data-shelf-cover>
-                  <BookCover slug={p.slug} size="sm" />
-                </div>
+                <ShelfBook slug={p.slug} size="sm" />
                 <p data-shelf-caption className="mt-2 text-[11px] font-semibold text-accent lg:mt-3 lg:text-[13px]">
                   {p.match}% match
                 </p>

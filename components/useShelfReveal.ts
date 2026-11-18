@@ -3,19 +3,20 @@
 import { useLayoutEffect, type RefObject } from "react";
 
 // Timing, in milliseconds
-const APPEAR = 160; // spines fade in, all together
-const HOLD = 380; // pause on the packed shelf before spreading
-const STAGGER = 55; // each book leaves a little after the one to its left
-const SPREAD = 700; // time to slide out and swing open
+const APPEAR = 180; // spines fade in, all together
+const HOLD = 420; // pause on the packed shelf before spreading
+const STAGGER = 60; // each book leaves a little after the one to its left
+const SPREAD = 750; // time to slide out and swing open
+const GAP = 2; // px between spines on the shelf
 const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 
 /**
- * Shelf reveal: books start as spines packed tightly at the left of each row,
- * then slide out to the right one by one, swinging open to show their covers.
+ * Shelf reveal: each row starts as a packed shelf of spines on the left,
+ * then the books slide out to the right one by one, swinging open to show their covers.
  *
- * Mark each book with `data-shelf-item`, the part that swings with `data-shelf-cover`,
- * and any text underneath with `data-shelf-caption`. Runs again whenever `key` changes.
- * Usually used through <ShelfReveal>, which wires this up for a list.
+ * Mark each book with `data-shelf-item`, the 3D book with `data-shelf-cover` (see <ShelfBook>,
+ * whose `data-spine` gives the spine's thickness), and text underneath with `data-shelf-caption`.
+ * Runs again whenever `key` changes. Usually used through <ShelfReveal>.
  */
 export function useShelfReveal(ref: RefObject<HTMLElement | null>, key: unknown) {
   useLayoutEffect(() => {
@@ -33,26 +34,32 @@ export function useShelfReveal(ref: RefObject<HTMLElement | null>, key: unknown)
     const running: Animation[] = [];
     for (const row of rows.values()) {
       const rowStart = row[0].offsetLeft;
+      let shelfX = rowStart; // where the next spine goes
       row.forEach((el, col) => {
-        const cover = el.querySelector<HTMLElement>("[data-shelf-cover]") ?? el;
-        const spine = cover.offsetWidth * 0.17;
-        const dx = rowStart + col * spine - el.offsetLeft;
+        const book = el.querySelector<HTMLElement>("[data-shelf-cover]") ?? el;
+        const thickness = book.offsetWidth * Number(book.dataset.spine ?? 0.06);
+        // Turned sideways, the book hinges on its left edge and its spine sits just left of
+        // that hinge, so shift by one spine width to line it up on the shelf.
+        const dx = shelfX + thickness - el.offsetLeft;
+        shelfX += thickness + GAP;
+
         const leaveAt = APPEAR + HOLD + col * STAGGER;
         const duration = leaveAt + SPREAD;
-        // Move first, then add depth, so every spine is seen head-on from where it sits
-        const closed = `translateX(${dx}px) perspective(900px) rotateY(80deg)`;
+        // Move first, then add depth, so every book is seen head-on from where it sits
+        const sideways = `translateX(${dx}px) perspective(1000px) rotateY(90deg)`;
 
-        cover.style.transformOrigin = "left center";
+        book.style.transformOrigin = "left center";
         running.push(
-          cover.animate(
+          book.animate(
             [
-              { transform: closed, opacity: 0, filter: "brightness(0.7)", offset: 0 },
-              { transform: closed, opacity: 1, filter: "brightness(0.7)", offset: APPEAR / duration },
-              { transform: closed, opacity: 1, filter: "brightness(0.7)", offset: leaveAt / duration, easing: EASE },
-              { transform: "translateX(0) perspective(900px) rotateY(0deg)", opacity: 1, filter: "brightness(1)", offset: 1 },
+              { transform: sideways, offset: 0 },
+              { transform: sideways, offset: leaveAt / duration, easing: EASE },
+              { transform: "translateX(0) perspective(1000px) rotateY(0deg)", offset: 1 },
             ],
             { duration, fill: "backwards" }
-          )
+          ),
+          // Fade on the outer item: fading the 3D book itself would flatten it
+          el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: APPEAR, fill: "backwards" })
         );
 
         const caption = el.querySelector<HTMLElement>("[data-shelf-caption]");
@@ -60,7 +67,7 @@ export function useShelfReveal(ref: RefObject<HTMLElement | null>, key: unknown)
           running.push(
             caption.animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], {
               duration: 320,
-              delay: duration - 180,
+              delay: duration - 200,
               easing: "ease-out",
               fill: "backwards",
             })

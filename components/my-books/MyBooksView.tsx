@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { ShelfReveal } from "../ShelfReveal";
+import { ShelfBook } from "../ShelfBook";
 import { AddBooksSheet } from "./AddBooksSheet";
 import { formatPages, getBook, shelves, type ShelfKey } from "@/lib/data";
 import { BookCover } from "../BookCover";
@@ -89,9 +90,7 @@ function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
           const l = logOf(slug);
           return (
             <li key={slug} data-shelf-item>
-              <div data-shelf-cover>
-                <BookCover slug={slug} size="sm" />
-              </div>
+              <ShelfBook slug={slug} size="sm" />
               <div data-shelf-caption>
                 <p className="mt-2 truncate text-[13px] font-semibold">{b.title}</p>
                 <p className="truncate text-[12px] text-muted">{b.series ?? b.author}</p>
@@ -106,6 +105,7 @@ function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
         <li data-shelf-item>
           <button
             data-shelf-cover
+            data-spine={0.05}
             onClick={() => setAdding(true)}
             className="group flex aspect-[2/3] w-full flex-col items-center justify-center gap-3 rounded-[6px] border-2 border-dashed border-line text-muted transition-colors hover:border-accent hover:bg-accent-soft hover:text-accent"
           >
