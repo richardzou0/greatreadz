@@ -5,7 +5,7 @@ import { RatingBreakdown } from "@/components/book/RatingBreakdown";
 import { BookCover } from "@/components/BookCover";
 import { BackIcon, ShareIcon, StarSmall } from "@/components/Icons";
 import { Eyebrow } from "@/components/ui";
-import { alsoLoved, books, followReviews, getBook } from "@/lib/data";
+import { books, followReviews, getBook, similarTo } from "@/lib/data";
 
 export function generateStaticParams() {
   return Object.keys(books).map((slug) => ({ slug }));
@@ -28,8 +28,11 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
   const book = getBook(slug);
   if (!book) notFound();
 
-  const isVillette = slug === "villette";
-  const similar = alsoLoved.filter((s) => s !== slug).slice(0, 6);
+  const reviews = followReviews[slug] ?? [];
+  const friendsAvg = reviews.length ? reviews.reduce((a, r) => a + r.rating, 0) / reviews.length : null;
+  const c = book.community;
+  const lovedPct = c ? c.bars[0] + c.bars[1] : 0;
+  const similar = similarTo(slug, 6);
 
   return (
     <main className="relative">
@@ -57,7 +60,12 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
                 <p className="mt-0.5 text-[14px] text-muted">
                   {book.author} · {book.year}
                 </p>
-                <p className="mt-1 text-[13px] leading-snug text-muted">{book.moods.slice(0, 3).join(" · ")}</p>
+                <p className="mt-1 text-[13px] leading-snug text-muted">{book.series ?? book.moods.slice(0, 3).join(" · ")}</p>
+                {book.myRating && (
+                  <p className="mt-1 flex items-center gap-1 text-[13px] font-semibold">
+                    <StarSmall size={12} className="text-accent" /> You rated it {book.myRating}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -74,7 +82,7 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
                   <li key={g.label}>
                     <a
                       href="#"
-                      className="flex h-11 items-center justify-center whitespace-nowrap rounded-xl border border-line bg-surface px-1 text-[13px] font-semibold transition-colors hover:border-accent/50 lg:justify-between lg:px-4 lg:text-[14px]"
+                      className="flex h-11 items-center justify-center gap-3 whitespace-nowrap rounded-xl border border-line bg-surface px-1 text-[13px] lg:whitespace-normal lg:leading-tight font-semibold transition-colors hover:border-accent/50 lg:justify-between lg:px-4 lg:text-[14px]"
                     >
                       <span className="lg:hidden">{g.short}</span>
                       <span className="hidden lg:inline">{g.label}</span>
@@ -92,10 +100,25 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
               <h1 className="font-serif text-[56px] font-medium leading-none tracking-[-0.01em]">{book.title}</h1>
               <p className="mt-5 text-[17px] text-muted">
                 {book.author} · {book.year}
+                {book.series && ` · ${book.series}`}
               </p>
               <p className="mt-2 flex items-center gap-2 text-[15px] text-muted">
                 <StarSmall size={15} className="text-accent" />
-                <span className="font-semibold text-ink">4.5</span> from 3 friends
+                {book.myRating ? (
+                  <>
+                    You rated it <span className="font-semibold text-ink">{book.myRating}</span>
+                  </>
+                ) : friendsAvg ? (
+                  <>
+                    <span className="font-semibold text-ink">{friendsAvg.toFixed(1)}</span> from {reviews.length} friends
+                  </>
+                ) : c ? (
+                  <>
+                    <span className="font-semibold text-ink">{c.avg.toFixed(1)}</span> from {c.count} readers
+                  </>
+                ) : (
+                  "No ratings yet"
+                )}
               </p>
               <ul className="mt-4 flex flex-wrap gap-2">
                 {book.moods.map((m) => (
@@ -113,35 +136,43 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
             </div>
 
             <div className="mt-3.5 grid gap-3.5 lg:mt-9 lg:grid-cols-2">
-              <RatingBreakdown />
+              <RatingBreakdown community={book.community} />
               <div className="rounded-2xl bg-accent-soft p-4 lg:p-5">
                 <p className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.08em] text-accent">
                   What readers say
                   <span className="rounded-lg border border-accent px-2 py-px text-[10px] normal-case tracking-normal">Summary · beta</span>
                 </p>
                 <p className="mt-2.5 text-[15px] leading-[1.55] lg:text-[16px]">
-                  {isVillette
-                    ? "Readers love Lucy's sharp, guarded voice and the ending. Many say the first third is slow and the payoff is worth it. Common words: haunting, lonely, sharp."
-                    : `Readers call it ${book.moods.slice(0, 2).join(" and ").toLowerCase()}. Most say it rewards a patient first read.`}{" "}
-                  <a href="#reviews" className="font-semibold text-accent">
-                    Read reviews
-                  </a>
+                  <span className="lg:hidden">{book.blurb} </span>
+                  {c && c.count >= 10 ? (
+                    <>
+                      {lovedPct >= 75 ? "Most readers loved it" : lovedPct >= 55 ? "Most readers liked it" : "Readers are split on this one"}:{" "}
+                      {lovedPct}% of {c.count} Open Library ratings are 4 or 5 stars.
+                    </>
+                  ) : (
+                    "Too few ratings to summarise yet."
+                  )}{" "}
+                  {reviews.length > 0 && (
+                    <a href="#reviews" className="font-semibold text-accent">
+                      Read reviews
+                    </a>
+                  )}
                 </p>
               </div>
             </div>
 
-            {isVillette && (
+            {reviews.length > 0 && (
               <section id="reviews" className="mt-8 lg:mt-9" aria-labelledby="follow">
                 <div className="flex items-baseline justify-between">
                   <Eyebrow>
                     <span id="follow">From people you follow</span>
                   </Eyebrow>
                   <a href="#reviews" className="text-[14px] font-semibold text-accent">
-                    All 3
+                    All {reviews.length}
                   </a>
                 </div>
                 <ul className="mt-3 grid gap-3.5 lg:grid-cols-2">
-                  {followReviews.slice(0, 2).map((r) => (
+                  {reviews.slice(0, 2).map((r) => (
                     <li key={r.name} className="flex gap-3 rounded-2xl border border-line bg-surface p-4 lg:p-5">
                       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent-soft text-[14px] font-semibold text-accent">
                         {r.initial}

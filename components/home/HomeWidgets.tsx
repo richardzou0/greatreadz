@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
-import { challenge, friendsActivity, getBook } from "@/lib/data";
+import { challenge, friendsActivity, topPick } from "@/lib/data";
 import { BookCover } from "../BookCover";
 import { ProgressBar } from "../ProgressBar";
 import { useReading } from "../ReadingProvider";
@@ -21,14 +21,15 @@ export function Greeting() {
 export function PickedForYou() {
   const { shelfOf, setShelf } = useReading();
   const [dismissed, setDismissed] = useState(false);
-  const book = getBook("villette");
-  const wanted = shelfOf("villette") === "want";
+  const book = topPick;
+  const wanted = shelfOf(book.slug) === "want";
+  const toggle = () => setShelf(book.slug, wanted ? null : "want");
 
   if (dismissed) {
     return (
       <div className="animate-fade-in rounded-[20px] bg-accent-soft p-5 text-[14px] lg:p-6">
         <p className="font-semibold text-accent">Got it. We&apos;ll pick differently.</p>
-        <p className="mt-1 text-muted">Fewer slow Victorian novels for a while.</p>
+        <p className="mt-1 text-muted">Fewer books like {book.title} for a while.</p>
         <button onClick={() => setDismissed(false)} className="mt-3 font-semibold text-accent underline underline-offset-4">
           Undo
         </button>
@@ -40,26 +41,21 @@ export function PickedForYou() {
     <div className="rounded-[20px] bg-accent-soft p-4 lg:p-6">
       <p className="hidden text-[12px] font-semibold uppercase tracking-[0.08em] text-accent lg:block">Picked for your taste</p>
       <div className="flex gap-4 lg:mt-4">
-        <BookCover slug="villette" className="w-16 shrink-0 lg:w-20" size="sm" />
+        <BookCover slug={book.slug} className="w-16 shrink-0 lg:w-20" size="sm" />
         <div className="min-w-0">
-          <Link href="/book/villette" className="font-serif text-[19px] font-medium hover:underline lg:text-[22px]">
+          <Link href={`/book/${book.slug}`} className="font-serif text-[19px] font-medium hover:underline lg:text-[22px]">
             {book.title}
           </Link>
           <p className="hidden text-[14px] text-muted lg:block">{book.author}</p>
-          <p className="mt-1 text-[12px] leading-snug text-muted lg:hidden">
-            You rate reflective, slow-paced books highest. Not a bestseller pick.
-          </p>
-          <p className="mt-1.5 hidden text-[14px] leading-[1.45] lg:block">
-            You rate reflective, slow-paced, character-driven books highest. This one matches all three.
-          </p>
+          <p className="mt-1 text-[12px] leading-snug text-muted lg:mt-1.5 lg:text-[14px] lg:leading-[1.45] lg:text-ink">{book.why}</p>
           <p className="mt-1.5 hidden text-[12px] text-muted lg:block">Based on your 4+ star books, not on what&apos;s trending</p>
           <div className="mt-3 flex gap-2 lg:hidden">
-            <PickButtons wanted={wanted} onWant={() => setShelf("villette", wanted ? null : "want")} onDismiss={() => setDismissed(true)} />
+            <PickButtons wanted={wanted} onWant={toggle} onDismiss={() => setDismissed(true)} />
           </div>
         </div>
       </div>
       <div className="mt-4 hidden gap-2 lg:flex">
-        <PickButtons wanted={wanted} onWant={() => setShelf("villette", wanted ? null : "want")} onDismiss={() => setDismissed(true)} />
+        <PickButtons wanted={wanted} onWant={toggle} onDismiss={() => setDismissed(true)} />
       </div>
     </div>
   );
@@ -93,7 +89,12 @@ export function ChallengeCard() {
         <span className="text-[14px] text-muted">of {challenge.goal} books</span>
       </p>
       <ProgressBar value={(challenge.read / challenge.goal) * 100} className="mt-4" />
-      <p className="mt-4 text-[13px] text-muted">{challenge.ahead} books ahead of schedule</p>
+      <p className="mt-4 text-[13px] text-muted">
+        {challenge.vsPace === 0
+          ? "Right on schedule"
+          : `${Math.abs(challenge.vsPace)} book${Math.abs(challenge.vsPace) > 1 ? "s" : ""} ${challenge.vsPace > 0 ? "ahead of" : "behind"} schedule`}{" "}
+        · {challenge.goal - challenge.read} to go
+      </p>
     </Link>
   );
 }

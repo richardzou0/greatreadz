@@ -5,9 +5,7 @@ import { getBook } from "@/lib/data";
 import { BookCover } from "./BookCover";
 import { CheckIcon, CloseIcon, StarFill } from "./Icons";
 import { ProgressBar } from "./ProgressBar";
-import type { Status } from "./ReadingProvider";
-
-type Log = { slug: string; page: number; status: Status; rating: number; note: string };
+import type { Log, Status } from "./ReadingProvider";
 
 const STATUSES: { key: Status; label: string }[] = [
   { key: "reading", label: "Reading" },
@@ -119,7 +117,7 @@ export function LogSheet({
           <div className="min-w-0 flex-1 pt-1.5 lg:pt-3">
             <h2 className="font-serif text-[21px] font-medium leading-tight lg:text-[30px]">{book.title}</h2>
             <p className="mt-1 text-[12px] text-muted lg:text-[14px]">
-              {book.author} · {book.pages} pages<span className="hidden lg:inline"> · synced from Kindle</span>
+              {book.author} · {book.pages} pages<span className="hidden lg:inline">{book.series && ` · ${book.series}`}</span>
             </p>
           </div>
           <button

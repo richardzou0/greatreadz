@@ -4,28 +4,33 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import {
+  achievement,
   challenge,
   challengeFriends,
-  diary,
+  challengeRank,
+  favouriteAuthor,
+  formatPages,
   getBook,
-  pagesPerMonth,
   readingTaste,
-  shelfBooks,
   shelves,
+  stats,
+  type ShelfKey,
 } from "@/lib/data";
 import { BookCover } from "../BookCover";
 import { BadgeIcon, StarSmall } from "../Icons";
 import { ProgressBar } from "../ProgressBar";
+import { useReading } from "../ReadingProvider";
 import { ThemeToggle } from "../ThemeToggle";
 import { Eyebrow, PageTitle } from "../ui";
 
-type ShelfKey = (typeof shelves)[number]["key"];
+const ordinal = (n: number) => `${n}${["th", "st", "nd", "rd"][n % 10 > 3 || [11, 12, 13].includes(n % 100) ? 0 : n % 10]}`;
 
-// My books: shelves plus a year-in-reading view.
+// My books: shelves plus a year-in-reading view. Every number comes from the Read shelf.
 export function MyBooksView() {
   const params = useSearchParams();
   const router = useRouter();
   const path = usePathname();
+  const { onShelf } = useReading();
   const fromUrl = params.get("shelf") as ShelfKey | null;
   const shelf: ShelfKey = shelves.some((s) => s.key === fromUrl) ? fromUrl! : "read";
 
@@ -49,7 +54,7 @@ export function MyBooksView() {
               }`}
             >
               {s.label}
-              <span className={`font-medium ${shelf === s.key ? "opacity-80" : "text-muted"}`}>{s.count}</span>
+              <span className={`font-medium ${shelf === s.key ? "opacity-80" : "text-muted"}`}>{onShelf(s.key).length}</span>
             </button>
           ))}
         </div>
@@ -61,30 +66,57 @@ export function MyBooksView() {
 }
 
 function ShelfGrid({ shelf }: { shelf: ShelfKey }) {
-  const slugs = shelfBooks[shelf] ?? [];
+  const { onShelf, logOf } = useReading();
+  const slugs = onShelf(shelf);
   const label = shelves.find((s) => s.key === shelf)?.label;
+  const note = {
+    reading: "Pick up where you left off",
+    want: "The rest of Red Rising, then all of A Song of Ice and Fire",
+    dnf: "No guilt. Life's too short.",
+    read: "",
+  }[shelf];
+
   return (
     <section className="animate-fade-in mt-6 lg:mt-8">
       <h2 className="font-serif text-[22px] font-medium lg:text-[26px]">{label}</h2>
-      <p className="mt-0.5 text-[13px] text-muted">
-        {shelf === "dnf" ? "No guilt. Life's too short." : shelf === "want" ? "Showing the 6 you added most recently" : "Pick up where you left off"}
-      </p>
-      <ul className="mt-4 grid grid-cols-3 gap-3.5 sm:grid-cols-4 lg:grid-cols-6 lg:gap-[18px]">
-        {slugs.map((slug) => (
-          <li key={slug}>
-            <BookCover slug={slug} size="sm" />
-            <p className="mt-2 truncate text-[13px] font-semibold">{getBook(slug).title}</p>
-            <p className="truncate text-[12px] text-muted">{getBook(slug).author}</p>
-          </li>
-        ))}
-      </ul>
+      <p className="mt-0.5 text-[13px] text-muted">{slugs.length ? note : ""}</p>
+      {slugs.length === 0 ? (
+        <p className="mt-4 rounded-2xl border border-dashed border-line p-6 text-[14px] text-muted">
+          {shelf === "dnf" ? "You've finished everything you started. Impressive." : "Nothing here yet."}
+        </p>
+      ) : (
+        <ul className="mt-4 grid grid-cols-3 gap-3.5 sm:grid-cols-4 lg:grid-cols-6 lg:gap-[18px]">
+          {slugs.map((slug) => {
+            const b = getBook(slug);
+            const l = logOf(slug);
+            return (
+              <li key={slug}>
+                <BookCover slug={slug} size="sm" />
+                <p className="mt-2 truncate text-[13px] font-semibold">{b.title}</p>
+                <p className="truncate text-[12px] text-muted">{b.series ?? b.author}</p>
+                {shelf === "reading" && <ProgressBar value={(l.page / b.pages) * 100} height={4} className="mt-2" />}
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </section>
   );
 }
 
 function ReadShelf() {
-  const max = Math.max(...pagesPerMonth.map((p) => p.v));
+  const { onShelf, logOf } = useReading();
+  const [showAll, setShowAll] = useState(false);
+  const readSlugs = onShelf("read");
+  const byPages = [...readSlugs].sort((a, b) => getBook(b).pages - getBook(a).pages);
+  const maxPages = getBook(byPages[0])?.pages ?? 1;
   const challengePct = (challenge.read / challenge.goal) * 100;
+  const challengeLine = `${challenge.read} of ${challenge.goal} · ${ordinal(challengeRank)} of ${challengeFriends.length} friends`;
+  const tags = [
+    `${favouriteAuthor.count} by ${favouriteAuthor.name}`,
+    `Avg ${stats.avgPages} pages`,
+    `${readSlugs.filter((s) => getBook(s).series?.includes("novella")).length} novellas`,
+  ];
 
   return (
     <div className="animate-fade-in">
@@ -95,9 +127,9 @@ function ReadShelf() {
         <h2 className="font-serif text-[21px] font-medium">Your 2026 in reading</h2>
         <dl className="mt-3 grid grid-cols-3">
           {[
-            ["38", "books"],
-            ["11.2k", "pages"],
-            ["3.9", "avg rating"],
+            [`${stats.booksRead}`, "books"],
+            [formatPages(stats.pages), "pages"],
+            [stats.avgRating.toFixed(1), "avg rating"],
           ].map(([v, l]) => (
             <div key={l}>
               <dt className="sr-only">{l}</dt>
@@ -108,12 +140,12 @@ function ReadShelf() {
         </dl>
         <p className="mt-5 flex justify-between text-[12px]">
           <span className="font-semibold">Reading challenge</span>
-          <span className="text-muted">38 of 50 · 2nd of 5 friends</span>
+          <span className="text-muted">{challengeLine}</span>
         </p>
         <ProgressBar value={challengePct} className="mt-2" />
         <p className="mt-5 flex justify-between text-[12px]">
           <span className="font-semibold">Moods you read</span>
-          <span className="text-muted">Mostly slow-paced</span>
+          <span className="text-muted">{tags[0]}</span>
         </p>
         <TasteBar className="mt-2" />
         <TasteLegend className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-[11px]" />
@@ -122,9 +154,9 @@ function ReadShelf() {
       {/* Desktop: stat tiles */}
       <dl className="mt-4 hidden grid-cols-4 gap-4 lg:grid">
         {[
-          ["38", "books read"],
-          ["11.2k", "pages turned"],
-          ["3.9", "average rating"],
+          [`${stats.booksRead}`, "books read"],
+          [formatPages(stats.pages), "pages turned"],
+          [stats.avgRating.toFixed(1), "average rating"],
         ].map(([v, l]) => (
           <div key={l} className="rounded-[20px] border border-line bg-surface p-5">
             <dd className="font-serif text-[40px] font-medium leading-none">{v}</dd>
@@ -133,29 +165,27 @@ function ReadShelf() {
         ))}
         <div className="rounded-[20px] bg-accent-soft p-5">
           <dd className="font-serif text-[40px] font-medium leading-none">{Math.round(challengePct)}%</dd>
-          <dt className="mt-3 text-[13px] text-muted">38 of 50 · 2nd of 5 friends</dt>
-          <ProgressBar value={challengePct} height={5} className="mt-3" track="var(--line)" />
+          <dt className="mt-3 text-[13px] text-muted">{challengeLine}</dt>
+          <ProgressBar value={challengePct} height={5} className="mt-3" />
         </div>
       </dl>
 
       <div className="mt-6 hidden gap-4 lg:grid lg:grid-cols-[minmax(0,672fr)_minmax(0,432fr)]">
         <section className="rounded-[20px] border border-line bg-surface p-6">
-          <Eyebrow>Pages per month</Eyebrow>
-          <ul className="mt-6 flex h-[168px] items-end justify-between gap-2" aria-label="Pages read per month">
-            {pagesPerMonth.map((p, i) => {
-              const current = i === pagesPerMonth.length - 1;
+          <div className="flex items-baseline justify-between">
+            <Eyebrow>Pages per book</Eyebrow>
+            <span className="text-[12px] text-muted">{formatPages(stats.pages)} pages in total</span>
+          </div>
+          <ul className="mt-4 space-y-2.5">
+            {byPages.map((slug) => {
+              const b = getBook(slug);
               return (
-                <li key={i} className="flex h-full flex-1 flex-col items-center justify-end gap-3">
-                  <span
-                    title={`${p.v * 10} pages`}
-                    className="animate-grow block w-full max-w-9 rounded-t-md rounded-b-[2px]"
-                    style={{
-                      height: `${(p.v / max) * 150}px`,
-                      background: current ? "var(--taste-2)" : "var(--accent)",
-                      animationDelay: `${i * 40}ms`,
-                    }}
-                  />
-                  <span className="text-[11px] text-muted">{p.m}</span>
+                <li key={slug} className="grid grid-cols-[150px_minmax(0,1fr)_36px] items-center gap-3 text-[13px]">
+                  <span className="truncate" title={b.title}>
+                    {b.title}
+                  </span>
+                  <ProgressBar value={(b.pages / maxPages) * 100} height={10} track="transparent" />
+                  <span className="text-right tabular-nums text-muted">{b.pages}</span>
                 </li>
               );
             })}
@@ -167,7 +197,7 @@ function ReadShelf() {
           <TasteBar className="mt-4" />
           <TasteLegend className="mt-4 space-y-2.5 text-[14px]" />
           <ul className="mt-5 flex flex-wrap gap-2 border-t border-line pt-5">
-            {["Mostly slow-paced", "Character-driven", "Avg 412 pages"].map((t) => (
+            {tags.map((t) => (
               <li key={t} className="rounded-full bg-accent-soft px-3 py-1.5 text-[13px] font-semibold text-accent">
                 {t}
               </li>
@@ -198,38 +228,45 @@ function ReadShelf() {
           </ol>
         </section>
 
-        <Achievement />
+        {achievement && <Achievement title={achievement.title} text={achievement.text} />}
       </div>
 
-      <section className="mt-6 lg:mt-9" aria-labelledby="diary">
-        <Eyebrow>
-          <span id="diary">Reading diary</span>
-        </Eyebrow>
+      <section className="mt-6 lg:mt-9" aria-labelledby="finished">
+        <div className="flex items-baseline justify-between">
+          <Eyebrow>
+            <span id="finished">Finished</span>
+          </Eyebrow>
+          <span className="text-[12px] text-muted">In the order you read them</span>
+        </div>
         <ol className="mt-1 lg:mt-2">
-          {diary.map((d, i) => {
-            const book = getBook(d.slug);
+          {readSlugs.map((slug, i) => {
+            const book = getBook(slug);
             return (
-              <li key={d.slug} className={`border-b border-line ${i > 1 ? "hidden lg:block" : ""}`}>
-                <Link href={`/book/${d.slug}`} className="flex items-center gap-4 py-3.5 lg:gap-6 lg:py-4">
-                  <span className="w-9 shrink-0 text-center">
-                    <span className="block text-[10px] font-semibold tracking-[0.06em] text-muted lg:text-[11px]">{d.month}</span>
-                    <span className="block font-serif text-[22px] font-medium leading-none lg:text-[26px]">{d.day}</span>
-                  </span>
-                  <BookCover slug={d.slug} href={null} plain className="w-10 shrink-0 lg:w-11" />
-                  <span className="min-w-0 flex-1 lg:w-[280px] lg:flex-none">
-                    <span className="block font-serif text-[18px] font-medium lg:text-[19px]">{book.title}</span>
+              <li key={slug} className={`border-b border-line ${i > 3 && !showAll ? "hidden lg:block" : ""}`}>
+                <Link href={`/book/${slug}`} className="flex items-center gap-4 py-3.5 lg:gap-6 lg:py-4">
+                  <span className="w-6 shrink-0 text-center font-serif text-[20px] font-medium text-muted lg:w-9 lg:text-[24px]">{i + 1}</span>
+                  <BookCover slug={slug} href={null} plain className="w-10 shrink-0 lg:w-11" />
+                  <span className="min-w-0 flex-1 lg:w-[340px] lg:flex-none">
+                    <span className="block truncate font-serif text-[18px] font-medium lg:text-[19px]">{book.title}</span>
                     <span className="block text-[12px] text-muted lg:text-[13px]">{book.author}</span>
                   </span>
-                  <span className="hidden flex-1 text-[14px] text-muted lg:block">{d.note}</span>
+                  <span className="hidden flex-1 text-[14px] text-muted lg:block">
+                    {book.series ?? `${book.pages} pages`} · {book.year}
+                  </span>
                   <span className="flex items-center gap-1 text-[13px] font-semibold lg:text-[14px]">
                     <StarSmall size={12} className="text-accent" />
-                    {d.rating}
+                    {logOf(slug).rating}
                   </span>
                 </Link>
               </li>
             );
           })}
         </ol>
+        {readSlugs.length > 4 && !showAll && (
+          <button onClick={() => setShowAll(true)} className="mt-3 h-11 text-[14px] font-semibold text-accent lg:hidden">
+            See all {readSlugs.length}
+          </button>
+        )}
       </section>
     </div>
   );
@@ -260,7 +297,7 @@ function TasteLegend({ className = "" }: { className?: string }) {
   );
 }
 
-function Achievement() {
+function Achievement({ title, text }: { title: string; text: string }) {
   const [shared, setShared] = useState(false);
   return (
     <section className="flex items-center gap-4 rounded-[20px] bg-accent-soft p-4 lg:block lg:p-6">
@@ -272,14 +309,14 @@ function Achievement() {
           <BadgeIcon size={22} />
         </span>
         <div>
-          <p className="text-[14px] font-semibold lg:font-serif lg:text-[22px] lg:font-medium">Autumn Gothic unlocked</p>
-          <p className="text-[12px] text-muted lg:text-[14px]">3 gothic novels before Nov 30 · limited time</p>
+          <p className="text-[14px] font-semibold lg:font-serif lg:text-[22px] lg:font-medium">{title}</p>
+          <p className="text-[12px] text-muted lg:text-[14px]">{text}</p>
         </div>
       </div>
       <div className="flex gap-2.5 lg:mt-5">
         <button
           onClick={() => setShared(true)}
-          className="h-11 shrink-0 rounded-full border border-accent px-4 text-[13px] font-semibold text-accent transition-colors lg:border-accent lg:bg-accent lg:px-5 lg:text-[14px] lg:text-on-accent"
+          className="h-11 shrink-0 rounded-full border border-accent px-4 text-[13px] font-semibold text-accent transition-colors lg:bg-accent lg:px-5 lg:text-[14px] lg:text-on-accent"
         >
           <span className="lg:hidden">{shared ? "Shared ✓" : "Share"}</span>
           <span className="hidden lg:inline">{shared ? "Link copied ✓" : "Share your year so far"}</span>

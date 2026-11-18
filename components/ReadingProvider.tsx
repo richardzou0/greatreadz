@@ -1,36 +1,55 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { currentlyReading } from "@/lib/data";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { books, type ShelfKey } from "@/lib/data";
 import { LogSheet } from "./LogSheet";
 
 export type Status = "reading" | "finished" | "dnf";
-export type Shelf = "want" | "reading" | "read" | "dnf" | null;
-
-type Log = { slug: string; page: number; status: Status; rating: number; note: string };
+export type Shelf = ShelfKey | null;
+export type Log = { slug: string; page: number; status: Status; rating: number; note: string };
 
 type Ctx = {
-  log: Log;
+  logOf: (slug: string) => Log;
   saveLog: (next: Log) => void;
-  openLog: (slug?: string, status?: Status) => void;
+  openLog: (slug: string, status?: Status) => void;
   shelfOf: (slug: string) => Shelf;
   setShelf: (slug: string, shelf: Shelf) => void;
+  /** Books on a shelf, in catalogue order */
+  onShelf: (shelf: ShelfKey) => string[];
 };
 
 const ReadingContext = createContext<Ctx | null>(null);
-const KEY = "gr-concept-reading";
+const KEY = "gr-concept-reading-v2";
 
-const initialLog: Log = { slug: currentlyReading.slug, page: currentlyReading.page, status: "reading", rating: 4.25, note: "" };
+// Starting point comes straight from Rich's real shelves in lib/data.ts.
+const initialShelves: Record<string, Shelf> = Object.fromEntries(
+  Object.values(books).map((b) => [b.slug, b.shelf ?? null])
+);
+const initialLogs: Record<string, Log> = Object.fromEntries(
+  Object.values(books)
+    .filter((b) => b.shelf)
+    .map((b) => [
+      b.slug,
+      {
+        slug: b.slug,
+        page: b.shelf === "read" ? b.pages : b.page ?? 0,
+        status: b.shelf === "read" ? "finished" : b.shelf === "dnf" ? "dnf" : "reading",
+        rating: b.myRating ?? 0,
+        note: "",
+      } satisfies Log,
+    ])
+);
 
-// Keeps the "currently reading" log and shelf choices in one place,
-// so the log sheet, home page and book page all stay in step.
+const blankLog = (slug: string): Log => ({ slug, page: 0, status: "reading", rating: 0, note: "" });
+
+// Keeps progress, ratings and shelves for every book in one place,
+// so the log sheet, home page, book pages and My books all stay in step.
 export function ReadingProvider({ children }: { children: React.ReactNode }) {
-  const [log, setLog] = useState<Log>(initialLog);
-  const [shelves, setShelves] = useState<Record<string, Shelf>>({ middlemarch: "reading" });
-  const [openFor, setOpenFor] = useState<string | null>(null);
-  const [presetStatus, setPresetStatus] = useState<Status | null>(null);
+  const [logs, setLogs] = useState(initialLogs);
+  const [shelves, setShelves] = useState(initialShelves);
+  const [open, setOpen] = useState<{ slug: string; status?: Status } | null>(null);
 
-  // Restore whatever this reader saved last time (browser only).
+  // Restore whatever this reader changed last time (browser only).
   useEffect(() => {
     try {
       const raw = localStorage.getItem(KEY);
@@ -38,65 +57,64 @@ export function ReadingProvider({ children }: { children: React.ReactNode }) {
         // Read after mount so the server and browser render the same first frame.
         /* eslint-disable react-hooks/set-state-in-effect */
         const saved = JSON.parse(raw);
-        if (saved.log) setLog(saved.log);
-        if (saved.shelves) setShelves(saved.shelves);
+        if (saved.logs) setLogs((l) => ({ ...l, ...saved.logs }));
+        if (saved.shelves) setShelves((s) => ({ ...s, ...saved.shelves }));
         /* eslint-enable react-hooks/set-state-in-effect */
       }
     } catch {}
   }, []);
 
-  const persist = (nextLog: Log, nextShelves: Record<string, Shelf>) => {
+  const persist = (nextLogs: Record<string, Log>, nextShelves: Record<string, Shelf>) => {
     try {
-      localStorage.setItem(KEY, JSON.stringify({ log: nextLog, shelves: nextShelves }));
+      localStorage.setItem(KEY, JSON.stringify({ logs: nextLogs, shelves: nextShelves }));
     } catch {}
   };
 
   const saveLog = useCallback(
     (next: Log) => {
       const shelf: Shelf = next.status === "finished" ? "read" : next.status === "dnf" ? "dnf" : "reading";
+      const nextLogs = { ...logs, [next.slug]: next };
       const nextShelves = { ...shelves, [next.slug]: shelf };
-      setLog(next);
+      setLogs(nextLogs);
       setShelves(nextShelves);
-      persist(next, nextShelves);
+      persist(nextLogs, nextShelves);
     },
-    [shelves]
+    [logs, shelves]
   );
 
   const setShelf = useCallback(
     (slug: string, shelf: Shelf) => {
       const nextShelves = { ...shelves, [slug]: shelf };
       setShelves(nextShelves);
-      persist(log, nextShelves);
+      persist(logs, nextShelves);
     },
-    [shelves, log]
+    [shelves, logs]
   );
 
-  const value: Ctx = {
-    log,
-    saveLog,
-    openLog: (slug, status) => {
-      setPresetStatus(status ?? null);
-      setOpenFor(slug ?? log.slug);
-    },
-    shelfOf: (slug) => shelves[slug] ?? null,
-    setShelf,
-  };
+  const value = useMemo<Ctx>(
+    () => ({
+      logOf: (slug) => logs[slug] ?? blankLog(slug),
+      saveLog,
+      openLog: (slug, status) => setOpen({ slug, status }),
+      shelfOf: (slug) => shelves[slug] ?? null,
+      setShelf,
+      onShelf: (shelf) => Object.keys(shelves).filter((s) => shelves[s] === shelf),
+    }),
+    [logs, shelves, saveLog, setShelf]
+  );
 
   return (
     <ReadingContext.Provider value={value}>
       {children}
-      {openFor && (
+      {open && (
         <LogSheet
-          key={openFor}
-          slug={openFor}
-          initial={{
-            ...(openFor === log.slug ? log : { ...initialLog, slug: openFor, page: 0, rating: 0 }),
-            ...(presetStatus && { status: presetStatus }),
-          }}
-          onClose={() => setOpenFor(null)}
+          key={open.slug}
+          slug={open.slug}
+          initial={{ ...(logs[open.slug] ?? blankLog(open.slug)), ...(open.status && { status: open.status }) }}
+          onClose={() => setOpen(null)}
           onSave={(next) => {
             saveLog(next);
-            setOpenFor(null);
+            setOpen(null);
           }}
         />
       )}

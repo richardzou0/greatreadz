@@ -160,6 +160,11 @@ body {
 @utility animate-fade-in { animation: fade-in 0.2s ease-out; }
 @utility animate-sheet { animation: sheet-up 0.32s cubic-bezier(0.22, 1, 0.36, 1); }
 @utility animate-modal { animation: modal-in 0.26s cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes sweep {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@utility animate-sweep { transform-origin: left; animation: sweep 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
 @utility animate-grow { transform-origin: bottom; animation: grow-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
 @media (prefers-reduced-motion: reduce) {

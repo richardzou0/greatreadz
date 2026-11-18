@@ -11,11 +11,18 @@ This is a portfolio piece, built from the design files in `public/` (5 screens �
 - **Fonts:** Newsreader (serif, for titles and numbers) + Inter (for everything else).
 - **Book covers:** plain coloured "stand-in" covers with the title in serif. Each book's colour lives in `lib/data.ts`.
 
+## Real vs sample content
+- **Real (Rich's own):** every book on the shelves, Rich's ratings, current page in Morning Star (82%) and Empire of the Vampire (5%), and the Want to read list (the rest of Red Rising and all of A Song of Ice and Fire).
+- **Worked out from that:** books read, pages turned, average rating, reading taste, the "6 by Stephen King" tag, the Different Seasons achievement and the recommendation match %.
+- **Real public data:** book years, page counts (common first editions; the four novellas are their share of *Different Seasons*) and the star breakdowns, which come from Open Library readers.
+- **Placeholders to change:** the 2026 reading goal (set to 12 in `lib/data.ts`, `CHALLENGE_GOAL`), and the assumption that all nine books were read in 2026.
+- **Sample:** friends (Maya, Jonah, Priya, Sam, Lena), their ratings, reviews and challenge numbers, and the "Verified readers" one-star burst, which is a demo of the idea.
+
 ## Pages
-- **Home** (`/`) — greeting, the book you're reading with a progress bar, friends' recently finished books, one "picked for your taste" suggestion, the reading challenge and three friend updates with a Cheer button.
-- **Book page** (`/book/villette`, and every other book) — big cover, a "Want to read" button with a shelf menu, "Rate or log it", where to get it, a rating breakdown with a **Verified readers** switch, a readers' summary, reviews from people you follow and similar books.
+- **Home** (`/`) — greeting, Morning Star with its progress bar plus a smaller "also reading" row for Empire of the Vampire, friends' recently finished books, one pick for your taste (The Long Walk), the reading challenge and three friend updates with a Cheer button.
+- **Book page** (`/book/the-long-walk`, `/book/golden-son` and every other book) — big cover, a shelf button, "Rate or log it", where to get it, your rating if you've read it, real Open Library star breakdown with a **Verified readers** switch, a summary worked out from those ratings, friends' reviews (sample, only on a couple of books) and similar books you haven't read.
 - **Discover** (`/discover`) — one search box (try typing "Austen"), mood buttons and a pace switch that change the picks, genres and community cards.
-- **My books** (`/my-books`) — shelf tabs (Reading, Want to read, Read, Didn't finish), your 2026 stats, a pages-per-month chart, reading taste, the friends challenge, an achievement and a reading diary.
+- **My books** (`/my-books`) — shelf tabs (Reading, Want to read, Read, Didn't finish), your stats, a pages-per-book chart (there are no finish dates, so no monthly chart), reading taste, the friends challenge, the Different Seasons achievement and the Finished list in the order you read them.
 - **Log and rate** — not a separate page: it pops up when you press **Update progress**, **Mark as finished**, **Rate or log it** or **Log**. On phones it slides up from the bottom; on bigger screens it's a centred card.
 
 ## Components
@@ -34,10 +41,12 @@ This is a portfolio piece, built from the design files in `public/` (5 screens �
 - Everything respects "reduce motion" on the device.
 
 ## Recent Changes
+- 2026-11-18: Swapped the placeholder books for Rich's real shelves and ratings. All stats are now worked out from them. Added real Open Library ratings, per-book progress (two books on the go) and more real recommendations.
 - 2026-11-18: Built all five screens from the design files, for phones and desktops, in light and dark mode. Added the working log-and-rate flow.
 
 ## How to Customize
 - **Change colours:** edit the values at the top of `app/globals.css` (light first, then dark).
-- **Change books, friends, stats or reviews:** edit `lib/data.ts`. Every screen reads from there.
-- **Add a new book:** copy one of the entries in `lib/data.ts`, give it a new short name (like `"emma"`), and it gets its own page at `/book/emma` automatically.
+- **Change books or ratings:** edit `lib/data.ts`. Each book has a `shelf` ("reading", "want", "read" or "dnf"), a `myRating` and, for books in progress, a `page`. The stats update by themselves.
+- **Add a new book:** copy one of the entries in `lib/data.ts` and give it a new short name (like `"emma"`). It gets its own page at `/book/emma` automatically. Leave out `shelf` and it becomes a possible recommendation instead.
+- **Set your reading goal:** change `CHALLENGE_GOAL` in `lib/data.ts`.
 - **Design files:** the original SVG designs are in `public/`. The brief and research PDFs are kept on this computer only and are not uploaded to GitHub.

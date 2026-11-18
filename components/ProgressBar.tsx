@@ -1,8 +1,5 @@
-"use client";
-
-import { useEffect, useState } from "react";
-
-// A rounded bar that eases to its value — on first load and every time it changes.
+// A rounded bar that sweeps in on first paint and eases to new values when they change.
+// The width is right from the first render, so it never depends on JavaScript to show up.
 export function ProgressBar({
   value,
   className = "",
@@ -18,12 +15,7 @@ export function ProgressBar({
   track?: string;
   label?: string;
 }) {
-  const [shown, setShown] = useState(0);
-  useEffect(() => {
-    const id = requestAnimationFrame(() => setShown(value));
-    return () => cancelAnimationFrame(id);
-  }, [value]);
-
+  const pct = Math.min(100, Math.max(0, value));
   return (
     <div
       role="progressbar"
@@ -35,8 +27,8 @@ export function ProgressBar({
       style={{ height, background: track }}
     >
       <div
-        className="h-full rounded-full transition-[width] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
-        style={{ width: `${Math.min(100, Math.max(0, shown))}%`, background: fill }}
+        className="animate-sweep h-full rounded-full transition-[width] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        style={{ width: `${pct}%`, background: fill }}
       />
     </div>
   );

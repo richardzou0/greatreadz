@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { shelves } from "@/lib/data";
 import { BooksIcon, CompassIcon, HomeIcon } from "./Icons";
+import { useReading } from "./ReadingProvider";
 import { ThemeToggle } from "./ThemeToggle";
 
 const NAV = [
@@ -21,6 +22,7 @@ function useActive() {
 /** Left column on laptops and desktops. */
 export function Sidebar() {
   const isActive = useActive();
+  const { onShelf } = useReading();
   return (
     <aside className="sticky top-0 hidden h-dvh w-56 shrink-0 flex-col border-r border-line bg-surface px-[18px] pb-7 pt-6 lg:flex">
       <Link href="/" className="flex items-baseline gap-3 px-2.5">
@@ -56,7 +58,7 @@ export function Sidebar() {
               className="flex h-11 items-center justify-between rounded-lg px-3 text-[14px] transition-colors hover:bg-accent-soft/60"
             >
               {s.label}
-              <span className="text-muted">{s.count}</span>
+              <span className="text-muted">{onShelf(s.key).length}</span>
             </Link>
           </li>
         ))}

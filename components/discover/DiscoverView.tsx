@@ -3,15 +3,15 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
-import { books, discoverPicks, genres, getBook, moods, paceOf, paces } from "@/lib/data";
+import { books, discoverPicks, genres, getBook, lovedCount, moods, paceOf, paces, topMood } from "@/lib/data";
 import { BookCover } from "../BookCover";
 import { ChevronRightIcon, FlagIcon, ListIcon, PeopleIcon, ScanIcon, SearchIcon } from "../Icons";
 import { ThemeToggle } from "../ThemeToggle";
 import { Eyebrow, PageTitle } from "../ui";
 
 const COMMUNITY = [
-  { Icon: PeopleIcon, title: "Victorian Novels Club", text: "Reading Middlemarch this month · Maya and 2 friends are members", short: "Reading Middlemarch · 4 new posts" },
-  { Icon: ListIcon, title: "Lists your friends follow", text: "Gothic for long nights, Short classics under 200 pages, and 3 more" },
+  { Icon: PeopleIcon, title: "Westeros Readalong", text: "Starting A Game of Thrones this month · Maya and 2 friends joined", short: "Starting A Game of Thrones · 4 new posts" },
+  { Icon: ListIcon, title: "Lists your friends follow", text: "Dystopias with teeth, Stephen King under 200 pages, and 3 more" },
   { Icon: FlagIcon, title: "2026 reading challenge", text: "See how your friends are pacing toward their goals", href: "/my-books" },
 ];
 
@@ -19,17 +19,16 @@ const COMMUNITY = [
 export function DiscoverView() {
   const params = useSearchParams();
   const startMood = params.get("mood");
-  const [mood, setMood] = useState(startMood && moods.includes(startMood) ? startMood : "Reflective");
-  const [pace, setPace] = useState("Slow");
+  const [mood, setMood] = useState(startMood && moods.includes(startMood) ? startMood : topMood);
+  const [pace, setPace] = useState("Fast");
   const [genre, setGenre] = useState<string | null>(null);
   const [query, setQuery] = useState("");
 
-  // Books with the mood first; within those, ones at your pace lead.
-  const picks = useMemo(() => {
+  // Books with the mood at your pace. If none fit, show the mood at any pace.
+  const { picks, anyPace } = useMemo(() => {
     const withMood = discoverPicks.filter((p) => getBook(p.slug).moods.includes(mood));
     const atPace = withMood.filter((p) => paceOf(getBook(p.slug)) === pace);
-    const rest = withMood.filter((p) => paceOf(getBook(p.slug)) !== pace);
-    return [...atPace, ...rest].slice(0, 6);
+    return atPace.length ? { picks: atPace.slice(0, 6), anyPace: false } : { picks: withMood.slice(0, 6), anyPace: true };
   }, [mood, pace]);
 
   const results = useMemo(() => {
@@ -121,11 +120,15 @@ export function DiscoverView() {
 
       <section className="mt-5 lg:mt-10" aria-live="polite">
         <h2 className="font-serif text-[22px] font-medium lg:text-[26px]">
-          {mood}, {pace.toLowerCase()}-paced picks
+          {mood}, {anyPace ? "any pace" : `${pace.toLowerCase()}-paced`} picks
         </h2>
         <p className="mt-0.5 text-[12px] text-muted lg:text-[14px]">
-          <span className="lg:hidden">Matched to books you rated 4+, not what&apos;s trending</span>
-          <span className="hidden lg:inline">Matched to the 23 books you rated 4 stars or higher, not to what&apos;s trending</span>
+          <span className="lg:hidden">
+            {anyPace ? `Nothing ${pace.toLowerCase()}-paced fits, so here's any pace. ` : ""}Matched to books you rated 4+, not what&apos;s trending
+          </span>
+          <span className="hidden lg:inline">
+            {anyPace ? `Nothing ${pace.toLowerCase()}-paced fits, so here's any pace. ` : ""}Matched to the {lovedCount} books you rated 4 stars or higher, not to what&apos;s trending
+          </span>
         </p>
         {picks.length === 0 ? (
           <p className="mt-4 rounded-2xl border border-dashed border-line p-6 text-[14px] text-muted">
