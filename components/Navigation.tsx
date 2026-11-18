@@ -2,9 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { shelves } from "@/lib/data";
 import { BooksIcon, CompassIcon, HomeIcon } from "./Icons";
-import { useReading } from "./ReadingProvider";
 import { ThemeToggle } from "./ThemeToggle";
 
 const NAV = [
@@ -22,7 +20,6 @@ function useActive() {
 /** Left column on laptops and desktops. */
 export function Sidebar() {
   const isActive = useActive();
-  const { onShelf } = useReading();
   return (
     <aside className="sticky top-0 hidden h-dvh w-56 shrink-0 flex-col border-r border-line bg-surface px-[18px] pb-7 pt-11 lg:flex">
       <Link href="/" className="px-2.5 font-serif text-[24px] font-semibold leading-none tracking-tight">
@@ -47,21 +44,6 @@ export function Sidebar() {
           );
         })}
       </nav>
-
-      <p className="mt-9 px-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">Shelves</p>
-      <ul className="mt-2.5">
-        {shelves.slice(0, 3).map((s) => (
-          <li key={s.key}>
-            <Link
-              href={`/my-books?shelf=${s.key}`}
-              className="flex h-11 items-center justify-between rounded-lg px-3 text-[14px] transition-colors hover:bg-accent-soft/60"
-            >
-              {s.label}
-              <span className="text-muted">{onShelf(s.key).length}</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
 
       <div className="mt-auto">
         <p className="mb-5 px-2.5 text-[11px] leading-relaxed text-muted">

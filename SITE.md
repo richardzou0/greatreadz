@@ -26,7 +26,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens �
 - **Log and rate** — not a separate page: it pops up when you press **Update progress**, **Mark as finished**, **Rate or log it** or **Log**. On phones it slides up from the bottom; on bigger screens it's a centred card.
 
 ## Components
-- **Sidebar** (`components/Navigation.tsx`) — Greatreadz logo (no "concept" tag), Home / My shelf / Discover, shelf counts, the "unsolicited concept" note, and the light/dark switch. Shown on laptops and desktops.
+- **Sidebar** (`components/Navigation.tsx`) — Greatreadz logo (no "concept" tag), Home / My shelf / Discover, the "unsolicited concept" note, and the light/dark switch. Shown on laptops and desktops.
 - **Bottom tab bar** (same file) — Home / My shelf / Discover on phones and tablets.
 - **Book cover** (`components/BookCover.tsx`) — draws any book's cover at any size.
 - **Shelf reveal** (`components/ShelfReveal.tsx`) — a row or grid of books that plays the spine-to-cover animation.
@@ -46,6 +46,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens �
 - Everything respects "reduce motion" on the device.
 
 ## Recent Changes
+- 2026-11-18: Removed the "Shelves" list from the sidebar. It repeated the My shelf tabs, so the sidebar is now just Home, My shelf and Discover.
 - 2026-11-18: "My books" is now **My shelf**, and sits under Home and above Discover in the sidebar and phone tab bar. Its first tab, **All**, shows every shelf at once as stacked, sideways-scrolling rows standing on a shelf ledge, each with "See all" and an add tile. Tabs: All · Reading · Want to read · Read · Didn't finish · Stats.
 - 2026-11-18: Stats is now its own tab on My books, first and open by default. The Read tab is a book shelf like the others (covers with your ratings, in reading order, plus a "Log a finished book" tile), and the old Finished list was removed from Stats in favour of a "See all books you've read" link.
 - 2026-11-18: Reworked the shelf reveal into one smooth motion that fans out like a hand of cards: the rightmost book leaves the packed shelf first and sits on top, and each book to its left follows from underneath, so no spine ever sits on top of an open cover. The total stagger is capped, so long rows don't drag.
