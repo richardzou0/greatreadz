@@ -67,7 +67,7 @@ export default function Home() {
       </div>
 
       <p className="mt-10 text-center text-[11px] text-muted lg:hidden">
-        Unsolicited concept. Not affiliated with Goodreads or Amazon.
+        Unsolicited concept. Not affiliated with Goodreads or Amazon. Covers and ratings from Open Library.
       </p>
     </main>
   );

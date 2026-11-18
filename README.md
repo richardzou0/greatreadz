@@ -24,9 +24,12 @@ A redesign concept for Goodreads, built as a working Next.js prototype. It cover
 npm install
 npm run dev
 ```
-Then open http://localhost:3000. Try **Update progress** on Home, the **Verified readers** switch on `/book/villette`, and the mood buttons on `/discover`.
+Then open http://localhost:3000. Try **Update progress** on Home, the **Verified readers** switch on `/book/red-rising`, and the mood buttons on `/discover`.
 
 ## Stack
 Next.js (App Router), React, Tailwind CSS v4. No backend: sample data lives in `lib/data.ts`, and your progress is saved in the browser.
 
 The original design files are in `public/` as SVGs.
+
+## Credits
+Book covers, page counts and reader ratings come from [Open Library](https://openlibrary.org). Cover artwork belongs to the books' publishers and is used here only to illustrate the concept.

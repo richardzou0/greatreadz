@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { getBook } from "@/lib/data";
+import { coverImage, getBook } from "@/lib/data";
 
 type Props = {
   slug: string;
@@ -12,11 +13,19 @@ type Props = {
   plain?: boolean;
 };
 
-// Typographic stand-in covers: solid colour, serif title, small-caps author.
-// Text scales with the cover's own width, so one component works at every size.
-export function BookCover({ slug, className = "", size = "md", href, fullAuthor, plain }: Props) {
+// Shows the real cover when there is one. Otherwise draws a typographic stand-in:
+// solid colour, serif title, small-caps author, scaled to the cover's own width.
+export function BookCover({
+  slug,
+  className = "",
+  size = "md",
+  href,
+  fullAuthor,
+  plain,
+}: Props) {
   const book = getBook(slug);
   if (!book) return null;
+  const image = coverImage(slug);
 
   const cover = (
     <div
@@ -25,22 +34,36 @@ export function BookCover({ slug, className = "", size = "md", href, fullAuthor,
       } ${className}`}
       style={{ backgroundColor: book.cover, color: book.coverInk }}
     >
-      {!plain && (
-        <>
-          <span
-            lang="en"
-            className="hyphens-auto break-words p-[9cqw] pb-0 font-serif leading-[1.1]"
-            style={{ fontSize: size === "lg" ? "15cqw" : size === "sm" ? "12cqw" : "13.5cqw" }}
-          >
-            {book.title}
-          </span>
-          <span
-            className="p-[9cqw] pt-0 font-sans uppercase tracking-[0.08em]"
-            style={{ fontSize: size === "lg" ? "4.6cqw" : "7cqw" }}
-          >
-            {size === "lg" || fullAuthor ? book.author : book.shortAuthor}
-          </span>
-        </>
+      {image ? (
+        <Image
+          src={image}
+          alt={`Cover of ${book.title}`}
+          fill
+          sizes={size === "lg" ? "260px" : "160px"}
+          className="object-cover"
+          priority={size === "lg"}
+        />
+      ) : (
+        !plain && (
+          <>
+            <span
+              lang="en"
+              className="hyphens-auto break-words p-[9cqw] pb-0 font-serif leading-[1.1]"
+              style={{
+                fontSize:
+                  size === "lg" ? "15cqw" : size === "sm" ? "12cqw" : "13.5cqw",
+              }}
+            >
+              {book.title}
+            </span>
+            <span
+              className="p-[9cqw] pt-0 font-sans uppercase tracking-[0.08em]"
+              style={{ fontSize: size === "lg" ? "4.6cqw" : "7cqw" }}
+            >
+              {size === "lg" || fullAuthor ? book.author : book.shortAuthor}
+            </span>
+          </>
+        )
       )}
       {/* soft spine highlight */}
       <span className="pointer-events-none absolute inset-y-0 left-0 w-[3%] bg-white/10" />

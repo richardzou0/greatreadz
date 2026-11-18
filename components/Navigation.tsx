@@ -66,7 +66,11 @@ export function Sidebar() {
 
       <div className="mt-auto">
         <p className="mb-5 px-2.5 text-[11px] leading-relaxed text-muted">
-          Unsolicited concept. Not affiliated with Goodreads or Amazon.
+          Unsolicited concept. Not affiliated with Goodreads or Amazon. Covers and ratings from{" "}
+          <a href="https://openlibrary.org" className="underline underline-offset-2 hover:text-ink">
+            Open Library
+          </a>
+          .
         </p>
         <div className="flex items-center justify-between px-2.5">
           <div className="flex items-center gap-2.5">

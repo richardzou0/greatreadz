@@ -9,7 +9,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens Ã
 - **Colors (light):** paper background `#f7f2ea`, card white `#fffcf7`, ink `#1e1a16`, muted text `#665d52`, lines `#e4dbcd`, one forest-green accent `#2f6b50` (soft version `#e2ede5`).
 - **Colors (dark):** background `#14120f`, cards `#1f1c18`, text `#f1eadf`, muted `#a79e91`, mint accent `#82c9a6`.
 - **Fonts:** Newsreader (serif, for titles and numbers) + Inter (for everything else).
-- **Book covers:** plain coloured "stand-in" covers with the title in serif. Each book's colour lives in `lib/data.ts`.
+- **Book covers:** real covers from Open Library, saved in `public/covers/`. Any book without one falls back to a plain coloured cover with the title in serif (colours live in `lib/data.ts`).
 
 ## Real vs sample content
 - **Real (Rich's own):** every book on the shelves, Rich's ratings, current page in Morning Star (82%) and Empire of the Vampire (5%), and the Want to read list (the rest of Red Rising and all of A Song of Ice and Fire).
@@ -41,6 +41,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens Ã
 - Everything respects "reduce motion" on the device.
 
 ## Recent Changes
+- 2026-11-18: Added real book covers for all 32 books (English editions, checked by eye), with Open Library credited in the sidebar.
 - 2026-11-18: Swapped the placeholder books for Rich's real shelves and ratings. All stats are now worked out from them. Added real Open Library ratings, per-book progress (two books on the go) and more real recommendations.
 - 2026-11-18: Built all five screens from the design files, for phones and desktops, in light and dark mode. Added the working log-and-rate flow.
 
@@ -48,5 +49,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens Ã
 - **Change colours:** edit the values at the top of `app/globals.css` (light first, then dark).
 - **Change books or ratings:** edit `lib/data.ts`. Each book has a `shelf` ("reading", "want", "read" or "dnf"), a `myRating` and, for books in progress, a `page`. The stats update by themselves.
 - **Add a new book:** copy one of the entries in `lib/data.ts` and give it a new short name (like `"emma"`). It gets its own page at `/book/emma` automatically. Leave out `shelf` and it becomes a possible recommendation instead.
+- **Go back to coloured covers:** set `USE_REAL_COVERS` to `false` in `lib/data.ts`.
+- **Add a cover for a new book:** save it as `public/covers/<short-name>.jpg` and add the short name to the `COVERS` list in `lib/data.ts`.
 - **Set your reading goal:** change `CHALLENGE_GOAL` in `lib/data.ts`.
 - **Design files:** the original SVG designs are in `public/`. The brief and research PDFs are kept on this computer only and are not uploaded to GitHub.

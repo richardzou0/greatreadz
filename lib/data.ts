@@ -249,6 +249,20 @@ const list: Book[] = [
   },
 ];
 
+// Real covers, saved in public/covers/ from Open Library (openlibrary.org).
+// Set to false to go back to the plain coloured covers everywhere.
+export const USE_REAL_COVERS = true;
+const COVERS = new Set([
+  "morning-star", "empire-of-the-vampire", "red-rising", "golden-son", "billy-summers", "pet-sematary",
+  "apt-pupil", "the-body", "the-breathing-method", "rita-hayworth", "archers-voice", "iron-gold", "dark-age",
+  "light-bringer", "a-game-of-thrones", "a-clash-of-kings", "a-storm-of-swords", "a-feast-for-crows",
+  "a-dance-with-dragons", "the-long-walk", "mistborn", "the-hunger-games", "the-poppy-war", "the-stand",
+  "enders-game", "project-hail-mary", "fourth-wing", "misery", "the-shining", "the-blade-itself",
+  "the-name-of-the-wind", "dune",
+]);
+/** Path to a book's real cover, or undefined to use the coloured stand-in */
+export const coverImage = (slug: string) => (USE_REAL_COVERS && COVERS.has(slug) ? `/covers/${slug}.jpg` : undefined);
+
 export const books: Record<string, Book> = Object.fromEntries(list.map((b) => [b.slug, b]));
 export const getBook = (slug: string) => books[slug];
 
