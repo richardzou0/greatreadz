@@ -64,6 +64,9 @@ export const ChevronDownIcon = (p: IconProps) => (
 export const ShareIcon = (p: IconProps) => (
   <Icon {...p}><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" /></Icon>
 );
+export const CoversIcon = (p: IconProps) => (
+  <Icon {...p}><rect x="4" y="3" width="7" height="10" rx="1" /><rect x="13" y="3" width="7" height="10" rx="1" /><path d="M4 17h7M13 17h7M4 21h7M13 21h7" /></Icon>
+);
 export const PlusIcon = (p: IconProps) => (
   <Icon {...p}><path d="M12 5v14M5 12h14" /></Icon>
 );

@@ -23,7 +23,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens �
 - **Book page** (`/book/the-long-walk`, `/book/golden-son` and every other book) — big cover, a shelf button, "Rate or log it", where to get it, your rating if you've read it, real Open Library star breakdown with a **Verified readers** switch, a summary worked out from those ratings, friends' reviews (sample, only on a couple of books) and similar books you haven't read.
 - **Community** (`/community`) — friends' activity feed (filter by friend, Cheer, reply), your friends, book clubs to join, and the challenge leaderboard. Sample social content; the books are real.
 - **Discover** (`/discover`) — one search box (try typing "Austen"), mood buttons and a pace switch that change the picks, genres and community cards.
-- **My shelf** (`/my-books`) — tabs: **All** (opens first: every shelf as its own scrolling row on a shelf ledge, with "See all"), then **Reading**, **Want to read**, **Read** (covers with your ratings) and **Didn't finish** as full shelves with an add button at the end, then **Stats** (your numbers, pages per book, reading taste, the friends challenge and the Different Seasons achievement).
+- **My shelf** (`/my-books`) — tabs: **All** (opens first: every shelf as its own scrolling row on a shelf ledge, with "See all"), then **Reading**, **Want to read**, **Read** (covers with your ratings) and **Didn't finish** as full shelves with an add button at the end, then **Stats** (your numbers, pages per book, reading taste, the friends challenge and the Different Seasons achievement). A **Covers / Spines** toggle switches any of the shelf tabs to a bookcase view with books shown spine-out.
 - **Log and rate** — not a separate page: it pops up when you press **Update progress**, **Mark as finished**, **Rate or log it** or **Log**. On phones it slides up from the bottom; on bigger screens it's a centred card.
 
 ## Components
@@ -32,6 +32,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens �
 - **Book cover** (`components/BookCover.tsx`) — draws any book's cover at any size.
 - **Shelf reveal** (`components/ShelfReveal.tsx`) — a row or grid of books that plays the spine-to-cover animation.
 - **Scroll shelf** (`components/ScrollShelf.tsx`) — a sideways-scrolling row of books with arrows on desktop and an optional shelf ledge; used for Home's friends row and the rows on My shelf.
+- **Bookcase** (`components/my-books/Bookcase.tsx`) — the spine view on My shelf: books spine-out on planks. Spine design is shared with the reveal in `components/Spine.tsx`.
 - **Shelf book** (`components/ShelfBook.tsx`) — a cover with a spine attached, used in those rows. Spine colours live in `lib/spines.ts` (sampled from the covers); thickness comes from the page count.
 - **Add books sheet** (`components/my-books/AddBooksSheet.tsx`) — opened from the add button on any shelf; search the catalogue, then add straight away (Want to read) or log the page or rating (the other shelves).
 - **Log sheet** (`components/LogSheet.tsx`) — status, ±10 pages, half-star taps, quarter-star slider, a note that auto-saves as a draft.
@@ -47,6 +48,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens �
 - Everything respects "reduce motion" on the device.
 
 ## Recent Changes
+- 2026-11-19: Added a **Covers / Spines** toggle on My shelf. Spines shows every shelf as a real bookcase: books stand spine-out on planks, coloured from their real covers, thicker for longer books and slightly varied in height. Hover lifts a book with its title (and rating or progress); click opens it. Books you're reading get a bookmark ribbon. The choice is remembered in the browser.
 - 2026-11-19: Added **Community** (`/community`), a new section under Discover in the sidebar and phone tab bar. It has a calm friends' activity feed (Today / Yesterday / This week) with Cheer and replies and a filter by friend, a Your friends list (what each is reading, books this year, books you've both read), book clubs you can join, and a compact challenge leaderboard. Discover's community cards and Home's friends' activity now link to it. Friends, updates, replies and clubs are sample content.
 - 2026-11-19: The disclosure now says "Not monetized and not affiliated with Goodreads or Amazon" everywhere.
 - 2026-11-18: Removed the "Shelves" list from the sidebar. It repeated the My shelf tabs, so the sidebar is now just Home, My shelf and Discover.
