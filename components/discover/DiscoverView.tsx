@@ -12,9 +12,9 @@ import { ThemeToggle } from "../ThemeToggle";
 import { Eyebrow, PageTitle } from "../ui";
 
 const COMMUNITY = [
-  { Icon: PeopleIcon, title: "Westeros Readalong", text: "Starting A Game of Thrones this month · Maya and 2 friends joined", short: "Starting A Game of Thrones · 4 new posts" },
-  { Icon: ListIcon, title: "Lists your friends follow", text: "Dystopias with teeth, Stephen King under 200 pages, and 3 more" },
-  { Icon: FlagIcon, title: "2026 reading challenge", text: "See how your friends are pacing toward their goals", href: "/my-books" },
+  { Icon: PeopleIcon, title: "Westeros Readalong", text: "Starting A Game of Thrones this week · Maya and Lena are in", short: "Starting A Game of Thrones · 31 posts", href: "/community#clubs" },
+  { Icon: ListIcon, title: "What friends are reading", text: "Maya started A Game of Thrones, Jonah finished The Poppy War, and 6 more updates", href: "/community" },
+  { Icon: FlagIcon, title: "2026 reading challenge", text: "See how your friends are pacing toward their goals", href: "/community" },
 ];
 
 // Discover: one search box, browse by how you want to feel, community out in the open.
@@ -173,9 +173,15 @@ export function DiscoverView() {
       </section>
 
       <section className="mt-6 lg:mt-10">
-        <Eyebrow>Your community</Eyebrow>
+        <div className="flex items-center justify-between">
+          <Eyebrow>Your community</Eyebrow>
+          <Link href="/community" className="flex h-9 items-center gap-1 text-[13px] font-semibold text-accent">
+            Open Community
+            <ChevronRightIcon size={14} />
+          </Link>
+        </div>
         {/* Phone: the one thing happening now */}
-        <Link href="#" className="mt-2.5 flex items-center gap-3.5 rounded-2xl border border-line bg-surface p-3.5 lg:hidden">
+        <Link href="/community#clubs" className="mt-2.5 flex items-center gap-3.5 rounded-2xl border border-line bg-surface p-3.5 lg:hidden">
           <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent">
             <PeopleIcon size={20} />
           </span>
@@ -190,7 +196,7 @@ export function DiscoverView() {
           {COMMUNITY.map(({ Icon, title, text, href }) => (
             <li key={title}>
               <Link
-                href={href ?? "#"}
+                href={href}
                 className="block h-full rounded-[20px] border border-line bg-surface p-5 transition-all hover:-translate-y-0.5 hover:border-accent/40"
               >
                 <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent">

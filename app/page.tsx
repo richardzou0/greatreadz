@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CurrentlyReading } from "@/components/home/CurrentlyReading";
 import { FriendsFinished } from "@/components/home/FriendsFinished";
 import { ChallengeCard, FriendsActivity, Greeting, PickedForYou } from "@/components/home/HomeWidgets";
@@ -48,16 +49,21 @@ export default function Home() {
           </section>
           <ChallengeCard />
           <section aria-labelledby="activity">
-            <Eyebrow className="mb-1">
-              <span id="activity">Friends&apos; activity</span>
-            </Eyebrow>
+            <div className="mb-1 flex items-center justify-between">
+              <Eyebrow>
+                <span id="activity">Friends&apos; activity</span>
+              </Eyebrow>
+              <Link href="/community" className="flex h-9 items-center text-[13px] font-semibold text-accent">
+                See all
+              </Link>
+            </div>
             <FriendsActivity />
           </section>
         </aside>
       </div>
 
       <p className="mt-10 text-center text-[11px] text-muted lg:hidden">
-        Unsolicited Goodreads redesign concept. Not affiliated with Goodreads or Amazon. Covers and ratings from Open Library.
+        Unsolicited Goodreads redesign concept. Not monetized and not affiliated with Goodreads or Amazon. Covers and ratings from Open Library.
       </p>
     </main>
   );

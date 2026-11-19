@@ -1,10 +1,10 @@
 # Greatreadz
 
-**Unsolicited Goodreads redesign concept. Not affiliated with Goodreads or Amazon.**
+**Unsolicited Goodreads redesign concept. Not monetized and not affiliated with Goodreads or Amazon.**
 
 **Live site: [greatreadz.designsbyrich.com](https://greatreadz.designsbyrich.com)**
 
-Greatreadz is a book-tracking app concept, built as a working Next.js prototype. It covers five screens in light and dark mode, on phones and desktops. Together they make one loop: find a book, log it, see your progress.
+Greatreadz is a book-tracking app concept, built as a working Next.js prototype. It covers six sections in light and dark mode, on phones and desktops. Together they make one loop: find a book, log it, see your progress.
 
 | Screen | What it fixes |
 | --- | --- |
@@ -12,7 +12,8 @@ Greatreadz is a book-tracking app concept, built as a working Next.js prototype.
 | Book page | Cover first, one clear shelf button, people you follow before strangers, review-bombing filtered out |
 | Log and rate | Status, pages and a rating in two taps, with half and quarter stars and an autosaved note |
 | My shelf | Every shelf at a glance, one tab per shelf, and a Stats tab: books, pages, moods, challenge |
-| Discover | One search entry point, browse by mood and pace, community out in the open |
+| Discover | One search entry point, browse by mood and pace |
+| Community | Friends' activity without an algorithm, book clubs and the challenge, surfaced instead of buried under "More" |
 
 ## Design decisions
 - **One accent colour + warm neutrals.** Paper tones replace the old brown and beige. The forest green turns mint in dark mode, and text passes WCAG AA in both themes.

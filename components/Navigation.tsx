@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BooksIcon, CompassIcon, HomeIcon } from "./Icons";
+import { BooksIcon, CompassIcon, HomeIcon, PeopleIcon } from "./Icons";
 import { ThemeToggle } from "./ThemeToggle";
 
 const NAV = [
   { href: "/", label: "Home", Icon: HomeIcon },
   { href: "/my-books", label: "My shelf", Icon: BooksIcon },
   { href: "/discover", label: "Discover", Icon: CompassIcon },
+  { href: "/community", label: "Community", Icon: PeopleIcon },
 ];
 
 // Book pages count as part of Home, like in the phone designs.
@@ -47,7 +48,7 @@ export function Sidebar() {
 
       <div className="mt-auto">
         <p className="mb-5 px-2.5 text-[11px] leading-relaxed text-muted">
-          Unsolicited Goodreads redesign concept. Not affiliated with Goodreads or Amazon. Covers and ratings from{" "}
+          Unsolicited Goodreads redesign concept. Not monetized and not affiliated with Goodreads or Amazon. Covers and ratings from{" "}
           <a href="https://openlibrary.org" className="underline underline-offset-2 hover:text-ink">
             Open Library
           </a>
@@ -71,7 +72,7 @@ export function BottomNav() {
   return (
     <nav
       aria-label="Main"
-      className="fixed inset-x-0 bottom-0 z-40 grid h-[84px] grid-cols-3 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 grid h-[84px] grid-cols-4 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
     >
       {NAV.map(({ href, label, Icon }) => {
         const active = isActive(href);
