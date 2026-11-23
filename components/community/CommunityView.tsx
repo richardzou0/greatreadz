@@ -27,8 +27,8 @@ export function CommunityView() {
       </p>
 
       <div className="mt-6 grid gap-x-8 gap-y-10 lg:mt-9 lg:grid-cols-[minmax(0,1fr)_minmax(300px,376px)]">
-        {/* Feed */}
-        <section aria-labelledby="feed">
+        {/* Feed. min-w-0 lets the friend chips scroll inside it instead of widening the page on phones. */}
+        <section aria-labelledby="feed" className="min-w-0">
           <div className="flex items-center justify-between gap-3">
             <Eyebrow>
               <span id="feed">Friends&apos; activity</span>
@@ -70,7 +70,7 @@ export function CommunityView() {
         </section>
 
         {/* Side column */}
-        <div className="space-y-10">
+        <div className="min-w-0 space-y-10">
           <FriendsList active={only} onPick={(name) => setOnly(only === name ? null : name)} />
           <Clubs />
           <Challenge />

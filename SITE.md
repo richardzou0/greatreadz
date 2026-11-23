@@ -48,6 +48,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens Ã
 - Everything respects "reduce motion" on the device.
 
 ## Recent Changes
+- 2026-11-23: Fixed Community opening zoomed out on phones. The friend filter chips were stretching the page wider than the screen; they now scroll inside their own row.
 - 2026-11-19: Added a **Covers / Spines** toggle on My shelf. Spines shows every shelf as a real bookcase: books stand spine-out on planks, coloured from their real covers, thicker for longer books and slightly varied in height. Hover lifts a book with its title (and rating or progress); click opens it. Books you're reading get a bookmark ribbon. The choice is remembered in the browser.
 - 2026-11-19: Added **Community** (`/community`), a new section under Discover in the sidebar and phone tab bar. It has a calm friends' activity feed (Today / Yesterday / This week) with Cheer and replies and a filter by friend, a Your friends list (what each is reading, books this year, books you've both read), book clubs you can join, and a compact challenge leaderboard. Discover's community cards and Home's friends' activity now link to it. Friends, updates, replies and clubs are sample content.
 - 2026-11-19: The disclosure now says "Not monetized and not affiliated with Goodreads or Amazon" everywhere.
