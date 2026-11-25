@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { books, summarise, type ShelfKey } from "@/lib/data";
+import { books, CHALLENGE_GOAL, summarise, type ShelfKey } from "@/lib/data";
 import { LogSheet } from "./LogSheet";
 
 export type Status = "reading" | "finished" | "dnf";
@@ -16,10 +16,14 @@ type Ctx = {
   setShelf: (slug: string, shelf: Shelf) => void;
   /** Books on a shelf, in catalogue order */
   onShelf: (shelf: ShelfKey) => string[];
+  /** Yearly reading goal */
+  goal: number;
+  setGoal: (goal: number) => void;
 };
 
 const ReadingContext = createContext<Ctx | null>(null);
 const KEY = "gr-concept-reading-v2";
+const GOAL_KEY = "gr-concept-goal";
 
 // Starting point comes straight from Rich's real shelves in lib/data.ts.
 const initialShelves: Record<string, Shelf> = Object.fromEntries(
@@ -48,6 +52,7 @@ export function ReadingProvider({ children }: { children: React.ReactNode }) {
   const [logs, setLogs] = useState(initialLogs);
   const [shelves, setShelves] = useState(initialShelves);
   const [open, setOpen] = useState<{ slug: string; status?: Status } | null>(null);
+  const [goal, setGoalState] = useState(CHALLENGE_GOAL);
 
   // Restore whatever this reader changed last time (browser only).
   useEffect(() => {
@@ -59,8 +64,11 @@ export function ReadingProvider({ children }: { children: React.ReactNode }) {
         const saved = JSON.parse(raw);
         if (saved.logs) setLogs((l) => ({ ...l, ...saved.logs }));
         if (saved.shelves) setShelves((s) => ({ ...s, ...saved.shelves }));
+
         /* eslint-enable react-hooks/set-state-in-effect */
       }
+      const savedGoal = Number(localStorage.getItem(GOAL_KEY));
+      if (savedGoal > 0) setGoalState(savedGoal);
     } catch {}
   }, []);
 
@@ -99,8 +107,15 @@ export function ReadingProvider({ children }: { children: React.ReactNode }) {
       shelfOf: (slug) => shelves[slug] ?? null,
       setShelf,
       onShelf: (shelf) => Object.keys(shelves).filter((s) => shelves[s] === shelf),
+      goal,
+      setGoal: (next) => {
+        setGoalState(next);
+        try {
+          localStorage.setItem(GOAL_KEY, String(next));
+        } catch {}
+      },
     }),
-    [logs, shelves, saveLog, setShelf]
+    [logs, shelves, saveLog, setShelf, goal]
   );
 
   return (
@@ -130,6 +145,6 @@ export function useReading() {
 
 /** Live stats for the Read shelf. Updates as soon as a book is logged. */
 export function useSummary() {
-  const { onShelf, logOf } = useReading();
-  return useMemo(() => summarise(onShelf("read"), (slug) => logOf(slug).rating), [onShelf, logOf]);
+  const { onShelf, logOf, goal } = useReading();
+  return useMemo(() => summarise(onShelf("read"), (slug) => logOf(slug).rating, goal), [onShelf, logOf, goal]);
 }

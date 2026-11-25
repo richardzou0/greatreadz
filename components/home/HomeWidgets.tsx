@@ -5,6 +5,7 @@ import { useState, useSyncExternalStore } from "react";
 import { CHALLENGE_DAYS_LEFT, friendsActivity, topPick } from "@/lib/data";
 import { BookCover } from "../BookCover";
 import { ProgressBar } from "../ProgressBar";
+import { GoalSheet } from "../my-books/GoalSheet";
 import { useReading, useSummary } from "../ReadingProvider";
 
 const partOfDay = () => {
@@ -81,16 +82,25 @@ function PickButtons({ wanted, onWant, onDismiss }: { wanted: boolean; onWant: (
 
 export function ChallengeCard() {
   const { challenge } = useSummary();
+  const [editing, setEditing] = useState(false);
+  const reached = challenge.read >= challenge.goal;
   return (
-    <Link href="/my-books" className="block rounded-[20px] border border-line bg-surface p-6 transition-colors hover:border-accent/40">
-      <p className="font-serif text-[20px] font-medium">2026 reading challenge</p>
+    <div className="rounded-[20px] border border-line bg-surface p-6">
+      <div className="flex items-baseline justify-between gap-3">
+        <Link href="/my-books?shelf=stats" className="font-serif text-[20px] font-medium hover:underline">
+          2026 reading challenge
+        </Link>
+        <button onClick={() => setEditing(true)} className="text-[13px] font-semibold text-accent underline-offset-2 hover:underline">
+          Edit goal
+        </button>
+      </div>
       <p className="mt-2 flex items-baseline gap-3">
         <span className="font-serif text-[40px] font-medium leading-none">{challenge.read}</span>
         <span className="text-[14px] text-muted">of {challenge.goal} books</span>
       </p>
-      <ProgressBar value={(challenge.read / challenge.goal) * 100} className="mt-4" />
+      <ProgressBar value={Math.min(100, (challenge.read / challenge.goal) * 100)} className="mt-4" />
       <p className="mt-4 text-[13px] text-muted">
-        {challenge.read >= challenge.goal
+        {reached
           ? `Goal reached with ${CHALLENGE_DAYS_LEFT} days to spare`
           : `${
               challenge.vsPace === 0
@@ -98,7 +108,8 @@ export function ChallengeCard() {
                 : `${Math.abs(challenge.vsPace)} book${Math.abs(challenge.vsPace) > 1 ? "s" : ""} ${challenge.vsPace > 0 ? "ahead of" : "behind"} schedule`
             } · ${challenge.goal - challenge.read} to go`}
       </p>
-    </Link>
+      {editing && <GoalSheet onClose={() => setEditing(false)} />}
+    </div>
   );
 }
 

@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
-import { books, discoverPicks, genres, getBook, lovedCount, moods, paceOf, paces, topMood } from "@/lib/data";
+import { books, booksByGenre, discoverPicks, genres, getBook, lovedCount, moods, paceOf, paces, topMood } from "@/lib/data";
 import { BookCover } from "../BookCover";
 import { ChevronRightIcon, FlagIcon, ListIcon, PeopleIcon, ScanIcon, SearchIcon } from "../Icons";
+import { useReading } from "../ReadingProvider";
 import { ShelfReveal } from "../ShelfReveal";
+import { ScanSheet } from "./ScanSheet";
 import { ShelfBook } from "../ShelfBook";
 import { ThemeToggle } from "../ThemeToggle";
 import { Eyebrow, PageTitle } from "../ui";
@@ -24,6 +26,7 @@ export function DiscoverView() {
   const [mood, setMood] = useState(startMood && moods.includes(startMood) ? startMood : topMood);
   const [pace, setPace] = useState("Fast");
   const [genre, setGenre] = useState<string | null>(null);
+  const [scanning, setScanning] = useState(false);
   const [query, setQuery] = useState("");
 
   // Books with the mood at your pace. If none fit, show the mood at any pace.
@@ -37,8 +40,7 @@ export function DiscoverView() {
     const q = query.trim().toLowerCase();
     if (!q) return [];
     return Object.values(books)
-      .filter((b) => b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q))
-      .slice(0, 5);
+      .filter((b) => b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q));
   }, [query]);
 
   return (
@@ -59,6 +61,7 @@ export function DiscoverView() {
           />
           <button
             aria-label="Scan a barcode"
+            onClick={() => setScanning(true)}
             className="flex h-[42px] shrink-0 items-center gap-2 rounded-full bg-accent-soft px-[11px] text-[14px] font-semibold text-accent transition-transform active:scale-95 lg:h-11 lg:px-4"
           >
             <ScanIcon size={20} />
@@ -66,7 +69,7 @@ export function DiscoverView() {
           </button>
         </div>
         {query && (
-          <ul className="animate-fade-in absolute inset-x-0 top-[calc(100%+6px)] z-30 overflow-hidden rounded-2xl border border-line bg-surface p-1.5 shadow-modal">
+          <ul className="animate-fade-in absolute inset-x-0 top-[calc(100%+6px)] z-30 max-h-[min(420px,60dvh)] overflow-y-auto rounded-2xl border border-line bg-surface p-1.5 shadow-modal">
             {results.length === 0 && <li className="px-4 py-3 text-[14px] text-muted">No books match “{query}”. Try an author.</li>}
             {results.map((b) => (
               <li key={b.slug}>
@@ -153,11 +156,11 @@ export function DiscoverView() {
         )}
       </section>
 
-      <section className="mt-10 hidden lg:block">
+      <section className="mt-8 lg:mt-10">
         <Eyebrow>Genres</Eyebrow>
-        <ul className="mt-3.5 flex flex-wrap gap-2.5">
+        <ul className="no-scrollbar -mx-5 mt-3 flex gap-2 overflow-x-auto px-5 lg:mx-0 lg:mt-3.5 lg:flex-wrap lg:gap-2.5 lg:overflow-visible lg:px-0">
           {genres.map((g) => (
-            <li key={g}>
+            <li key={g} className="shrink-0">
               <button
                 onClick={() => setGenre(genre === g ? null : g)}
                 aria-pressed={genre === g}
@@ -170,6 +173,7 @@ export function DiscoverView() {
             </li>
           ))}
         </ul>
+        {genre && <GenreBooks genre={genre} />}
       </section>
 
       <section className="mt-6 lg:mt-10">
@@ -209,6 +213,28 @@ export function DiscoverView() {
           ))}
         </ul>
       </section>
+      {scanning && <ScanSheet onClose={() => setScanning(false)} />}
     </main>
+  );
+}
+
+/** Books in a genre: ones you haven't read first, each marked with its shelf if it has one. */
+function GenreBooks({ genre }: { genre: string }) {
+  const { shelfOf } = useReading();
+  const label: Record<string, string> = { want: "On Want to read", reading: "Reading", read: "Read", dnf: "Didn’t finish" };
+  const slugs = [...booksByGenre[genre]].sort((a, b) => Number(shelfOf(a) === "read") - Number(shelfOf(b) === "read"));
+  return (
+    <ul key={genre} className="no-scrollbar animate-fade-in -mx-5 mt-4 flex gap-3 overflow-x-auto px-5 pb-1 lg:mx-0 lg:grid lg:grid-cols-6 lg:gap-[18px] lg:overflow-visible lg:px-0">
+      {slugs.map((slug) => {
+        const shelf = shelfOf(slug);
+        return (
+          <li key={slug} className="w-[96px] shrink-0 lg:w-auto">
+            <BookCover slug={slug} size="sm" />
+            <p className="mt-2 truncate text-[13px] font-semibold">{getBook(slug).title}</p>
+            <p className={`truncate text-[12px] ${shelf ? "text-accent" : "text-muted"}`}>{shelf ? label[shelf] : getBook(slug).author}</p>
+          </li>
+        );
+      })}
+    </ul>
   );
 }

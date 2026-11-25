@@ -5,6 +5,7 @@ import { books, discoverPicks, shelves, type ShelfKey } from "@/lib/data";
 import { BookCover } from "../BookCover";
 import { CheckIcon, CloseIcon, PlusIcon, SearchIcon } from "../Icons";
 import { useReading, type Status } from "../ReadingProvider";
+import { useDialogFocus } from "../useDialogFocus";
 
 const matchOf = Object.fromEntries(discoverPicks.map((p) => [p.slug, p.match]));
 const shelfLabel = Object.fromEntries(shelves.map((s) => [s.key, s.label]));
@@ -27,6 +28,8 @@ export function AddBooksSheet({ shelf, onClose }: { shelf: ShelfKey; onClose: ()
   // Remember what was added here so those rows can be undone instead of disappearing.
   const [added, setAdded] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useDialogFocus(dialogRef);
 
   // Latest close handler, so the setup below runs once per open (not on every re-render).
   const closeRef = useRef(onClose);
@@ -77,6 +80,7 @@ export function AddBooksSheet({ shelf, onClose }: { shelf: ShelfKey; onClose: ()
       onMouseDown={(e) => e.target === e.currentTarget && onClose()}
     >
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-label={setup.title}

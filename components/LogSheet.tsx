@@ -5,6 +5,7 @@ import { getBook } from "@/lib/data";
 import { BookCover } from "./BookCover";
 import { CheckIcon, CloseIcon, StarFill } from "./Icons";
 import { ProgressBar } from "./ProgressBar";
+import { useDialogFocus } from "./useDialogFocus";
 import type { Log, Status } from "./ReadingProvider";
 
 const STATUSES: { key: Status; label: string }[] = [
@@ -50,6 +51,8 @@ export function LogSheet({
   const pct = Math.round((shownPage / pages) * 100);
 
   // Close on Escape, and stop the page behind from scrolling.
+  useDialogFocus(dialogRef);
+
   // Latest close handler, so the setup below runs once per open (not on every re-render).
   const closeRef = useRef(onClose);
   useEffect(() => {
@@ -233,10 +236,16 @@ export function LogSheet({
               placeholder="A line for future you…"
               className="mt-2 h-[84px] w-full resize-none rounded-[14px] border border-line bg-surface px-4 py-3 text-[15px] placeholder:text-muted focus:border-accent focus:outline-none lg:h-[120px]"
             />
-            <p className="mt-2 flex items-center gap-2 text-[12px] text-muted">
-              <CheckIcon size={13} className={draftSaved ? "text-accent" : ""} />
-              <span className="lg:hidden">Draft saved on this phone. Syncs when you&apos;re online.</span>
-              <span className="hidden lg:inline">Draft saved on this device. Syncs when you&apos;re online.</span>
+            <p className="mt-2 flex min-h-5 items-center gap-2 text-[12px] text-muted" aria-live="polite">
+              {draftSaved ? (
+                <>
+                  <CheckIcon size={13} className="text-accent" />
+                  <span className="lg:hidden">Draft saved on this phone.</span>
+                  <span className="hidden lg:inline">Draft saved on this device.</span>
+                </>
+              ) : (
+                "Only you can see this."
+              )}
             </p>
 
             <div className="mt-8 hidden justify-end gap-2.5 lg:flex">

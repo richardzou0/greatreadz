@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BookActions } from "@/components/book/BookActions";
+import { GetIt } from "@/components/book/GetIt";
 import { RatingBreakdown } from "@/components/book/RatingBreakdown";
 import { BookCover } from "@/components/BookCover";
 import { ShelfReveal } from "@/components/ShelfReveal";
+import { ShareButton } from "@/components/ShareButton";
 import { ShelfBook } from "@/components/ShelfBook";
 import { BackIcon, ShareIcon, StarSmall } from "@/components/Icons";
 import { Eyebrow } from "@/components/ui";
@@ -18,11 +20,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return { title: book ? `${book.title} · Greatreadz` : "Book not found" };
 }
 
-const GET_IT = [
-  { label: "Buy on Yamazon", short: "Buy on Yamazon", note: "Paperback, Quindle" },
-  { label: "Borrow from your library", short: "Borrow free", note: "Free" },
-  { label: "Listen on Audible", short: "Audiobook", note: "Audiobook" },
-];
 
 // Book page: cover first, one clear shelf button, people you follow before strangers.
 export default async function BookPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -47,9 +44,14 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
             <BackIcon size={20} />
             <span className="hidden lg:inline">Back</span>
           </Link>
-          <button aria-label="Share" className="flex h-11 w-11 items-center justify-center lg:hidden">
+          <ShareButton
+            title={`${book.title} · Greatreadz`}
+            className="flex h-11 min-w-11 items-center justify-center px-2 text-[12px] font-semibold text-accent lg:hidden"
+            doneLabel="Copied"
+            label="Share this book"
+          >
             <ShareIcon size={20} />
-          </button>
+          </ShareButton>
         </div>
 
         <div className="mt-2 lg:mt-3 lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-12">
@@ -79,20 +81,7 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
               <Eyebrow as="h2" className="hidden lg:block">
                 Get it
               </Eyebrow>
-              <ul className="grid grid-cols-3 gap-2 lg:mt-3 lg:grid-cols-1">
-                {GET_IT.map((g) => (
-                  <li key={g.label}>
-                    <a
-                      href="#"
-                      className="flex h-11 items-center justify-center gap-3 whitespace-nowrap rounded-xl border border-line bg-surface px-1 text-[13px] lg:whitespace-normal lg:leading-tight font-semibold transition-colors hover:border-accent/50 lg:justify-between lg:px-4 lg:text-[14px]"
-                    >
-                      <span className="lg:hidden">{g.short}</span>
-                      <span className="hidden lg:inline">{g.label}</span>
-                      <span className="hidden font-medium text-muted lg:inline">{g.note}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <GetIt title={book.title} author={book.author} />
             </div>
           </div>
 

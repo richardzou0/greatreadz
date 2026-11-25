@@ -4,9 +4,12 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
 import { ScrollShelf } from "../ScrollShelf";
 import { ShelfReveal } from "../ShelfReveal";
+import { ShareButton } from "../ShareButton";
 import { ShelfBook } from "../ShelfBook";
 import { AddBooksSheet } from "./AddBooksSheet";
+import { BadgesSheet } from "./BadgesSheet";
 import { Bookcase } from "./Bookcase";
+import { GoalSheet } from "./GoalSheet";
 import { formatPages, getBook, shelves, type ShelfKey } from "@/lib/data";
 import {
   BadgeIcon,
@@ -417,8 +420,19 @@ function StatsView({ onSeeRead }: { onSeeRead: () => void }) {
     (a, b) => getBook(b).pages - getBook(a).pages,
   );
   const maxPages = getBook(byPages[0])?.pages ?? 1;
-  const challengePct = (challenge.read / challenge.goal) * 100;
-  const challengeLine = `${challenge.read} of ${challenge.goal}${challenge.read >= challenge.goal ? " · goal reached" : ""} · ${ordinal(challengeRank)} of ${challengeFriends.length} friends`;
+  const [editingGoal, setEditingGoal] = useState(false);
+  const goalReached = challenge.read >= challenge.goal;
+  const challengePct = Math.min(100, (challenge.read / challenge.goal) * 100);
+  const challengeLine = `${challenge.read} of ${challenge.goal} · ${ordinal(challengeRank)} of ${challengeFriends.length} friends`;
+  const shareText = `My 2026 in reading on Greatreadz: ${stats.booksRead} books, ${formatPages(stats.pages)} pages, ${stats.avgRating.toFixed(1)}★ on average.`;
+  const editGoal = (
+    <button
+      onClick={() => setEditingGoal(true)}
+      className="text-[12px] font-semibold text-accent underline-offset-2 hover:underline lg:text-[13px]"
+    >
+      Edit goal
+    </button>
+  );
   const tags = [
     `${favouriteAuthor.count} by ${favouriteAuthor.name}`,
     `Avg ${stats.avgPages} pages`,
@@ -453,11 +467,14 @@ function StatsView({ onSeeRead }: { onSeeRead: () => void }) {
             </div>
           ))}
         </dl>
-        <p className="mt-5 flex justify-between text-[12px]">
-          <span className="font-semibold">Reading challenge</span>
+        <p className="mt-5 flex items-baseline justify-between gap-2 text-[12px]">
+          <span className="font-semibold">
+            Reading challenge{goalReached && <span className="text-accent"> · reached</span>}
+          </span>
           <span className="text-muted">{challengeLine}</span>
         </p>
         <ProgressBar value={challengePct} className="mt-2" />
+        <div className="mt-2 text-right">{editGoal}</div>
         <p className="mt-5 flex justify-between text-[12px]">
           <span className="font-semibold">Moods you read</span>
           <span className="text-muted">{tags[0]}</span>
@@ -488,9 +505,12 @@ function StatsView({ onSeeRead }: { onSeeRead: () => void }) {
         ))}
         <div className="rounded-[20px] bg-accent-soft p-5">
           <dd className="font-serif text-[40px] font-medium leading-none">
-            {Math.round(challengePct)}%
+            {goalReached ? "Goal hit" : `${Math.round(challengePct)}%`}
           </dd>
-          <dt className="mt-3 text-[13px] text-muted">{challengeLine}</dt>
+          <dt className="mt-3 flex items-baseline justify-between gap-2 text-[13px] text-muted">
+            <span>{challengeLine}</span>
+            {editGoal}
+          </dt>
           <ProgressBar value={challengePct} height={5} className="mt-3" />
         </div>
       </dl>
@@ -573,7 +593,7 @@ function StatsView({ onSeeRead }: { onSeeRead: () => void }) {
         </section>
 
         {achievement && (
-          <Achievement title={achievement.title} text={achievement.text} />
+          <Achievement title={achievement.title} text={achievement.text} shareText={shareText} />
         )}
       </div>
 
@@ -584,6 +604,7 @@ function StatsView({ onSeeRead }: { onSeeRead: () => void }) {
         See all {readSlugs.length} books you&apos;ve read
         <ChevronRightIcon size={16} />
       </button>
+      {editingGoal && <GoalSheet onClose={() => setEditingGoal(false)} />}
     </div>
   );
 }
@@ -634,8 +655,8 @@ function TasteLegend({
   );
 }
 
-function Achievement({ title, text }: { title: string; text: string }) {
-  const [shared, setShared] = useState(false);
+function Achievement({ title, text, shareText }: { title: string; text: string; shareText: string }) {
+  const [badges, setBadges] = useState(false);
   return (
     <section className="flex items-center gap-4 rounded-[20px] bg-accent-soft p-4 lg:block lg:p-6">
       <Eyebrow as="p" className="hidden text-accent lg:block">
@@ -646,26 +667,29 @@ function Achievement({ title, text }: { title: string; text: string }) {
           <BadgeIcon size={22} />
         </span>
         <div>
-          <p className="text-[14px] font-semibold lg:font-serif lg:text-[22px] lg:font-medium">
-            {title}
-          </p>
+          <p className="text-[14px] font-semibold lg:font-serif lg:text-[22px] lg:font-medium">{title}</p>
           <p className="text-[12px] text-muted lg:text-[14px]">{text}</p>
         </div>
       </div>
-      <div className="flex gap-2.5 lg:mt-5">
-        <button
-          onClick={() => setShared(true)}
+      <div className="flex shrink-0 flex-col gap-2 lg:mt-5 lg:flex-row lg:gap-2.5">
+        <ShareButton
+          title="My 2026 in reading · Greatreadz"
+          text={shareText}
+          doneLabel="Copied ✓"
           className="h-11 shrink-0 rounded-full border border-accent px-4 text-[13px] font-semibold text-accent transition-colors lg:bg-accent lg:px-5 lg:text-[14px] lg:text-on-accent"
         >
-          <span className="lg:hidden">{shared ? "Shared ✓" : "Share"}</span>
-          <span className="hidden lg:inline">
-            {shared ? "Link copied ✓" : "Share your year so far"}
-          </span>
-        </button>
-        <button className="hidden h-11 rounded-full border border-accent px-5 text-[14px] font-semibold text-accent lg:block">
-          See all badges
+          <span className="lg:hidden">Share</span>
+          <span className="hidden lg:inline">Share your year so far</span>
+        </ShareButton>
+        <button
+          onClick={() => setBadges(true)}
+          className="h-11 shrink-0 rounded-full border border-accent px-4 text-[13px] font-semibold text-accent transition-colors hover:bg-bg lg:px-5 lg:text-[14px]"
+        >
+          <span className="lg:hidden">Badges</span>
+          <span className="hidden lg:inline">See all badges</span>
         </button>
       </div>
+      {badges && <BadgesSheet onClose={() => setBadges(false)} />}
     </section>
   );
 }

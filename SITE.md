@@ -15,7 +15,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens Ã
 - **Real (Rich's own):** every book on the shelves, Rich's ratings, current page in Morning Star (82%) and Empire of the Vampire (5%), where he stopped in Between Two Kingdoms (50%), and the Want to read list (the rest of Red Rising and all of A Song of Ice and Fire).
 - **Worked out from that:** books read, pages turned, average rating, reading taste, the "6 by Stephen King" tag, the Different Seasons achievement and the recommendation match %.
 - **Real public data:** book years, page counts (common first editions; the four novellas are their share of *Different Seasons*) and the star breakdowns, which come from Open Library readers.
-- **Placeholders to change:** the 2026 reading goal (set to 12 in `lib/data.ts`, `CHALLENGE_GOAL`), and the assumption that all 13 finished books were read in 2026.
+- **Placeholders to change:** the default 2026 reading goal (12, `CHALLENGE_GOAL` in `lib/data.ts`; visitors can change theirs with "Edit goal"), and the assumption that all 13 finished books were read in 2026.
 - **Sample:** friends (Maya, Jonah, Priya, Sam, Lena), their ratings, reviews, Community updates, replies and book clubs, challenge numbers, and the "Verified readers" one-star burst, which is a demo of the idea.
 
 ## Pages
@@ -48,6 +48,15 @@ This is a portfolio piece, built from the design files in `public/` (5 screens Ã
 - Everything respects "reduce motion" on the device.
 
 ## Recent Changes
+- 2026-11-25: QA fixes for the portfolio version.
+  - New Greatreadz favicon (three book spines on green) replaces the Vercel triangle; there's an iPhone home-screen icon too.
+  - "Listen on Audible" is now "Listen on Baudible". The Get it buttons work: Borrow opens the book on Open Library (free, non-profit); Yamazon and Baudible explain they're made up and that the site isn't monetized.
+  - Pop-ups keep keyboard focus inside while open and return it to the button that opened them.
+  - Every clickable control shows the hand cursor, and the keyboard focus ring uses the site's green.
+  - Discover: genre chips now show the books in that genre (Classics and Mystery removed, as nothing fit), search shows every match, and Scan opens a demo scanner that "finds" a book.
+  - Book page Share uses the phone's share sheet or copies the link. Stats: "Share your year" shares a summary, "See all badges" lists 8 badges worked out from your shelves.
+  - The reading goal can be edited ("Edit goal" on the Home and Stats challenge cards); a reached goal reads "Goal hit" instead of "108%".
+  - Home no longer shows Mistborn twice (Maya's "just finished" is now Dark Age), and the log sheet only says "Draft saved" once you've actually typed.
 - 2026-11-23: Fixed Community opening zoomed out on phones. The friend filter chips were stretching the page wider than the screen; they now scroll inside their own row.
 - 2026-11-19: Added a **Covers / Spines** toggle on My shelf. Spines shows every shelf as a real bookcase: books stand spine-out on planks, coloured from their real covers, thicker for longer books and slightly varied in height. Hover lifts a book with its title (and rating or progress); click opens it. Books you're reading get a bookmark ribbon. The choice is remembered in the browser.
 - 2026-11-19: Added **Community** (`/community`), a new section under Discover in the sidebar and phone tab bar. It has a calm friends' activity feed (Today / Yesterday / This week) with Cheer and replies and a filter by friend, a Your friends list (what each is reading, books this year, books you've both read), book clubs you can join, and a compact challenge leaderboard. Discover's community cards and Home's friends' activity now link to it. Friends, updates, replies and clubs are sample content.
@@ -76,5 +85,7 @@ This is a portfolio piece, built from the design files in `public/` (5 screens Ã
 - **Add a new book:** copy one of the entries in `lib/data.ts` and give it a new short name (like `"emma"`). It gets its own page at `/book/emma` automatically. Leave out `shelf` and it becomes a possible recommendation instead.
 - **Go back to coloured covers:** set `USE_REAL_COVERS` to `false` in `lib/data.ts`.
 - **Add a cover for a new book:** save it as `public/covers/<short-name>.jpg` and add the short name to the `COVERS` list in `lib/data.ts`.
-- **Set your reading goal:** change `CHALLENGE_GOAL` in `lib/data.ts`.
+- **Set your reading goal:** change `CHALLENGE_GOAL` in `lib/data.ts` for everyone, or use "Edit goal" on the challenge card for your own browser.
+- **Change genres:** edit `booksByGenre` in `lib/data.ts`.
+- **Change the favicon:** edit `app/icon.svg` (and regenerate `app/apple-icon.png`).
 - **Design files:** the original SVG designs are in `public/`. The brief and research PDFs are kept on this computer only and are not uploaded to GitHub.

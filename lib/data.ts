@@ -324,11 +324,10 @@ const sum = (ns: number[]) => ns.reduce((a, b) => a + b, 0);
 
 export const formatPages = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(1)}k` : `${n}`);
 
-// Reading challenge. The goal is a placeholder: change it to Rich's real goal.
+// Reading challenge. Default goal; visitors can change theirs on the challenge card.
 export const CHALLENGE_GOAL = 12;
 const today = new Date("2026-11-18");
 const yearShare = (today.getTime() - new Date("2026-01-01").getTime()) / (365 * 864e5);
-const onPace = Math.round(CHALLENGE_GOAL * yearShare);
 export const CHALLENGE_DAYS_LEFT = Math.ceil((new Date("2027-01-01").getTime() - today.getTime()) / 864e5);
 
 const PACE_TAGS = ["Slow-paced", "Fast-paced"];
@@ -345,7 +344,7 @@ const SEASONS = ["rita-hayworth", "apt-pupil", "the-body", "the-breathing-method
  * Every number on My books and the Home challenge card, worked out from a list of finished books.
  * Runs again whenever a book is logged, so the stats always match the shelves.
  */
-export function summarise(readSlugs: string[], ratingOf: (slug: string) => number) {
+export function summarise(readSlugs: string[], ratingOf: (slug: string) => number, goal = CHALLENGE_GOAL) {
   const done = readSlugs.map(getBook).filter(Boolean);
   const count = done.length || 1;
   const pages = sum(done.map((b) => b.pages));
@@ -383,10 +382,10 @@ export function summarise(readSlugs: string[], ratingOf: (slug: string) => numbe
     readingTaste: taste,
     topMood: moodRanked[0]?.[0] ?? "Reflective",
     challenge: {
-      goal: CHALLENGE_GOAL,
+      goal,
       read: done.length,
       // positive = ahead of schedule, negative = behind
-      vsPace: done.length - onPace,
+      vsPace: done.length - Math.round(goal * yearShare),
     },
     // Sample friends' numbers, ranked with Rich's real count
     challengeFriends: friends,
@@ -429,11 +428,21 @@ export const paceOf = (b: Book) =>
 
 export const moods = ["Reflective", "Adventurous", "Funny", "Dark", "Hopeful", "Tense"];
 export const paces = ["Slow", "Medium", "Fast"];
-export const genres = ["Sci-fi", "Fantasy", "Horror", "Thriller", "Romance", "Classics", "Literary fiction", "Mystery", "Memoir"];
+/** Books in each genre, for the Discover genre chips. A book can be in more than one. */
+export const booksByGenre: Record<string, string[]> = {
+  "Sci-fi": ["red-rising", "golden-son", "morning-star", "iron-gold", "dark-age", "light-bringer", "dune", "enders-game", "project-hail-mary", "the-hunger-games"],
+  Fantasy: ["mistborn", "the-name-of-the-wind", "the-blade-itself", "the-poppy-war", "fourth-wing", "empire-of-the-vampire", "a-game-of-thrones", "a-clash-of-kings", "a-storm-of-swords", "a-feast-for-crows", "a-dance-with-dragons"],
+  Horror: ["pet-sematary", "the-shining", "misery", "the-stand", "the-breathing-method", "empire-of-the-vampire"],
+  Thriller: ["billy-summers", "apt-pupil", "the-long-walk", "misery", "the-hunger-games"],
+  Romance: ["archers-voice", "fourth-wing"],
+  "Literary fiction": ["the-body", "rita-hayworth"],
+  Memoir: ["be-useful", "greenlights", "living-with-a-seal", "cant-hurt-me", "between-two-kingdoms"],
+};
+export const genres = Object.keys(booksByGenre);
 
 // ——— Sample social content (friends are not real people) ———
 export const friendsFinished = [
-  { friend: "Maya", slug: "mistborn", rating: 4.5 },
+  { friend: "Maya", slug: "dark-age", rating: 5 },
   { friend: "Jonah", slug: "the-stand", rating: 4 },
   { friend: "Priya", slug: "fourth-wing", rating: 3.5 },
   { friend: "Sam", slug: "project-hail-mary", rating: 5 },
